@@ -387,53 +387,29 @@ function andonick_section_contact() {
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
 						<input type="hidden" name="andonick_form_type" value="devis">
+						<input type="hidden" name="andonick_lang" value="<?php echo esc_attr( andonick_lang() ); ?>">
 						<?php wp_nonce_field( 'andonick_contact', 'andonick_nonce' ); ?>
 						<div style="display:none;"><input type="text" name="andonick_website" tabindex="-1" autocomplete="off"></div>
 
-						<div class="form-row">
-							<label for="f-name"><?php echo esc_html( andonick_t( 'f_name' ) ); ?></label>
-							<input type="text" id="f-name" name="andonick_name" required>
-						</div>
-						<div class="form-row">
-							<label for="f-company"><?php echo esc_html( andonick_t( 'f_company' ) ); ?></label>
-							<input type="text" id="f-company" name="andonick_company">
-						</div>
-						<div class="form-row form-row-2">
-							<div>
-								<label for="f-phone"><?php echo esc_html( andonick_t( 'f_phone' ) ); ?></label>
-								<input type="tel" id="f-phone" name="andonick_phone" required>
+						<?php $fi = 0; ?>
+						<?php foreach ( andonick_form_fields( 'devis' ) as $ffield ) : ?>
+							<div class="form-row">
+								<label for="f-devis-<?php echo esc_attr( $fi ); ?>"><?php echo esc_html( $ffield['label'] ); ?></label>
+								<?php if ( 'select' === $ffield['type'] ) : ?>
+									<select id="f-devis-<?php echo esc_attr( $fi ); ?>" name="andonick_f<?php echo esc_attr( $fi ); ?>"<?php echo $ffield['required'] ? ' required' : ''; ?>>
+										<?php $options = ( 'slots' === $ffield['options'] ) ? andonick_lines( 'slots', $slots ) : andonick_lines( 'services', $services ); ?>
+										<?php foreach ( $options as $option ) : ?>
+											<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option ); ?></option>
+										<?php endforeach; ?>
+									</select>
+								<?php elseif ( 'textarea' === $ffield['type'] ) : ?>
+									<textarea id="f-devis-<?php echo esc_attr( $fi ); ?>" name="andonick_f<?php echo esc_attr( $fi ); ?>" rows="4"<?php echo $ffield['required'] ? ' required' : ''; ?>></textarea>
+								<?php else : ?>
+									<input type="<?php echo esc_attr( $ffield['type'] ); ?>" id="f-devis-<?php echo esc_attr( $fi ); ?>" name="andonick_f<?php echo esc_attr( $fi ); ?>"<?php echo $ffield['required'] ? ' required' : ''; ?>>
+								<?php endif; ?>
 							</div>
-							<div>
-								<label for="f-email"><?php echo esc_html( andonick_t( 'f_email' ) ); ?></label>
-								<input type="email" id="f-email" name="andonick_email">
-							</div>
-						</div>
-						<div class="form-row">
-							<label for="f-service"><?php echo esc_html( andonick_t( 'f_service' ) ); ?></label>
-							<select id="f-service" name="andonick_service" required>
-								<?php foreach ( $services as $service ) : ?>
-									<option value="<?php echo esc_attr( $service ); ?>"><?php echo esc_html( $service ); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-						<div class="form-row">
-							<label for="f-desc"><?php echo esc_html( andonick_t( 'f_desc' ) ); ?></label>
-							<textarea id="f-desc" name="andonick_desc" rows="4" placeholder="<?php echo esc_attr( andonick_t( 'descPlaceholder' ) ); ?>" required></textarea>
-						</div>
-						<div class="form-row form-row-2">
-							<div>
-								<label><?php echo esc_html( andonick_t( 'f_slot' ) ); ?></label>
-								<select name="andonick_slot">
-									<?php foreach ( $slots as $slot ) : ?>
-										<option value="<?php echo esc_attr( $slot ); ?>"><?php echo esc_html( $slot ); ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-							<div>
-								<label><?php echo esc_html( andonick_t( 'f_city' ) ); ?></label>
-								<input type="text" name="andonick_city" placeholder="<?php echo esc_attr( andonick_t( 'cityPlaceholder' ) ); ?>">
-							</div>
-						</div>
+							<?php $fi++; ?>
+						<?php endforeach; ?>
 						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_devis' ) ); ?></button>
 						<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_devis' ) ); ?></p>
 					</form>
@@ -443,37 +419,29 @@ function andonick_section_contact() {
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
 						<input type="hidden" name="andonick_form_type" value="rappel">
+						<input type="hidden" name="andonick_lang" value="<?php echo esc_attr( andonick_lang() ); ?>">
 						<?php wp_nonce_field( 'andonick_contact', 'andonick_nonce' ); ?>
 						<div style="display:none;"><input type="text" name="andonick_website" tabindex="-1" autocomplete="off"></div>
 
-						<div class="form-row">
-							<label><?php echo esc_html( andonick_t( 'f_name' ) ); ?></label>
-							<input type="text" name="andonick_name" required>
-						</div>
-						<div class="form-row form-row-2">
-							<div>
-								<label><?php echo esc_html( andonick_t( 'f_phone' ) ); ?></label>
-								<input type="tel" name="andonick_phone" required>
+						<?php $ri = 0; ?>
+						<?php foreach ( andonick_form_fields( 'rappel' ) as $rfield ) : ?>
+							<div class="form-row">
+								<label for="f-rappel-<?php echo esc_attr( $ri ); ?>"><?php echo esc_html( $rfield['label'] ); ?></label>
+								<?php if ( 'select' === $rfield['type'] ) : ?>
+									<select id="f-rappel-<?php echo esc_attr( $ri ); ?>" name="andonick_f<?php echo esc_attr( $ri ); ?>"<?php echo $rfield['required'] ? ' required' : ''; ?>>
+										<?php $options = ( 'slots' === $rfield['options'] ) ? andonick_lines( 'slots', $slots ) : andonick_lines( 'services', $services ); ?>
+										<?php foreach ( $options as $option ) : ?>
+											<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option ); ?></option>
+										<?php endforeach; ?>
+									</select>
+								<?php elseif ( 'textarea' === $rfield['type'] ) : ?>
+									<textarea id="f-rappel-<?php echo esc_attr( $ri ); ?>" name="andonick_f<?php echo esc_attr( $ri ); ?>" rows="4"<?php echo $rfield['required'] ? ' required' : ''; ?>></textarea>
+								<?php else : ?>
+									<input type="<?php echo esc_attr( $rfield['type'] ); ?>" id="f-rappel-<?php echo esc_attr( $ri ); ?>" name="andonick_f<?php echo esc_attr( $ri ); ?>"<?php echo $rfield['required'] ? ' required' : ''; ?>>
+								<?php endif; ?>
 							</div>
-							<div>
-								<label><?php echo esc_html( andonick_t( 'f_object' ) ); ?></label>
-								<input type="text" name="andonick_object" placeholder="<?php echo esc_attr( andonick_t( 'objectPlaceholder' ) ); ?>">
-							</div>
-						</div>
-						<div class="form-row form-row-2">
-							<div>
-								<label><?php echo esc_html( andonick_t( 'f_slot' ) ); ?></label>
-								<select name="andonick_slot">
-									<?php foreach ( $slots as $slot ) : ?>
-										<option value="<?php echo esc_attr( $slot ); ?>"><?php echo esc_html( $slot ); ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-							<div>
-								<label><?php echo esc_html( andonick_t( 'f_city' ) ); ?></label>
-								<input type="text" name="andonick_city" placeholder="<?php echo esc_attr( andonick_t( 'cityPlaceholder' ) ); ?>">
-							</div>
-						</div>
+							<?php $ri++; ?>
+						<?php endforeach; ?>
 						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_rappel' ) ); ?></button>
 						<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_rappel' ) ); ?></p>
 					</form>
@@ -483,3 +451,66 @@ function andonick_section_contact() {
 	</section>
 	<?php
 }
+/**
+ * Section libre « Texte » — titre, contenu et bouton, édités sans code.
+ * Ne s'affiche que si au moins un contenu est rempli.
+ */
+function andonick_free_texte( $n ) {
+	$p       = 'texte' . $n;
+	$eyebrow = trim( (string) andonick_t( $p . '_eyebrow' ) );
+	$title   = trim( (string) andonick_t( $p . '_title' ) );
+	$body    = trim( (string) andonick_t( $p . '_body' ) );
+	$btn     = trim( (string) andonick_t( $p . '_btn' ) );
+	$href    = trim( (string) andonick_t( $p . '_btn_href' ) );
+	if ( '' === $title && '' === $body && '' === $btn ) {
+		return;
+	}
+	?>
+	<section class="section section-free" id="<?php echo esc_attr( $p ); ?>">
+		<div class="container">
+			<?php if ( '' !== $eyebrow || '' !== $title ) : ?>
+				<div class="section-head reveal">
+					<?php if ( '' !== $eyebrow ) : ?><span class="eyebrow"><?php echo esc_html( $eyebrow ); ?></span><?php endif; ?>
+					<?php if ( '' !== $title ) : ?><h2><?php echo esc_html( $title ); ?></h2><?php endif; ?>
+				</div>
+			<?php endif; ?>
+			<?php if ( '' !== $body ) : ?>
+				<div class="free-body reveal"><?php echo nl2br( esc_html( $body ) ); ?></div>
+			<?php endif; ?>
+			<?php if ( '' !== $btn ) : ?>
+				<p class="free-cta reveal"><a class="btn" href="<?php echo esc_url( $href ); ?>"><?php echo esc_html( $btn ); ?></a></p>
+			<?php endif; ?>
+		</div>
+	</section>
+	<?php
+}
+function andonick_section_texte1() { andonick_free_texte( 1 ); }
+function andonick_section_texte2() { andonick_free_texte( 2 ); }
+function andonick_section_texte3() { andonick_free_texte( 3 ); }
+
+/**
+ * Section libre « Bannière » — pleine largeur, fond violet ou image personnalisée.
+ */
+function andonick_free_banniere( $n ) {
+	$p     = 'banniere' . $n;
+	$title = trim( (string) andonick_t( $p . '_title' ) );
+	$body  = trim( (string) andonick_t( $p . '_body' ) );
+	$btn   = trim( (string) andonick_t( $p . '_btn' ) );
+	$href  = trim( (string) andonick_t( $p . '_btn_href' ) );
+	if ( '' === $title && '' === $body && '' === $btn ) {
+		return;
+	}
+	$bg = andonick_ap_bg( $p );
+	?>
+	<section class="section section-banner" id="<?php echo esc_attr( $p ); ?>"<?php if ( '' !== $bg ) : ?> style="background-image:linear-gradient(rgba(42,10,99,0.84),rgba(42,10,99,0.84)),url('<?php echo esc_url( $bg ); ?>');background-size:cover;background-position:center;"<?php endif; ?>>
+		<div class="container banner-inner">
+			<?php if ( '' !== $title ) : ?><h2 class="banner-title reveal"><?php echo esc_html( $title ); ?></h2><?php endif; ?>
+			<?php if ( '' !== $body ) : ?><p class="banner-body reveal"><?php echo nl2br( esc_html( $body ) ); ?></p><?php endif; ?>
+			<?php if ( '' !== $btn ) : ?><p class="banner-cta reveal"><a class="btn btn-outline-light" href="<?php echo esc_url( $href ); ?>"><?php echo esc_html( $btn ); ?></a></p><?php endif; ?>
+		</div>
+	</section>
+	<?php
+}
+function andonick_section_banniere1() { andonick_free_banniere( 1 ); }
+function andonick_section_banniere2() { andonick_free_banniere( 2 ); }
+function andonick_section_banniere3() { andonick_free_banniere( 3 ); }

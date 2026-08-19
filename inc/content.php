@@ -56,10 +56,60 @@ function andonick_content() {
 			'map_dir'         => 'ANDONICK Group — Quartier Sica 1, Rue du Languedoc, Bangui, République Centrafricaine',
 			'socials'         => array(),
 			'news_eyebrow'    => 'Actualités',
-			'news_title'      => 'L\'actualité du Groupe',
-			'news_sub'        => '',
-			'news_more'       => 'Lire la suite',
-			'news_count'      => '3',
+'news_title'    => 'L\'actualité du Groupe',
+			'news_sub'      => '',
+			'news_more'     => 'Lire la suite',
+			'news_count'    => '3',
+			'seo_desc'      => 'ANDONICK Group International — groupe multisectoriel panafricain présent à Bangui (Centrafrique), Dakar (Sénégal) et Bordeaux (France) : bâtiment, énergie, TIC, transport, mines, agriculture, commerce et services financiers.',
+			'page_404_title' => 'Introuvable',
+			'page_404_body'  => 'Le contenu demandé n\'existe plus ou n\'est plus disponible.',
+			'page_404_back'  => 'Retour à l\'accueil',
+			'page_prev'      => 'Article précédent',
+			'page_next'      => 'Article suivant',
+			'texte1_eyebrow' => '',
+			'texte1_title'   => '',
+			'texte1_body'    => '',
+			'texte1_btn'     => '',
+			'texte1_btn_href' => '',
+			'texte2_eyebrow' => '',
+			'texte2_title'   => '',
+			'texte2_body'    => '',
+			'texte2_btn'     => '',
+			'texte2_btn_href' => '',
+			'texte3_eyebrow' => '',
+			'texte3_title'   => '',
+			'texte3_body'    => '',
+			'texte3_btn'     => '',
+			'texte3_btn_href' => '',
+			'banniere1_title' => '',
+			'banniere1_body'  => '',
+			'banniere1_btn'   => '',
+			'banniere1_btn_href' => '',
+			'banniere2_title' => '',
+			'banniere2_body'  => '',
+			'banniere2_btn'   => '',
+			'banniere2_btn_href' => '',
+			'banniere3_title' => '',
+			'banniere3_body'  => '',
+			'banniere3_btn'   => '',
+			'banniere3_btn_href' => '',
+			'devis_fields'   => array(
+				'Nom complet|text|1',
+				'Entreprise|text|0',
+				'Téléphone|tel|1',
+				'E-mail|email|0',
+				'Filiale / service concerné|select|0|services',
+				'Votre message|textarea|1',
+				'Créneau de rappel souhaité|select|0|slots',
+				'Ville|text|0',
+			),
+			'rappel_fields'  => array(
+				'Nom complet|text|1',
+				'Téléphone|tel|1',
+				'Objet de la demande|text|0',
+				'Créneau de rappel|select|0|slots',
+				'Ville|text|0',
+			),
 			'strip'           => array(
 				'Distributeur officiel Starlink RCA',
 				'Fibre optique & Cybersécurité',
@@ -240,6 +290,56 @@ function andonick_content() {
 			'news_sub'      => '',
 			'news_more'     => 'Read more',
 			'news_count'    => '3',
+			'seo_desc'      => 'ANDONICK Group International — pan-African multi-sector group based in Bangui (Central African Republic), Dakar (Senegal) and Bordeaux (France): construction, energy, ICT, transport, mining, agriculture, trade and financial services.',
+			'page_404_title' => 'Not Found',
+			'page_404_body'  => 'The requested content no longer exists or is no longer available.',
+			'page_404_back'  => 'Back to home',
+			'page_prev'      => 'Previous article',
+			'page_next'      => 'Next article',
+			'texte1_eyebrow' => '',
+			'texte1_title'   => '',
+			'texte1_body'    => '',
+			'texte1_btn'     => '',
+			'texte1_btn_href' => '',
+			'texte2_eyebrow' => '',
+			'texte2_title'   => '',
+			'texte2_body'    => '',
+			'texte2_btn'     => '',
+			'texte2_btn_href' => '',
+			'texte3_eyebrow' => '',
+			'texte3_title'   => '',
+			'texte3_body'    => '',
+			'texte3_btn'     => '',
+			'texte3_btn_href' => '',
+			'banniere1_title' => '',
+			'banniere1_body'  => '',
+			'banniere1_btn'   => '',
+			'banniere1_btn_href' => '',
+			'banniere2_title' => '',
+			'banniere2_body'  => '',
+			'banniere2_btn'   => '',
+			'banniere2_btn_href' => '',
+			'banniere3_title' => '',
+			'banniere3_body'  => '',
+			'banniere3_btn'   => '',
+			'banniere3_btn_href' => '',
+			'devis_fields'   => array(
+				'Full name|text|1',
+				'Company|text|0',
+				'Phone|tel|1',
+				'E-mail|email|0',
+				'Subsidiary / service concerned|select|0|services',
+				'Your message|textarea|1',
+				'Preferred callback slot|select|0|slots',
+				'City|text|0',
+			),
+			'rappel_fields'  => array(
+				'Full name|text|1',
+				'Phone|tel|1',
+				'Subject of the request|text|0',
+				'Callback slot|select|0|slots',
+				'City|text|0',
+			),
 			'strip'         => array(
 				'Official Starlink Distributor CAR',
 				'Fibre Optics & Cybersecurity',
@@ -569,6 +669,48 @@ function andonick_legal_pages() {
  */
 function andonick_news_enabled() {
 	return '0' === get_theme_mod( 'andonick_news_enabled', '1' ) ? false : true;
+}
+
+/**
+ * Les champs d'un formulaire — éditable sans code.
+ * 1 ligne = « Libellé|type|obligatoire(0/1)|source(optionnelle) »
+ * Types : text, tel, email, textarea, select.
+ * Pour select : source = services (liste déroulante) ou slots (créneaux).
+ */
+function andonick_form_fields( $form, $lang = '' ) {
+	if ( '' === $lang ) {
+		$lang = andonick_lang();
+	}
+	if ( ! in_array( $lang, array( 'fr', 'en' ), true ) ) {
+		$lang = 'fr';
+	}
+	$key = ( 'rappel' === $form ) ? 'rappel_fields' : 'devis_fields';
+	$raw = get_theme_mod( 'andonick_' . $lang . '_' . $key, implode( "\n", andonick_content()[ $lang ][ $key ] ) );
+	$out = array();
+	foreach ( array_filter( array_map( 'trim', explode( "\n", (string) $raw ) ) ) as $line ) {
+		$parts = array_map( 'trim', explode( '|', $line ) );
+		if ( '' === $parts[0] ) {
+			continue;
+		}
+		$type = isset( $parts[1] ) ? $parts[1] : 'text';
+		if ( ! in_array( $type, array( 'text', 'tel', 'email', 'textarea', 'select' ), true ) ) {
+			$type = 'text';
+		}
+		$out[] = array(
+			'label'    => $parts[0],
+			'type'     => $type,
+			'required' => isset( $parts[2] ) && '1' === $parts[2],
+			'options'  => isset( $parts[3] ) ? $parts[3] : '',
+		);
+	}
+	return $out;
+}
+
+/**
+ * Les sections libres activables : texte1…3, banniere1…3 (ordre des sections).
+ */
+function andonick_free_sections() {
+	return array( 'texte1', 'texte2', 'texte3', 'banniere1', 'banniere2', 'banniere3' );
 }
 
 /**

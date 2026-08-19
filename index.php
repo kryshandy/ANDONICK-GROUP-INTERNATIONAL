@@ -38,18 +38,18 @@ get_header();
 			<?php endwhile; ?>
 			<?php if ( is_single() && 'post' === get_post_type() ) : ?>
 <nav class="page-nav">
-				<span class="prev"><?php previous_post_link( '%link', '&larr; ' . esc_html( 'Article précédent' ), true ); ?></span>
-				<span class="next"><?php next_post_link( '%link', esc_html( 'Article suivant' ) . ' &rarr;', true ); ?></span>
+				<span class="prev"><?php previous_post_link( '%link', '&larr; ' . esc_html( andonick_t( 'page_prev' ) ), true ); ?></span>
+				<span class="next"><?php next_post_link( '%link', esc_html( andonick_t( 'page_next' ) ) . ' &rarr;', true ); ?></span>
 			</nav>
 			<?php endif; ?>
 		<?php else : ?>
 			<article class="legal-article">
 				<header class="page-head">
-					<h1 class="page-title"><?php echo esc_html( 'Introuvable' ); ?></h1>
+					<h1 class="page-title"><?php echo esc_html( andonick_t( 'page_404_title' ) ); ?></h1>
 				</header>
 				<div class="page-body">
-					<p><?php echo esc_html( 'Le contenu demandé n\'existe plus.' ); ?></p>
-					<a class="btn" href="<?php echo esc_url( home_url( '/' ) ); ?>">Retour à l'accueil</a>
+					<p><?php echo esc_html( andonick_t( 'page_404_body' ) ); ?></p>
+					<a class="btn" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( andonick_t( 'page_404_back' ) ); ?></a>
 				</div>
 			</article>
 		<?php endif; ?>

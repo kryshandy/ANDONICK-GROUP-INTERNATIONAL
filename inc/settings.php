@@ -69,6 +69,7 @@ function andonick_cz_image( $wp_customize, $key, $default, $label, $section ) {
  */
 function andonick_sanitize_section_order( $input ) {
 	$allowed = array( 'hero', 'groupe', 'filiales', 'impact', 'actualites', 'realisations', 'references', 'contact' );
+	$allowed = array_merge( $allowed, andonick_free_sections() );
 	$order   = array();
 	foreach ( explode( "\n", $input ) as $line ) {
 		$item = sanitize_key( trim( $line ) );
@@ -105,10 +106,10 @@ function andonick_customize_register( $wp_customize ) {
 	) );
 	$wp_customize->add_control( 'andonick_section_order', array(
 		'label'       => 'Ordre des sections',
-		'description' => 'Noms possibles : hero, groupe, filiales, impact, actualites, realisations, references, contact (la section actualites ne s\'affiche que si des articles existent)',
+		'description' => 'Noms possibles : hero, groupe, filiales, impact, actualites, realisations, references, contact, texte1, texte2, texte3, banniere1, banniere2, banniere3 (sections libres : elles ne s\'affichent que si un contenu y est rempli — la section actualites uniquement si des articles existent)',
 		'section'     => 'andonick_structure',
 		'type'        => 'textarea',
-		'input_attrs' => array( 'rows' => 9 ),
+		'input_attrs' => array( 'rows' => 11 ),
 	) );
 
 	/* ---- Section images (commune) ---- */
@@ -126,6 +127,7 @@ function andonick_customize_register( $wp_customize ) {
 	for ( $gi = 7; $gi <= 12; $gi++ ) {
 		andonick_cz_image( $wp_customize, 'gallery_' . $gi, '', 'Galerie — photo ' . $gi . ' (vide = non affichée)', 'andonick_images' );
 	}
+	andonick_cz_image( $wp_customize, 'og', '', 'Image de partage réseaux sociaux (Open Graph, 1200 × 630 conseillé) — vide = aucune image de partage', 'andonick_images' );
 
 	/* ---- Sections par langue ---- */
 	foreach ( array( 'fr' => 'Français', 'en' => 'English' ) as $lang => $label ) {
@@ -169,7 +171,7 @@ function andonick_customize_register( $wp_customize ) {
 			if ( is_array( $value ) || in_array( $key, array( 'filiales', 'services', 'impacts', 'testis', 'ref_headers', 'refs', 'partners', 'slots' ), true ) ) {
 				continue;
 			}
-			$is_long = in_array( $key, array( 's2_body', 'hero_lead', 'impact_body', 'contact_sub', 'f_disc_devis', 'f_disc_rappel', 'foot_tag', 'contact_addr' ), true );
+			$is_long = in_array( $key, array( 's2_body', 'hero_lead', 'impact_body', 'contact_sub', 'f_disc_devis', 'f_disc_rappel', 'foot_tag', 'contact_addr', 'seo_desc' ), true );
 			if ( $is_long ) {
 				andonick_cz_textarea( $wp_customize, $lang, $key, $value, $sec_texts );
 			} else {
@@ -190,6 +192,8 @@ function andonick_customize_register( $wp_customize ) {
 		andonick_cz_textarea( $wp_customize, $lang, 'stats', implode( "\n", $content[ $lang ]['stats'] ), $sec_texts, 'Statistiques du haut de page (1 par ligne : Nombre|Libellé — vide = non affichée)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'socials', implode( "\n", $content[ $lang ]['socials'] ), $sec_texts, 'Réseaux sociaux (1 par ligne : Nom|URL — vide = aucun lien affiché)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'map_dir', $content[ $lang ]['map_dir'], $sec_texts, 'Adresse affichée sur la carte (bloc Contact)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'devis_fields', implode( "\n", $content[ $lang ]['devis_fields'] ), $sec_struct, 'Formulaire devis — champs (1 ligne = Libellé|type|obligatoire|source — types : text, tel, email, textarea, select ; sources : services, slots)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'rappel_fields', implode( "\n", $content[ $lang ]['rappel_fields'] ), $sec_struct, 'Formulaire rappel — champs (même format ; gardez le même ordre en anglais)' );
 
 		/* Les métiers — 12 emplacements (8 remplis par défaut, 4 vides pour la suite) */
 		for ( $i = 0; $i < 12; $i++ ) {
@@ -270,6 +274,39 @@ function andonick_customize_register( $wp_customize ) {
 		'news_sub'      => 'Actualités — sous-titre (facultatif)',
 		'news_more'     => 'Actualités — texte du lien « Lire la suite »',
 		'news_count'    => 'Actualités — nombre d\'articles affichés',
+		'seo_desc'      => 'SEO — description de la page (meta description + partages réseaux sociaux)',
+		'page_404_title'=> 'Page 404 (introuvable) — grand titre',
+		'page_404_body' => 'Page 404 (introuvable) — texte',
+		'page_404_back' => 'Page 404 (introuvable) — texte du bouton retour',
+		'page_prev'     => 'Blog — lien « Article précédent »',
+		'page_next'     => 'Blog — lien « Article suivant »',
+		'texte1_eyebrow' => 'Section libre « Texte 1 » — petit titre (vide = masquée)',
+		'texte1_title'  => 'Section libre « Texte 1 » — grand titre',
+		'texte1_body'   => 'Section libre « Texte 1 » — contenu (paragraphes)',
+		'texte1_btn'    => 'Section libre « Texte 1 » — texte du bouton (vide = pas de bouton)',
+		'texte1_btn_href' => 'Section libre « Texte 1 » — lien du bouton',
+		'texte2_eyebrow' => 'Section libre « Texte 2 » — petit titre (vide = masquée)',
+		'texte2_title'  => 'Section libre « Texte 2 » — grand titre',
+		'texte2_body'   => 'Section libre « Texte 2 » — contenu (paragraphes)',
+		'texte2_btn'    => 'Section libre « Texte 2 » — texte du bouton (vide = pas de bouton)',
+		'texte2_btn_href' => 'Section libre « Texte 2 » — lien du bouton',
+		'texte3_eyebrow' => 'Section libre « Texte 3 » — petit titre (vide = masquée)',
+		'texte3_title'  => 'Section libre « Texte 3 » — grand titre',
+		'texte3_body'   => 'Section libre « Texte 3 » — contenu (paragraphes)',
+		'texte3_btn'    => 'Section libre « Texte 3 » — texte du bouton (vide = pas de bouton)',
+		'texte3_btn_href' => 'Section libre « Texte 3 » — lien du bouton',
+		'banniere1_title' => 'Bannière 1 — grand titre (vide = masquée)',
+		'banniere1_body'  => 'Bannière 1 — texte',
+		'banniere1_btn'   => 'Bannière 1 — texte du bouton (vide = pas de bouton)',
+		'banniere1_btn_href' => 'Bannière 1 — lien du bouton',
+		'banniere2_title' => 'Bannière 2 — grand titre (vide = masquée)',
+		'banniere2_body'  => 'Bannière 2 — texte',
+		'banniere2_btn'   => 'Bannière 2 — texte du bouton (vide = pas de bouton)',
+		'banniere2_btn_href' => 'Bannière 2 — lien du bouton',
+		'banniere3_title' => 'Bannière 3 — grand titre (vide = masquée)',
+		'banniere3_body'  => 'Bannière 3 — texte',
+		'banniere3_btn'   => 'Bannière 3 — texte du bouton (vide = pas de bouton)',
+		'banniere3_btn_href' => 'Bannière 3 — lien du bouton',
 	);
 	foreach ( array( 'fr', 'en' ) as $lang ) {
 		foreach ( $nice_labels as $key => $label ) {

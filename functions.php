@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.3.0' );
+define( 'ANDONICK_VERSION', '3.4.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
@@ -135,11 +135,14 @@ function andonick_favicon() {
 add_action( 'wp_head', 'andonick_favicon', 5 );
 
 /**
- * Gestion du formulaire de devis / rappel (admin-post).
+ * Gestion des formulaires (devis / rappel) — admin-post.
+ * Les champs sont définis sans code : « Formulaires & listes » dans le
+ * Customizer. Le nom de chaque champ est andonick_f{index} ; la validation
+ * porte sur les lignes marquées obligatoires (|1).
  */
 function andonick_handle_form() {
 	$nonce_ok = isset( $_POST['andonick_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['andonick_nonce'] ) ), 'andonick_contact' );
-	if ( ! $nonce_ok || empty( $_POST['andonick_name'] ) || empty( $_POST['andonick_phone'] ) ) {
+	if ( ! $nonce_ok ) {
 		wp_safe_redirect( wp_get_referer() . '#devis' );
 		exit;
 	}
@@ -149,32 +152,49 @@ function andonick_handle_form() {
 		exit;
 	}
 
-	$lang = ( 'en' === andonick_lang() ) ? 'EN' : 'FR';
-	$type = ( isset( $_POST['andonick_form_type'] ) && 'rappel' === $_POST['andonick_form_type'] ) ? 'RAPPEL' : 'DEVIS';
+	$lang = ( isset( $_POST['andonick_lang'] ) && 'en' === $_POST['andonick_lang'] ) ? 'en' : 'fr';
+	$type = ( isset( $_POST['andonick_form_type'] ) && 'rappel' === $_POST['andonick_form_type'] ) ? 'rappel' : 'devis';
+	$config = andonick_form_fields( $type, $lang );
 
-	$fields = array(
-		'Nom'        => sanitize_text_field( wp_unslash( $_POST['andonick_name'] ) ),
-		'Téléphone'  => sanitize_text_field( wp_unslash( $_POST['andonick_phone'] ) ),
-		'Entreprise' => isset( $_POST['andonick_company'] ) ? sanitize_text_field( wp_unslash( $_POST['andonick_company'] ) ) : '',
-		'Email'      => isset( $_POST['andonick_email'] ) ? sanitize_email( wp_unslash( $_POST['andonick_email'] ) ) : '',
-		'Service'    => isset( $_POST['andonick_service'] ) ? sanitize_text_field( wp_unslash( $_POST['andonick_service'] ) ) : '',
-		'Description'=> isset( $_POST['andonick_desc'] ) ? sanitize_textarea_field( wp_unslash( $_POST['andonick_desc'] ) ) : '',
-		'Créneau'    => isset( $_POST['andonick_slot'] ) ? sanitize_text_field( wp_unslash( $_POST['andonick_slot'] ) ) : '',
-		'Ville'      => isset( $_POST['andonick_city'] ) ? sanitize_text_field( wp_unslash( $_POST['andonick_city'] ) ) : '',
-		'Objet'      => isset( $_POST['andonick_object'] ) ? sanitize_text_field( wp_unslash( $_POST['andonick_object'] ) ) : '',
-	);
+	$labels = array( 'fr' => 'FR', 'en' => 'EN' );
+	$kind   = ( 'rappel' === $type ) ? 'RAPPEL' : 'DEVIS';
+	$lines  = array();
+	$ok     = true;
 
-	$body  = "Demande [$type] — Site web (langue $lang)\n\n";
-	foreach ( $fields as $label => $value ) {
+	if ( empty( $config ) ) {
+		$ok = false;
+	}
+	foreach ( $config as $i => $field ) {
+		$key = 'andonick_f' . $i;
+		if ( 'email' === $field['type'] ) {
+			$value = isset( $_POST[ $key ] ) ? sanitize_email( wp_unslash( $_POST[ $key ] ) ) : '';
+		} elseif ( 'textarea' === $field['type'] ) {
+			$value = isset( $_POST[ $key ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $key ] ) ) : '';
+		} else {
+			$value = isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : '';
+		}
+		$value = trim( $value );
+		if ( $field['required'] && '' === $value ) {
+			$ok = false;
+			continue;
+		}
 		if ( '' !== $value ) {
-			$body .= "$label : $value\n";
+			$lines[] = $field['label'] . ' : ' . $value;
 		}
 	}
-	$body .= "\nEnvoyé depuis : " . esc_url_raw( wp_get_referer() );
+
+	if ( ! $ok ) {
+		wp_safe_redirect( wp_get_referer() . '#devis' );
+		exit;
+	}
+
+	$body  = 'Demande [' . $kind . '] — Site web (langue ' . $labels[ $lang ] . ')' . "\n\n";
+	$body .= implode( "\n", $lines );
+	$body .= "\n\nEnvoyé depuis : " . esc_url_raw( wp_get_referer() );
 
 	wp_mail(
 		andonick_t( 'contact_mail' ),
-		'[ANDONICK] Nouvelle demande ' . $type . ' (' . $lang . ')',
+		'[ANDONICK] Nouvelle demande ' . $kind . ' (' . $labels[ $lang ] . ')',
 		$body
 	);
 
@@ -183,3 +203,40 @@ function andonick_handle_form() {
 }
 add_action( 'admin_post_nopriv_andonick_contact', 'andonick_handle_form' );
 add_action( 'admin_post_andonick_contact', 'andonick_handle_form' );
+
+/**
+ * SEO — meta description + balises Open Graph / Twitter, réglées sans code
+ * (champ « seo_desc » par langue + image « andonick_img_og »).
+ */
+function andonick_seo_meta() {
+	$lang  = andonick_lang();
+	$name  = get_bloginfo( 'name' );
+	$title = $name . ' — ' . andonick_t( 'hero_tag' );
+	$desc  = trim( (string) andonick_t( 'seo_desc' ) );
+	$img   = trim( (string) get_theme_mod( 'andonick_img_og', '' ) );
+	$url   = ( 'en' === $lang ) ? home_url( '/?lang=en' ) : home_url( '/' );
+	$locale = ( 'en' === $lang ) ? 'en_US' : 'fr_FR';
+
+	if ( '' !== $desc ) {
+		echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
+	}
+	echo '<meta property="og:type" content="website">' . "\n";
+	echo '<meta property="og:site_name" content="' . esc_attr( $name ) . '">' . "\n";
+	echo '<meta property="og:locale" content="' . esc_attr( $locale ) . '">' . "\n";
+	echo '<meta property="og:title" content="' . esc_attr( $title ) . '">' . "\n";
+	if ( '' !== $desc ) {
+		echo '<meta property="og:description" content="' . esc_attr( $desc ) . '">' . "\n";
+	}
+	echo '<meta property="og:url" content="' . esc_url( $url ) . '">' . "\n";
+	if ( '' !== $img ) {
+		echo '<meta property="og:image" content="' . esc_url( $img ) . '">' . "\n";
+		echo '<meta property="og:image:alt" content="' . esc_attr( $name ) . '">' . "\n";
+		echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+		echo '<meta name="twitter:title" content="' . esc_attr( $title ) . '">' . "\n";
+		if ( '' !== $desc ) {
+			echo '<meta name="twitter:description" content="' . esc_attr( $desc ) . '">' . "\n";
+		}
+		echo '<meta name="twitter:image" content="' . esc_url( $img ) . '">' . "\n";
+	}
+}
+add_action( 'wp_head', 'andonick_seo_meta', 2 );

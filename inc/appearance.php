@@ -65,18 +65,54 @@ function andonick_ap_bg( $key ) {
 }
 
 /**
+ * Police personnalisée : nom de famille + fichier woff2.
+ * Retourne [ nom => url ] ou [] si incomplet.
+ */
+function andonick_ap_font_custom() {
+	$name = trim( str_replace( array( "'", '"', ';', "\n", "\r" ), '', (string) get_theme_mod( 'andonick_ap_font_custom_name', '' ) ) );
+	$file = trim( (string) get_theme_mod( 'andonick_ap_font_custom_file', '' ) );
+	return ( '' !== $name && '' !== $file ) ? array( $name => $file ) : array();
+}
+
+/**
+ * Liste complète des polices proposées (personnalisée d'abord, puis 5 standard).
+ */
+function andonick_ap_font_choices() {
+	$builtin = array(
+		'Segoe UI, Arial, sans-serif'          => 'Segoe UI (par défaut)',
+		'Georgia, "Times New Roman", serif'    => 'Georgia (serif élégant)',
+		'"Trebuchet MS", Segoe UI, sans-serif' => 'Trebuchet MS',
+		'Arial, Helvetica, sans-serif'         => 'Arial',
+		'Verdana, Geneva, sans-serif'          => 'Verdana',
+	);
+	$choices = array();
+	foreach ( andonick_ap_font_custom() as $name => $file ) {
+		$choices[ $name ] = $name . ' (personnalisée)';
+	}
+	return $choices + $builtin;
+}
+
+/**
+ * Autorise l'upload de polices (woff2 / woff) dans la bibliothèque.
+ */
+function andonick_ap_font_mimes( $mimes ) {
+	$mimes['woff2'] = 'font/woff2';
+	$mimes['woff']  = 'font/woff';
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'andonick_ap_font_mimes' );
+
+/**
  * Feuille de style injectée : variables CSS + règles de positionnement.
  */
 function andonick_appearance_css() {
-	$font_choices  = array(
-		'Segoe UI, Arial, sans-serif',
-		'Georgia, "Times New Roman", serif',
-		'"Trebuchet MS", Segoe UI, sans-serif',
-		'Arial, Helvetica, sans-serif',
-		'Verdana, Geneva, sans-serif',
-	);
-	$font          = andonick_ap( 'font', $font_choices[0] );
-	$font_heading  = andonick_ap( 'font_heading', $font );
+	$font_choices  = array_keys( andonick_ap_font_choices() );
+	$font          = andonick_ap_sanitize_choice( andonick_ap( 'font', $font_choices[0] ), $font_choices, $font_choices[0] );
+	$font_heading  = andonick_ap( 'font_heading', '' );
+	if ( '' !== $font_heading && ! in_array( $font_heading, $font_choices, true ) ) {
+		$font_heading = '';
+	}
+	$heading = ( '' !== $font_heading ) ? $font_heading : $font;
 	$size          = andonick_ap_sanitize_int( andonick_ap( 'font_size', '16' ), 14, 18, 16 );
 	$primary       = andonick_ap_sanitize_hex( andonick_ap( 'color_primary', '#461491' ) );
 	$primary_dark  = andonick_ap_sanitize_hex( andonick_ap( 'color_primary_dark', '#2A0A63' ) );
@@ -101,7 +137,11 @@ function andonick_appearance_css() {
 	$hero_pad      = array( '80' => '72px', '90' => '92px', '100' => '120px' );
 	$justify       = array( 'center' => 'center', 'left' => 'flex-start', 'right' => 'flex-end' );
 
-	$css  = ':root{';
+	$css  = '';
+	foreach ( andonick_ap_font_custom() as $fname => $furl ) {
+		$css .= "@font-face{font-family:'" . $fname . "';src:url('" . esc_url( $furl ) . "') format('woff2');font-display:swap;}";
+	}
+	$css .= ':root{';
 	$css .= '--violet:' . $primary . ';';
 	$css .= '--violet-dark:' . $primary_dark . ';';
 	$css .= '--grey:' . $text . ';';
@@ -111,7 +151,7 @@ function andonick_appearance_css() {
 	$css .= '--radius:' . $radius . 'px;';
 	$css .= '--radius-sm:' . $radius . 'px;';
 	$css .= '--font:' . $font . ';';
-	$css .= '--font-heading:' . $font_heading . ';';
+	$css .= '--font-heading:' . $heading . ';';
 	$css .= '--container-w:' . $width . 'px;';
 	$css .= '--section-pad:' . $pad . 'px;';
 	$css .= '--gal-col:' . $gal . ';';
@@ -200,21 +240,11 @@ function andonick_customize_appearance( $wp_customize ) {
 		'title' => 'Polices & alignements',
 		'panel' => 'andonick_appearance',
 	) );
-	$fonts = array(
-		'Segoe UI, Arial, sans-serif'                       => 'Segoe UI (par défaut)',
-		'Georgia, "Times New Roman", serif'                 => 'Georgia (serif élégant)',
-		'"Trebuchet MS", Segoe UI, sans-serif'              => 'Trebuchet MS',
-		'Arial, Helvetica, sans-serif'                      => 'Arial',
-		'Verdana, Geneva, sans-serif'                       => 'Verdana',
-	);
+	$fonts = andonick_ap_font_choices();
 	$wp_customize->add_setting( 'andonick_ap_font', array(
 		'default'           => 'Segoe UI, Arial, sans-serif',
 		'sanitize_callback' => function ( $v ) {
-			return andonick_ap_sanitize_choice( $v, array_keys( array(
-				'Segoe UI, Arial, sans-serif' => 1, 'Georgia, "Times New Roman", serif' => 1,
-				'"Trebuchet MS", Segoe UI, sans-serif' => 1, 'Arial, Helvetica, sans-serif' => 1,
-				'Verdana, Geneva, sans-serif' => 1,
-			) ), 'Segoe UI, Arial, sans-serif' );
+			return andonick_ap_sanitize_choice( $v, array_keys( andonick_ap_font_choices() ), 'Segoe UI, Arial, sans-serif' );
 		},
 		'type'              => 'theme_mod',
 	) );
@@ -227,11 +257,7 @@ function andonick_customize_appearance( $wp_customize ) {
 	$wp_customize->add_setting( 'andonick_ap_font_heading', array(
 		'default'           => '',
 		'sanitize_callback' => function ( $v ) {
-			return andonick_ap_sanitize_choice( $v, array(
-				'', 'Segoe UI, Arial, sans-serif', 'Georgia, "Times New Roman", serif',
-				'"Trebuchet MS", Segoe UI, sans-serif', 'Arial, Helvetica, sans-serif',
-				'Verdana, Geneva, sans-serif',
-			), '' );
+			return andonick_ap_sanitize_choice( $v, array( '' ) + array_keys( andonick_ap_font_choices() ), '' );
 		},
 		'type'              => 'theme_mod',
 	) );
@@ -241,6 +267,30 @@ function andonick_customize_appearance( $wp_customize ) {
 		'type'    => 'select',
 		'choices' => array( '' => 'Comme la police générale' ) + $fonts,
 	) );
+	$wp_customize->add_setting( 'andonick_ap_font_custom_name', array(
+		'default'           => '',
+		'sanitize_callback' => function ( $v ) {
+			return sanitize_text_field( str_replace( array( "'", '"', ';', "\n", "\r" ), '', wp_unslash( $v ) ) );
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_ap_font_custom_name', array(
+		'label'       => 'Police personnalisée — nom de la famille',
+		'description' => 'Exemple : Montserrat. Sera proposée en tête de liste dès le fichier chargé.',
+		'section'     => 'andonick_ap_typo',
+		'type'        => 'text',
+	) );
+	$wp_customize->add_setting( 'andonick_ap_font_custom_file', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'andonick_ap_font_custom_file', array(
+		'label'       => 'Police personnalisée — fichier (.woff2)',
+		'description' => 'Téléversez votre fichier .woff2 (ou .woff) depuis la bibliothèque, puis choisissez le fichier. Vide = police non utilisée.',
+		'section'     => 'andonick_ap_typo',
+		'settings'    => 'andonick_ap_font_custom_file',
+	) ) );
 	$wp_customize->add_setting( 'andonick_ap_font_size', array(
 		'default'           => '16',
 		'sanitize_callback' => function ( $v ) {
@@ -472,6 +522,9 @@ function andonick_customize_appearance( $wp_customize ) {
 		'filiales'   => 'Image de fond de la section « Les métiers » (facultative)',
 		'references' => 'Image de fond de la section « Références » (facultative)',
 		'contact'    => 'Image de fond de la section « Contact » (facultative)',
+		'banniere1'  => 'Image de fond de la bannière libre n°1 (facultative)',
+		'banniere2'  => 'Image de fond de la bannière libre n°2 (facultative)',
+		'banniere3'  => 'Image de fond de la bannière libre n°3 (facultative)',
 	);
 	foreach ( $bg_labels as $key => $label ) {
 		$wp_customize->add_setting( 'andonick_ap_bg_' . $key, array(
