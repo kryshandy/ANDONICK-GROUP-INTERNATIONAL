@@ -29,6 +29,7 @@ function andonick_content() {
 
 			// Hero.
 			'hero_tag'      => 'Groupe multisectoriel panafricain',
+			'hero_title_tail' => 'INTERNATIONAL',
 			'hero_title'    => 'ANDONICK GROUP INTERNATIONAL',
 			'hero_lead'     => 'Télécommunications, énergie solaire, sécurité, BTP, transport & logistique, commerce général, facility management et conseil : un partenaire technique unique, présent à Bangui, Dakar et Bordeaux.',
 			'hero_cta1'     => 'Demander un devis en ligne',
@@ -174,6 +175,7 @@ function andonick_content() {
 			'nav_devis'     => 'Request a Quote',
 
 			'hero_tag'      => 'Pan-African multi-sector group',
+			'hero_title_tail' => 'INTERNATIONAL',
 			'hero_title'    => 'ANDONICK GROUP INTERNATIONAL',
 			'hero_lead'     => 'Telecommunications, solar energy, security, construction, transport & logistics, general trade, facility management and consulting: a single technical partner, present in Bangui, Dakar and Bordeaux.',
 			'hero_cta1'     => 'Request a Quote Online',
@@ -311,14 +313,182 @@ function andonick_lang() {
 
 /**
  * Récupère une chaîne traduite. Ex. andonick_t( 'nav_contact' ).
+ * Lit d'abord le Customizer (Apparence → Personnaliser), sinon la valeur par défaut.
  */
 function andonick_t( $key ) {
 	$content = andonick_content();
 	$lang    = andonick_lang();
-	if ( isset( $content[ $lang ][ $key ] ) ) {
-		return $content[ $lang ][ $key ];
+	$default = isset( $content[ $lang ][ $key ] ) ? $content[ $lang ][ $key ] : '';
+	return get_theme_mod( "andonick_{$lang}_{$key}", $default );
+}
+
+/**
+ * Nombre des statistiques (éditables). Ex. andonick_stat( 'stat1_num' ).
+ */
+function andonick_stat( $key ) {
+	return andonick_t( $key );
+}
+
+/**
+ * URL d'une image éditable du site.
+ * Ex. andonick_img( 'hero' ), andonick_img( 'gallery_1' ).
+ */
+function andonick_img( $key ) {
+	$defaults = array(
+		'hero'      => ANDONICK_URI . '/assets/img/hero.jpg',
+		'group'     => ANDONICK_URI . '/assets/img/domaines.jpg',
+		'impact'    => ANDONICK_URI . '/assets/img/impact.jpg',
+		'gallery_1' => ANDONICK_URI . '/assets/img/hero.jpg',
+		'gallery_2' => ANDONICK_URI . '/assets/img/domaines.jpg',
+		'gallery_3' => ANDONICK_URI . '/assets/img/impact.jpg',
+		'gallery_4' => ANDONICK_URI . '/assets/img/photo-07.jpg',
+		'gallery_5' => ANDONICK_URI . '/assets/img/photo-08.jpg',
+		'gallery_6' => ANDONICK_URI . '/assets/img/photo-11.jpg',
+	);
+	$mod      = get_theme_mod( "andonick_img_{$key}", '' );
+	return ( '' !== $mod ) ? $mod : $defaults[ $key ];
+}
+
+/**
+ * Image du logo : logo personnalisé WP si défini, sinon logo officiel du thème.
+ */
+function andonick_logo() {
+	$custom = get_theme_mod( 'custom_logo' );
+	if ( $custom ) {
+		$url = wp_get_attachment_image_url( $custom, 'full' );
+		if ( $url ) {
+			return $url;
+		}
 	}
-	return isset( $content['fr'][ $key ] ) ? $content['fr'][ $key ] : $key;
+	return ANDONICK_URI . '/assets/img/logo.png';
+}
+
+/**
+ * Liste à partir d'un Customizer « 1 ligne = 1 élément » avec repli sur les défauts.
+ */
+function andonick_lines( $key, $default_lines ) {
+	$lang = andonick_lang();
+	$raw  = get_theme_mod( "andonick_{$lang}_{$key}", '' );
+	if ( '' !== $raw ) {
+		$lines = array_filter( array_map( 'trim', explode( "\n", $raw ) ) );
+		if ( ! empty( $lines ) ) {
+			return array_values( $lines );
+		}
+	}
+	return $default_lines;
+}
+
+/**
+ * Les 8 métiers (éditables).
+ */
+function andonick_filiales() {
+	$lang   = andonick_lang();
+	$defs   = andonick_content()[ $lang ]['filiales'];
+	$result = array();
+	foreach ( $defs as $i => $f ) {
+		$tags_raw = get_theme_mod( "andonick_{$lang}_filiales_{$i}_tags", '' );
+		$tags     = ( '' !== $tags_raw ) ? array_values( array_filter( array_map( 'trim', explode( "\n", $tags_raw ) ) ) ) : $f['tags'];
+		$result[] = array(
+			'num'   => get_theme_mod( "andonick_{$lang}_filiales_{$i}_num", $f['num'] ),
+			'title' => get_theme_mod( "andonick_{$lang}_filiales_{$i}_title", $f['title'] ),
+			'desc'  => get_theme_mod( "andonick_{$lang}_filiales_{$i}_desc", $f['desc'] ),
+			'tags'  => $tags,
+		);
+	}
+	return $result;
+}
+
+/**
+ * Les témoignages (éditables).
+ */
+function andonick_testis() {
+	$lang   = andonick_lang();
+	$defs   = andonick_content()[ $lang ]['testis'];
+	$result = array();
+	foreach ( $defs as $i => $t ) {
+		$result[] = array(
+			get_theme_mod( "andonick_{$lang}_testis_{$i}_quote", $t[0] ),
+			get_theme_mod( "andonick_{$lang}_testis_{$i}_name", $t[1] ),
+			get_theme_mod( "andonick_{$lang}_testis_{$i}_role", $t[2] ),
+		);
+	}
+	return $result;
+}
+
+/**
+ * Les impacts (éditables).
+ */
+function andonick_impacts() {
+	$lang   = andonick_lang();
+	$defs   = andonick_content()[ $lang ]['impacts'];
+	$result = array();
+	foreach ( $defs as $i => $imp ) {
+		$result[] = array(
+			get_theme_mod( "andonick_{$lang}_impacts_{$i}_title", $imp[0] ),
+			get_theme_mod( "andonick_{$lang}_impacts_{$i}_desc", $imp[1] ),
+		);
+	}
+	return $result;
+}
+
+/**
+ * Tableau des références (éditable : 1 ligne = Catégorie | Nom | Fonction | Téléphone).
+ */
+function andonick_refs() {
+	$lang = andonick_lang();
+	$raw  = get_theme_mod( "andonick_{$lang}_refs_rows", '' );
+	if ( '' !== $raw ) {
+		$rows = array();
+		foreach ( explode( "\n", $raw ) as $line ) {
+			$parts = array_map( 'trim', explode( '|', $line ) );
+			if ( count( $parts ) >= 4 ) {
+				$rows[] = array_slice( $parts, 0, 4 );
+			}
+		}
+		if ( ! empty( $rows ) ) {
+			return $rows;
+		}
+	}
+	return andonick_content()[ $lang ]['refs'];
+}
+
+/**
+ * En-têtes du tableau références (éditables).
+ */
+function andonick_ref_headers() {
+	return andonick_lines( 'ref_headers', andonick_content()[ andonick_lang() ]['ref_headers'] );
+}
+
+/**
+ * Partenaires (éditables).
+ */
+function andonick_partners() {
+	return andonick_lines( 'partners', andonick_content()[ andonick_lang() ]['partners'] );
+}
+
+/**
+ * Liste déroulante des services (éditable).
+ */
+function andonick_services() {
+	return andonick_lines( 'services', andonick_content()[ andonick_lang() ]['services'] );
+}
+
+/**
+ * Créneaux de rappel (éditables).
+ */
+function andonick_slots() {
+	return andonick_lines( 'slots', andonick_content()[ andonick_lang() ]['slots'] );
+}
+
+/**
+ * Les 6 images de la galerie (éditables).
+ */
+function andonick_gallery() {
+	$imgs = array();
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$imgs[] = andonick_img( 'gallery_' . $i );
+	}
+	return $imgs;
 }
 
 /**

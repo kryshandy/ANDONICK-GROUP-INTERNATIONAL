@@ -41,12 +41,16 @@ wp-content/themes/andonick/
 6. Activer le thème **ANDONICK Group International** (Apparence → Thèmes).
 7. Ouvrir `http://localhost/wordpress/`.
 
-## Modifier les textes du site
+## Modifier le site SANS code — Apparence → Personnaliser
 
-Tous les textes FR/EN sont regroupés dans **`inc/content.php`** (tableaux bilingues) :
-- `fr` → textes français, `en` → textes anglais.
-- Les clés sont appelées dans les templates via `andonick_t( 'cle' )`.
-- Images : remplacer les fichiers dans `assets/img/` (mêmes noms).
+Tout le contenu est éditable depuis l'admin WordPress, sans toucher au code :
+
+- **Panneau « ANDONICK — Contenu du site »** : textes principaux FR et EN, les 8 métiers (numéro/titre/description/étiquettes), témoignages, références (1 ligne = `Catégorie | Nom | Fonction | Téléphone`), impacts, partenaires, listes des formulaires, créneaux, statistiques.
+- **Section « Images »** : photo du hero, photos des sections, les 6 photos de la galerie (sélecteur de fichiers WordPress).
+- **Identité du site** (réglages de base) : logo, titre, icône.
+- Chaque modification est **prévisualisée en direct** ; « Publier » applique au site.
+
+Les valeurs par défaut restent dans `inc/content.php` (source officielle du site ANDONICK).
 
 **Règles** : ne jamais modifier les couleurs, ni le logo (fichier officiel, à conserver intact), ni ajouter de couleur hors charte.
 
@@ -62,6 +66,7 @@ Tous les textes FR/EN sont regroupés dans **`inc/content.php`** (tableaux bilin
 
 ## Versions
 
+- **2.1.0** — Contenu 100 % éditable depuis le Customizer WordPress (textes, listes, témoignages, images, FR/EN) + audit complet des traductions
 - **2.0.0** — Refonte design premium : animations au scroll, compteurs animés, scrollspy, barre de progression, WhatsApp flottant, galerie réalisations, responsiveness profond (320–1440px)
 - **1.0.0** — Création du thème one-page bilingue conforme à la charte
 

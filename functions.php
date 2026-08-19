@@ -14,6 +14,7 @@ define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
 require_once ANDONICK_DIR . '/inc/content.php';
+require_once ANDONICK_DIR . '/inc/settings.php';
 
 /**
  * Configuration de base du thème.

@@ -36,7 +36,7 @@
 <header class="site-header" id="siteHeader">
 	<div class="container header-inner">
 		<a class="brand" href="#accueil" aria-label="ANDONICK Group International">
-			<img src="<?php echo esc_url( ANDONICK_URI . '/assets/img/logo.png' ); ?>" alt="Logo ANDONICK Group" class="brand-logo">
+			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="Logo ANDONICK Group" class="brand-logo">
 		</a>
 
 		<nav class="main-nav" id="mainNav" aria-label="Navigation principale">

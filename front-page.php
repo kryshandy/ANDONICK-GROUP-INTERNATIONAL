@@ -1,6 +1,7 @@
 <?php
 /**
  * Page d'accueil — one page ANDONICK Group International.
+ * Tout le contenu est éditable depuis Apparence → Personnaliser.
  *
  * @package Andonick
  */
@@ -8,38 +9,39 @@
 get_header();
 
 $lang     = andonick_lang();
-$content  = andonick_content()[ $lang ]; // phpcs:ignore
-$lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
+$filiales = andonick_filiales();
+$testis   = andonick_testis();
+$impacts  = andonick_impacts();
 ?>
 
 <main id="accueil">
 
 	<!-- ============ HERO ============ -->
 	<section class="hero" id="hero">
-		<div class="hero-bg" style="background-image:url('<?php echo esc_url( ANDONICK_URI . '/assets/img/hero.jpg' ); ?>');"></div>
+		<div class="hero-bg" style="background-image:url('<?php echo esc_url( andonick_img( 'hero' ) ); ?>');"></div>
 		<div class="container hero-inner">
-			<span class="hero-tag"><?php echo esc_html( $content['hero_tag'] ); ?></span>
-			<h1 class="hero-title">ANDONICK GROUP <em>INTERNATIONAL</em></h1>
-			<p class="hero-lead"><?php echo esc_html( $content['hero_lead'] ); ?></p>
+			<span class="hero-tag"><span class="dot"></span><?php echo esc_html( andonick_t( 'hero_tag' ) ); ?></span>
+			<h1 class="hero-title">ANDONICK GROUP <em><?php echo esc_html( andonick_t( 'hero_title_tail' ) ); ?></em></h1>
+			<p class="hero-lead"><?php echo esc_html( andonick_t( 'hero_lead' ) ); ?></p>
 			<div class="hero-cta">
-				<a href="#devis" class="btn"><?php echo esc_html( $content['hero_cta1'] ); ?></a>
-				<a href="#filiales" class="btn btn-outline-light"><?php echo esc_html( $content['hero_cta2'] ); ?></a>
+				<a href="#devis" class="btn"><?php echo esc_html( andonick_t( 'hero_cta1' ) ); ?></a>
+				<a href="#filiales" class="btn btn-outline-light"><?php echo esc_html( andonick_t( 'hero_cta2' ) ); ?></a>
 			</div>
 
 			<div class="hero-stats">
-				<div class="stat reveal"><b><span data-count="15" data-suffix="+">0+</span></b><span><?php echo esc_html( $content['stat1'] ); ?></span></div>
-				<div class="stat reveal reveal-delay-1"><b><span data-count="8">0</span></b><span><?php echo esc_html( $content['stat2'] ); ?></span></div>
-				<div class="stat reveal reveal-delay-2"><b><span data-count="3">0</span></b><span><?php echo esc_html( $content['stat3'] ); ?></span></div>
+				<div class="stat reveal"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat1_num' ) ); ?>" data-suffix="+"><?php echo esc_html( andonick_stat( 'stat1_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat1' ) ); ?></span></div>
+				<div class="stat reveal reveal-delay-1"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat2_num' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat2_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat2' ) ); ?></span></div>
+				<div class="stat reveal reveal-delay-2"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat3_num' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat3_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat3' ) ); ?></span></div>
 			</div>
 		</div>
 
 		<div class="hero-strip">
 			<div class="container strip-inner">
-				<span><?php echo esc_html( $content['strip1'] ); ?></span>
-				<span><?php echo esc_html( $content['strip2'] ); ?></span>
-				<span><?php echo esc_html( $content['strip3'] ); ?></span>
-				<span><?php echo esc_html( $content['strip4'] ); ?></span>
-				<span><?php echo esc_html( $content['strip5'] ); ?></span>
+				<span><?php echo esc_html( andonick_t( 'strip1' ) ); ?></span>
+				<span><?php echo esc_html( andonick_t( 'strip2' ) ); ?></span>
+				<span><?php echo esc_html( andonick_t( 'strip3' ) ); ?></span>
+				<span><?php echo esc_html( andonick_t( 'strip4' ) ); ?></span>
+				<span><?php echo esc_html( andonick_t( 'strip5' ) ); ?></span>
 			</div>
 		</div>
 	</section>
@@ -48,18 +50,18 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 	<section class="section section-group" id="groupe">
 		<div class="container group-grid">
 			<div class="group-text reveal">
-				<span class="eyebrow"><?php echo esc_html( $content['s2_eyebrow'] ); ?></span>
-				<h2><?php echo esc_html( $content['s2_title'] ); ?></h2>
-				<p><?php echo esc_html( $content['s2_body'] ); ?></p>
+				<span class="eyebrow"><?php echo esc_html( andonick_t( 's2_eyebrow' ) ); ?></span>
+				<h2><?php echo esc_html( andonick_t( 's2_title' ) ); ?></h2>
+				<p><?php echo wp_kses_post( andonick_t( 's2_body' ) ); ?></p>
 				<ul class="value-list">
-					<li><b><?php echo esc_html( $content['val1'] ); ?></b></li>
-					<li><b><?php echo esc_html( $content['val2'] ); ?></b></li>
-					<li><b><?php echo esc_html( $content['val3'] ); ?></b></li>
-					<li><b><?php echo esc_html( $content['val4'] ); ?></b></li>
+					<li><b><?php echo esc_html( andonick_t( 'val1' ) ); ?></b></li>
+					<li><b><?php echo esc_html( andonick_t( 'val2' ) ); ?></b></li>
+					<li><b><?php echo esc_html( andonick_t( 'val3' ) ); ?></b></li>
+					<li><b><?php echo esc_html( andonick_t( 'val4' ) ); ?></b></li>
 				</ul>
 			</div>
 			<figure class="group-media reveal reveal-delay-2">
-				<img src="<?php echo esc_url( ANDONICK_URI . '/assets/img/domaines.jpg' ); ?>" alt="<?php echo esc_attr( $content['img_team_name'] ); ?>">
+				<img src="<?php echo esc_url( andonick_img( 'group' ) ); ?>" alt="<?php echo esc_attr( andonick_t( 'img_team_name' ) ); ?>">
 			</figure>
 		</div>
 	</section>
@@ -68,13 +70,13 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 	<section class="section section-filiales" id="filiales">
 		<div class="container">
 			<div class="section-head reveal">
-				<span class="eyebrow"><?php echo esc_html( $content['s3_eyebrow'] ); ?></span>
-				<h2><?php echo esc_html( $content['s3_title'] ); ?></h2>
-				<p><?php echo esc_html( $content['s3_sub'] ); ?></p>
+				<span class="eyebrow"><?php echo esc_html( andonick_t( 's3_eyebrow' ) ); ?></span>
+				<h2><?php echo esc_html( andonick_t( 's3_title' ) ); ?></h2>
+				<p><?php echo esc_html( andonick_t( 's3_sub' ) ); ?></p>
 			</div>
 
 			<div class="filiales-grid">
-				<?php foreach ( $content['filiales'] as $filiale ) : ?>
+				<?php foreach ( $filiales as $filiale ) : ?>
 					<article class="filiale-card reveal" data-num="<?php echo esc_attr( $filiale['num'] ); ?>">
 						<div class="filiale-head">
 							<span class="filiale-num"><?php echo esc_html( $filiale['num'] ); ?></span>
@@ -94,13 +96,13 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 
 	<!-- ============ IMPACT ============ -->
 	<section class="section section-impact" id="impact">
-		<div class="impact-bg" style="background-image:url('<?php echo esc_url( ANDONICK_URI . '/assets/img/impact.jpg' ); ?>');"></div>
+		<div class="impact-bg" style="background-image:url('<?php echo esc_url( andonick_img( 'impact' ) ); ?>');"></div>
 		<div class="container impact-inner">
-			<span class="eyebrow eyebrow-light reveal"><?php echo esc_html( $content['impact_eyebrow'] ); ?></span>
-			<h2 class="reveal"><?php echo esc_html( $content['impact_title'] ); ?></h2>
-			<p class="impact-body reveal reveal-delay-1"><?php echo esc_html( $content['impact_body'] ); ?></p>
+			<span class="eyebrow eyebrow-light reveal"><?php echo esc_html( andonick_t( 'impact_eyebrow' ) ); ?></span>
+			<h2 class="reveal"><?php echo esc_html( andonick_t( 'impact_title' ) ); ?></h2>
+			<p class="impact-body reveal reveal-delay-1"><?php echo esc_html( andonick_t( 'impact_body' ) ); ?></p>
 			<div class="impact-grid">
-				<?php foreach ( $content['impacts'] as $i => $impact ) : ?>
+				<?php foreach ( $impacts as $i => $impact ) : ?>
 					<div class="impact-item reveal reveal-delay-<?php echo esc_attr( min( $i + 1, 4 ) ); ?>">
 						<b><?php echo esc_html( $impact[0] ); ?></b>
 						<span><?php echo esc_html( $impact[1] ); ?></span>
@@ -114,17 +116,14 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 	<section class="section section-gallery" id="realisations">
 		<div class="container">
 			<div class="section-head reveal">
-				<span class="eyebrow"><?php echo esc_html( $content['gallery_eyebrow'] ); ?></span>
-				<h2><?php echo esc_html( $content['gallery_title'] ); ?></h2>
-				<p><?php echo esc_html( $content['gallery_sub'] ); ?></p>
+				<span class="eyebrow"><?php echo esc_html( andonick_t( 'gallery_eyebrow' ) ); ?></span>
+				<h2><?php echo esc_html( andonick_t( 'gallery_title' ) ); ?></h2>
+				<p><?php echo esc_html( andonick_t( 'gallery_sub' ) ); ?></p>
 			</div>
 			<div class="gallery-grid">
-				<?php
-				$gallery_imgs = array( 'hero.jpg', 'domaines.jpg', 'impact.jpg', 'photo-07.jpg', 'photo-08.jpg', 'photo-11.jpg' );
-				foreach ( $gallery_imgs as $gi => $gimg ) :
-					?>
+				<?php foreach ( andonick_gallery() as $gi => $gimg ) : ?>
 					<figure class="gallery-item reveal reveal-delay-<?php echo esc_attr( ( $gi % 3 ) + 1 ); ?>">
-						<img src="<?php echo esc_url( ANDONICK_URI . '/assets/img/' . $gimg ); ?>" alt="<?php echo esc_attr( $content['gallery_title'] ); ?>" loading="lazy">
+						<img src="<?php echo esc_url( $gimg ); ?>" alt="<?php echo esc_attr( andonick_t( 'gallery_title' ) ); ?>" loading="lazy">
 					</figure>
 				<?php endforeach; ?>
 			</div>
@@ -135,12 +134,12 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 	<section class="section section-refs" id="references">
 		<div class="container">
 			<div class="section-head reveal">
-				<span class="eyebrow"><?php echo esc_html( $content['testi_eyebrow'] ); ?></span>
-				<h2><?php echo esc_html( $content['testi_title'] ); ?></h2>
+				<span class="eyebrow"><?php echo esc_html( andonick_t( 'testi_eyebrow' ) ); ?></span>
+				<h2><?php echo esc_html( andonick_t( 'testi_title' ) ); ?></h2>
 			</div>
 
 			<div class="testi-grid">
-				<?php foreach ( $content['testis'] as $ti => $testi ) : ?>
+				<?php foreach ( $testis as $ti => $testi ) : ?>
 					<blockquote class="testi-card reveal reveal-delay-<?php echo esc_attr( ( $ti % 3 ) + 1 ); ?>">
 						<span class="testi-quote-mark">“</span>
 						<p><?php echo esc_html( $testi[0] ); ?></p>
@@ -153,19 +152,19 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 			</div>
 
 			<div class="refs-block reveal">
-				<span class="eyebrow"><?php echo esc_html( $content['refs_eyebrow'] ); ?></span>
-				<h3><?php echo esc_html( $content['refs_title'] ); ?></h3>
+				<span class="eyebrow"><?php echo esc_html( andonick_t( 'refs_eyebrow' ) ); ?></span>
+				<h3><?php echo esc_html( andonick_t( 'refs_title' ) ); ?></h3>
 				<div class="refs-table-wrap">
 					<table class="refs-table">
 						<thead>
 							<tr>
-								<?php foreach ( $content['ref_headers'] as $header ) : ?>
+								<?php foreach ( andonick_ref_headers() as $header ) : ?>
 									<th><?php echo esc_html( $header ); ?></th>
 								<?php endforeach; ?>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ( $content['refs'] as $ref ) : ?>
+							<?php foreach ( andonick_refs() as $ref ) : ?>
 								<tr>
 									<td><?php echo esc_html( $ref[0] ); ?></td>
 									<td><b><?php echo esc_html( $ref[1] ); ?></b></td>
@@ -178,9 +177,9 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 				</div>
 
 				<div class="partners-strip">
-					<span class="eyebrow"><?php echo esc_html( $content['partners_title'] ); ?></span>
+					<span class="eyebrow"><?php echo esc_html( andonick_t( 'partners_title' ) ); ?></span>
 					<ul>
-						<?php foreach ( $content['partners'] as $partner ) : ?>
+						<?php foreach ( andonick_partners() as $partner ) : ?>
 							<li><?php echo esc_html( $partner ); ?></li>
 						<?php endforeach; ?>
 					</ul>
@@ -193,34 +192,34 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 	<section class="section section-contact" id="contact">
 		<div class="container contact-grid">
 			<div class="contact-info reveal">
-				<span class="eyebrow"><?php echo esc_html( $content['contact_eyebrow'] ); ?></span>
-				<h2><?php echo esc_html( $content['contact_title'] ); ?></h2>
-				<p class="contact-sub"><?php echo esc_html( $content['contact_sub'] ); ?></p>
+				<span class="eyebrow"><?php echo esc_html( andonick_t( 'contact_eyebrow' ) ); ?></span>
+				<h2><?php echo esc_html( andonick_t( 'contact_title' ) ); ?></h2>
+				<p class="contact-sub"><?php echo esc_html( andonick_t( 'contact_sub' ) ); ?></p>
 
 				<div class="contact-block">
-					<h4><?php echo esc_html( $content['contact_coord'] ); ?></h4>
-					<p><?php echo esc_html( $content['contact_addr'] ); ?></p>
+					<h4><?php echo esc_html( andonick_t( 'contact_coord' ) ); ?></h4>
+					<p><?php echo wp_kses_post( andonick_t( 'contact_addr' ) ); ?></p>
 					<p class="contact-phones">
 						<a href="tel:+23675000649">+236 75 00 06 49</a> /
 						<a href="tel:+23670286601">+236 70 28 66 01</a>
-						<span><?php echo esc_html( $content['lbl_rca'] ); ?></span><br>
+						<span class="lbl"><?php echo esc_html( andonick_t( 'lbl_rca' ) ); ?></span><br>
 						<a href="tel:+33605564373">+33 6 05 56 43 73</a>
-						<span><?php echo esc_html( $content['lbl_fr'] ); ?></span><br>
+						<span class="lbl"><?php echo esc_html( andonick_t( 'lbl_fr' ) ); ?></span><br>
 						<a href="mailto:contact@andonickgroup.com">contact@andonickgroup.com</a>
 					</p>
 				</div>
 
 				<div class="contact-channels">
-					<a class="btn btn-whatsapp" href="https://wa.me/23675000649" target="_blank" rel="noopener"><?php echo esc_html( $content['wa_rca'] ); ?></a>
-					<a class="btn btn-whatsapp" href="https://wa.me/33605564373" target="_blank" rel="noopener"><?php echo esc_html( $content['wa_fr'] ); ?></a>
-					<a class="btn btn-outline" href="tel:+23675000649"><?php echo esc_html( $content['call_direct'] ); ?></a>
+					<a class="btn btn-whatsapp" href="https://wa.me/23675000649" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_rca' ) ); ?></a>
+					<a class="btn btn-whatsapp" href="https://wa.me/33605564373" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_fr' ) ); ?></a>
+					<a class="btn btn-outline" href="tel:+23675000649"><?php echo esc_html( andonick_t( 'call_direct' ) ); ?></a>
 				</div>
 			</div>
 
 			<div class="contact-form-wrap reveal reveal-delay-2" id="devis">
 				<div class="form-tabs">
-					<button type="button" class="form-tab active" data-tab="devis"><?php echo esc_html( $content['tab_devis'] ); ?></button>
-					<button type="button" class="form-tab" data-tab="rappel"><?php echo esc_html( $content['tab_rappel'] ); ?></button>
+					<button type="button" class="form-tab active" data-tab="devis"><?php echo esc_html( andonick_t( 'tab_devis' ) ); ?></button>
+					<button type="button" class="form-tab" data-tab="rappel"><?php echo esc_html( andonick_t( 'tab_rappel' ) ); ?></button>
 				</div>
 
 				<div class="form-panel" id="panel-devis">
@@ -231,51 +230,51 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 						<div style="display:none;"><input type="text" name="andonick_website" tabindex="-1" autocomplete="off"></div>
 
 						<div class="form-row">
-							<label for="f-name"><?php echo esc_html( $content['f_name'] ); ?></label>
+							<label for="f-name"><?php echo esc_html( andonick_t( 'f_name' ) ); ?></label>
 							<input type="text" id="f-name" name="andonick_name" required>
 						</div>
 						<div class="form-row">
-							<label for="f-company"><?php echo esc_html( $content['f_company'] ); ?></label>
+							<label for="f-company"><?php echo esc_html( andonick_t( 'f_company' ) ); ?></label>
 							<input type="text" id="f-company" name="andonick_company">
 						</div>
 						<div class="form-row form-row-2">
 							<div>
-								<label for="f-phone"><?php echo esc_html( $content['f_phone'] ); ?></label>
+								<label for="f-phone"><?php echo esc_html( andonick_t( 'f_phone' ) ); ?></label>
 								<input type="tel" id="f-phone" name="andonick_phone" required>
 							</div>
 							<div>
-								<label for="f-email"><?php echo esc_html( $content['f_email'] ); ?></label>
+								<label for="f-email"><?php echo esc_html( andonick_t( 'f_email' ) ); ?></label>
 								<input type="email" id="f-email" name="andonick_email">
 							</div>
 						</div>
 						<div class="form-row">
-							<label for="f-service"><?php echo esc_html( $content['f_service'] ); ?></label>
+							<label for="f-service"><?php echo esc_html( andonick_t( 'f_service' ) ); ?></label>
 							<select id="f-service" name="andonick_service" required>
-								<?php foreach ( $content['services'] as $service ) : ?>
+								<?php foreach ( andonick_services() as $service ) : ?>
 									<option value="<?php echo esc_attr( $service ); ?>"><?php echo esc_html( $service ); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
 						<div class="form-row">
-							<label for="f-desc"><?php echo esc_html( $content['f_desc'] ); ?></label>
-							<textarea id="f-desc" name="andonick_desc" rows="4" placeholder="<?php echo esc_attr( $content['descPlaceholder'] ); ?>" required></textarea>
+							<label for="f-desc"><?php echo esc_html( andonick_t( 'f_desc' ) ); ?></label>
+							<textarea id="f-desc" name="andonick_desc" rows="4" placeholder="<?php echo esc_attr( andonick_t( 'descPlaceholder' ) ); ?>" required></textarea>
 						</div>
 						<div class="form-row form-row-2">
 							<div>
-								<label><?php echo esc_html( $content['f_slot'] ); ?></label>
+								<label><?php echo esc_html( andonick_t( 'f_slot' ) ); ?></label>
 								<select name="andonick_slot">
-									<?php foreach ( $content['slots'] as $slot ) : ?>
+									<?php foreach ( andonick_slots() as $slot ) : ?>
 										<option value="<?php echo esc_attr( $slot ); ?>"><?php echo esc_html( $slot ); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
 							<div>
-								<label><?php echo esc_html( $content['f_city'] ); ?></label>
-								<input type="text" name="andonick_city" placeholder="<?php echo esc_attr( $content['cityPlaceholder'] ); ?>">
+								<label><?php echo esc_html( andonick_t( 'f_city' ) ); ?></label>
+								<input type="text" name="andonick_city" placeholder="<?php echo esc_attr( andonick_t( 'cityPlaceholder' ) ); ?>">
 							</div>
 						</div>
-						<button type="submit" class="btn btn-block"><?php echo esc_html( $content['f_submit_devis'] ); ?></button>
-						<p class="form-disclaimer"><?php echo esc_html( $content['f_disc_devis'] ); ?></p>
+						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_devis' ) ); ?></button>
+						<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_devis' ) ); ?></p>
 					</form>
 				</div>
 
@@ -287,35 +286,35 @@ $lang_alt = ( 'en' === $lang ) ? 'fr' : 'en';
 						<div style="display:none;"><input type="text" name="andonick_website" tabindex="-1" autocomplete="off"></div>
 
 						<div class="form-row">
-							<label><?php echo esc_html( $content['f_name'] ); ?></label>
+							<label><?php echo esc_html( andonick_t( 'f_name' ) ); ?></label>
 							<input type="text" name="andonick_name" required>
 						</div>
 						<div class="form-row form-row-2">
 							<div>
-								<label><?php echo esc_html( $content['f_phone'] ); ?></label>
+								<label><?php echo esc_html( andonick_t( 'f_phone' ) ); ?></label>
 								<input type="tel" name="andonick_phone" required>
 							</div>
 							<div>
-								<label><?php echo esc_html( $content['f_object'] ); ?></label>
-								<input type="text" name="andonick_object" placeholder="<?php echo esc_attr( $content['objectPlaceholder'] ); ?>">
+								<label><?php echo esc_html( andonick_t( 'f_object' ) ); ?></label>
+								<input type="text" name="andonick_object" placeholder="<?php echo esc_attr( andonick_t( 'objectPlaceholder' ) ); ?>">
 							</div>
 						</div>
 						<div class="form-row form-row-2">
 							<div>
-								<label><?php echo esc_html( $content['f_slot'] ); ?></label>
+								<label><?php echo esc_html( andonick_t( 'f_slot' ) ); ?></label>
 								<select name="andonick_slot">
-									<?php foreach ( $content['slots'] as $slot ) : ?>
+									<?php foreach ( andonick_slots() as $slot ) : ?>
 										<option value="<?php echo esc_attr( $slot ); ?>"><?php echo esc_html( $slot ); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
 							<div>
-								<label><?php echo esc_html( $content['f_city'] ); ?></label>
-								<input type="text" name="andonick_city" placeholder="<?php echo esc_attr( $content['cityPlaceholder'] ); ?>">
+								<label><?php echo esc_html( andonick_t( 'f_city' ) ); ?></label>
+								<input type="text" name="andonick_city" placeholder="<?php echo esc_attr( andonick_t( 'cityPlaceholder' ) ); ?>">
 							</div>
 						</div>
-						<button type="submit" class="btn btn-block"><?php echo esc_html( $content['f_submit_rappel'] ); ?></button>
-						<p class="form-disclaimer"><?php echo esc_html( $content['f_disc_rappel'] ); ?></p>
+						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_rappel' ) ); ?></button>
+						<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_rappel' ) ); ?></p>
 					</form>
 				</div>
 			</div>

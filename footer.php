@@ -9,14 +9,14 @@
 <footer class="site-footer">
 	<div class="container footer-grid">
 		<div class="footer-col footer-brand">
-			<img src="<?php echo esc_url( ANDONICK_URI . '/assets/img/logo.png' ); ?>" alt="Logo ANDONICK Group" class="footer-logo">
+			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="Logo ANDONICK Group" class="footer-logo">
 			<p><?php echo esc_html( andonick_t( 'foot_tag' ) ); ?></p>
 		</div>
 
 		<div class="footer-col">
 			<h4><?php echo esc_html( andonick_t( 'foot_filiales' ) ); ?></h4>
 			<ul class="footer-links">
-				<?php foreach ( andonick_content()[ andonick_lang() ]['filiales'] as $filiale ) : ?>
+				<?php foreach ( andonick_filiales() as $filiale ) : ?>
 					<li><a href="#filiales"><?php echo esc_html( $filiale['title'] ); ?></a></li>
 				<?php endforeach; ?>
 			</ul>
