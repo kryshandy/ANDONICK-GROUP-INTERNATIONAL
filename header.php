@@ -17,11 +17,15 @@
 <div class="topbar">
 	<div class="container topbar-inner">
 		<div class="topbar-links">
-			<a href="https://wa.me/<?php echo esc_attr( andonick_wa( 'phone_fr' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_rca' ) ); ?> — <strong><?php echo esc_html( andonick_t( 'phone_fr' ) ); ?></strong></a>
-			<span class="topbar-sep">|</span>
-			<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca1' ) ); ?>"><strong><?php echo esc_html( andonick_t( 'phone_rca1' ) ); ?></strong></a>
-			<span class="topbar-sep">|</span>
-			<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca2' ) ); ?>"><strong><?php echo esc_html( andonick_t( 'phone_rca2' ) ); ?></strong></a>
+			<?php $topbar_links = andonick_topbar_links(); ?>
+			<?php foreach ( $topbar_links as $ti => $tb ) : ?>
+				<?php if ( $ti > 0 ) : ?><span class="topbar-sep">|</span><?php endif; ?>
+				<?php if ( '' !== $tb[1] ) : ?>
+					<a href="<?php echo esc_url( $tb[1] ); ?>"<?php echo ( 0 === strpos( $tb[1], 'http' ) ) ? ' target="_blank" rel="noopener"' : ''; ?>><strong><?php echo esc_html( $tb[0] ); ?></strong></a>
+				<?php else : ?>
+					<span><?php echo esc_html( $tb[0] ); ?></span>
+				<?php endif; ?>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </div>
@@ -33,11 +37,9 @@
 		</a>
 
 		<nav class="main-nav" id="mainNav" aria-label="<?php echo esc_attr( andonick_t( 'aria_nav' ) ); ?>">
-			<a href="<?php echo esc_url( andonick_t( 'nav_group_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_group' ) ); ?></a>
-			<a href="<?php echo esc_url( andonick_t( 'nav_filiales_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_filiales' ) ); ?></a>
-			<a href="<?php echo esc_url( andonick_t( 'nav_impact_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_impact' ) ); ?></a>
-			<a href="<?php echo esc_url( andonick_t( 'nav_refs_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_refs' ) ); ?></a>
-			<a href="<?php echo esc_url( andonick_t( 'nav_contact_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_contact' ) ); ?></a>
+			<?php foreach ( andonick_nav_links() as $nav_link ) : ?>
+				<a href="<?php echo esc_url( $nav_link[1] ); ?>"><?php echo esc_html( $nav_link[0] ); ?></a>
+			<?php endforeach; ?>
 			<a href="<?php echo esc_url( andonick_t( 'nav_devis_href' ) ); ?>" class="btn btn-sm btn-white"><?php echo esc_html( andonick_t( 'nav_devis' ) ); ?></a>
 		</nav>
 

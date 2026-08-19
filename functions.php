@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.4.0' );
+define( 'ANDONICK_VERSION', '3.5.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
@@ -48,8 +48,9 @@ function andonick_assets() {
 	wp_add_inline_style( 'andonick-style', andonick_appearance_css() );
 	wp_enqueue_script( 'andonick-main', ANDONICK_URI . '/assets/js/main.js', array(), ANDONICK_VERSION, true );
 	wp_localize_script( 'andonick-main', 'AndonickData', array(
-		'ajaxUrl' => admin_url( 'admin-post.php' ),
-		'toast'   => andonick_t( 'toast_msg' ),
+		'ajaxUrl'         => admin_url( 'admin-post.php' ),
+		'toast'           => andonick_t( 'toast_msg' ),
+		'counterDuration' => min( 5000, max( 500, absint( andonick_ap( 'counter_duration', '1600' ) ) ) ),
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'andonick_assets' );
@@ -211,10 +212,21 @@ add_action( 'admin_post_andonick_contact', 'andonick_handle_form' );
 function andonick_seo_meta() {
 	$lang  = andonick_lang();
 	$name  = get_bloginfo( 'name' );
-	$title = $name . ' — ' . andonick_t( 'hero_tag' );
+	$is_article = is_singular( 'post' );
+	$obj   = $is_article ? get_post() : null;
+	$title = $obj ? get_the_title( $obj ) : $name . ' — ' . andonick_t( 'hero_tag' );
 	$desc  = trim( (string) andonick_t( 'seo_desc' ) );
-	$img   = trim( (string) get_theme_mod( 'andonick_img_og', '' ) );
-	$url   = ( 'en' === $lang ) ? home_url( '/?lang=en' ) : home_url( '/' );
+	if ( $obj ) {
+		$excerpt = trim( wp_strip_all_tags( get_the_excerpt( $obj ) ) );
+		if ( '' !== $excerpt ) {
+			$desc = $excerpt;
+		}
+	}
+	$img    = trim( (string) get_theme_mod( 'andonick_img_og', '' ) );
+	if ( $obj && has_post_thumbnail( $obj ) ) {
+		$img = get_the_post_thumbnail_url( $obj, 'full' );
+	}
+	$url    = $obj ? get_permalink( $obj ) : ( ( 'en' === $lang ) ? home_url( '/?lang=en' ) : home_url( '/' ) );
 	$locale = ( 'en' === $lang ) ? 'en_US' : 'fr_FR';
 
 	if ( '' !== $desc ) {

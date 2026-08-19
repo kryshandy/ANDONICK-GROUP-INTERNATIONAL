@@ -197,7 +197,9 @@
 				el.textContent = target + suffix;
 				return;
 			}
-			var duration = 1600;
+			var duration = (typeof window.AndonickData !== 'undefined' && window.AndonickData.counterDuration)
+				? parseInt(window.AndonickData.counterDuration, 10)
+				: 1600;
 			var start = null;
 			function step(ts) {
 				if (!start) { start = ts; }

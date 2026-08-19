@@ -246,7 +246,7 @@ function andonick_section_actualites() {
 						<?php endif; ?>
 						<time datetime="<?php echo esc_attr( get_the_date( 'c', $news ) ); ?>"><?php echo esc_html( get_the_date( '', $news ) ); ?></time>
 						<h3><a href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo esc_html( get_the_title( $news ) ); ?></a></h3>
-						<p><?php echo esc_html( wp_trim_words( get_the_excerpt( $news ), 24, '…' ) ); ?></p>
+						<p><?php echo esc_html( wp_trim_words( get_the_excerpt( $news ), andonick_excerpt_words(), '…' ) ); ?></p>
 						<a class="news-more" href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo esc_html( andonick_t( 'news_more' ) ); ?></a>
 					</article>
 				<?php endforeach; ?>
@@ -377,12 +377,21 @@ function andonick_section_contact() {
 				<?php endif; ?>
 			</div>
 
-			<div class="contact-form-wrap reveal reveal-delay-2" id="devis">
+<div class="contact-form-wrap reveal reveal-delay-2" id="devis">
+				<?php $tab_devis  = andonick_form_enabled( 'devis' ); ?>
+				<?php $tab_rappel = andonick_form_enabled( 'rappel' ); ?>
+				<?php if ( $tab_devis || $tab_rappel ) : ?>
 				<div class="form-tabs">
-					<button type="button" class="form-tab active" data-tab="devis"><?php echo esc_html( andonick_t( 'tab_devis' ) ); ?></button>
-					<button type="button" class="form-tab" data-tab="rappel"><?php echo esc_html( andonick_t( 'tab_rappel' ) ); ?></button>
+					<?php if ( $tab_devis ) : ?>
+						<button type="button" class="form-tab<?php echo $tab_devis ? ' active' : ''; ?>" data-tab="devis"><?php echo esc_html( andonick_t( 'tab_devis' ) ); ?></button>
+					<?php endif; ?>
+					<?php if ( $tab_rappel ) : ?>
+						<button type="button" class="form-tab<?php echo ( ! $tab_devis ) ? ' active' : ''; ?>" data-tab="rappel"><?php echo esc_html( andonick_t( 'tab_rappel' ) ); ?></button>
+					<?php endif; ?>
 				</div>
+				<?php endif; ?>
 
+				<?php if ( $tab_devis ) : ?>
 				<div class="form-panel" id="panel-devis">
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
@@ -411,10 +420,12 @@ function andonick_section_contact() {
 							<?php $fi++; ?>
 						<?php endforeach; ?>
 						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_devis' ) ); ?></button>
-						<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_devis' ) ); ?></p>
+<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_devis' ) ); ?></p>
 					</form>
 				</div>
+				<?php endif; ?>
 
+				<?php if ( $tab_rappel ) : ?>
 				<div class="form-panel" id="panel-rappel" hidden>
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
@@ -443,9 +454,10 @@ function andonick_section_contact() {
 							<?php $ri++; ?>
 						<?php endforeach; ?>
 						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_rappel' ) ); ?></button>
-						<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_rappel' ) ); ?></p>
+<p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_rappel' ) ); ?></p>
 					</form>
 				</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</section>
@@ -455,6 +467,16 @@ function andonick_section_contact() {
  * Section libre « Texte » — titre, contenu et bouton, édités sans code.
  * Ne s'affiche que si au moins un contenu est rempli.
  */
+function andonick_free_texte_img( $n ) {
+	$img = trim( (string) get_theme_mod( 'andonick_img_texte' . $n, '' ) );
+	if ( '' === $img ) {
+		return null;
+	}
+	$pos = get_theme_mod( 'andonick_texte' . $n . '_img_pos', 'left' );
+	$pos = ( 'right' === $pos ) ? 'right' : 'left';
+	return array( $img, $pos );
+}
+
 function andonick_free_texte( $n ) {
 	$p       = 'texte' . $n;
 	$eyebrow = trim( (string) andonick_t( $p . '_eyebrow' ) );
@@ -462,24 +484,34 @@ function andonick_free_texte( $n ) {
 	$body    = trim( (string) andonick_t( $p . '_body' ) );
 	$btn     = trim( (string) andonick_t( $p . '_btn' ) );
 	$href    = trim( (string) andonick_t( $p . '_btn_href' ) );
-	if ( '' === $title && '' === $body && '' === $btn ) {
+	$media   = andonick_free_texte_img( $n );
+	if ( '' === $title && '' === $body && '' === $btn && ! $media ) {
 		return;
 	}
 	?>
 	<section class="section section-free" id="<?php echo esc_attr( $p ); ?>">
 		<div class="container">
-			<?php if ( '' !== $eyebrow || '' !== $title ) : ?>
-				<div class="section-head reveal">
-					<?php if ( '' !== $eyebrow ) : ?><span class="eyebrow"><?php echo esc_html( $eyebrow ); ?></span><?php endif; ?>
-					<?php if ( '' !== $title ) : ?><h2><?php echo esc_html( $title ); ?></h2><?php endif; ?>
+			<div class="free-layout<?php echo $media && 'right' === $media[1] ? ' pos-right' : ''; ?>">
+				<?php if ( $media ) : ?>
+					<figure class="free-media reveal">
+						<img src="<?php echo esc_url( $media[0] ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
+					</figure>
+				<?php endif; ?>
+				<div class="free-content">
+					<?php if ( '' !== $eyebrow || '' !== $title ) : ?>
+						<div class="section-head reveal">
+							<?php if ( '' !== $eyebrow ) : ?><span class="eyebrow"><?php echo esc_html( $eyebrow ); ?></span><?php endif; ?>
+							<?php if ( '' !== $title ) : ?><h2><?php echo esc_html( $title ); ?></h2><?php endif; ?>
+						</div>
+					<?php endif; ?>
+					<?php if ( '' !== $body ) : ?>
+						<div class="free-body reveal"><?php echo nl2br( esc_html( $body ) ); ?></div>
+					<?php endif; ?>
+					<?php if ( '' !== $btn ) : ?>
+						<p class="free-cta reveal"><a class="btn" href="<?php echo esc_url( $href ); ?>"><?php echo esc_html( $btn ); ?></a></p>
+					<?php endif; ?>
 				</div>
-			<?php endif; ?>
-			<?php if ( '' !== $body ) : ?>
-				<div class="free-body reveal"><?php echo nl2br( esc_html( $body ) ); ?></div>
-			<?php endif; ?>
-			<?php if ( '' !== $btn ) : ?>
-				<p class="free-cta reveal"><a class="btn" href="<?php echo esc_url( $href ); ?>"><?php echo esc_html( $btn ); ?></a></p>
-			<?php endif; ?>
+			</div>
 		</div>
 	</section>
 	<?php

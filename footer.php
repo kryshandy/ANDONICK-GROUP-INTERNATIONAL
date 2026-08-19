@@ -21,26 +21,53 @@
 			<?php endif; ?>
 		</div>
 
+		<?php $col2 = andonick_footer_col( 2 ); ?>
+		<?php if ( $col2 ) : ?>
 		<div class="footer-col">
-			<h4><?php echo esc_html( andonick_t( 'foot_filiales' ) ); ?></h4>
+			<h4><?php echo esc_html( $col2[0] ); ?></h4>
 			<ul class="footer-links">
-				<?php foreach ( andonick_filiales() as $filiale ) : ?>
-					<li><a href="#filiales"><?php echo esc_html( $filiale['title'] ); ?></a></li>
+				<?php foreach ( $col2[1] as $link ) : ?>
+					<?php if ( '' === $link[1] ) : ?>
+						<li><?php echo esc_html( $link[0] ); ?></li>
+					<?php else : ?>
+						<li><a href="<?php echo esc_url( $link[1] ); ?>"><?php echo esc_html( $link[0] ); ?></a></li>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</ul>
 		</div>
+		<?php endif; ?>
 
+		<?php $col3 = andonick_footer_col( 3 ); ?>
+		<?php if ( $col3 ) : ?>
 		<div class="footer-col">
-			<h4><?php echo esc_html( andonick_t( 'foot_contact' ) ); ?></h4>
+			<h4><?php echo esc_html( $col3[0] ); ?></h4>
 			<ul class="footer-links">
-				<li><?php echo esc_html( andonick_t( 'contact_addr' ) ); ?></li>
-				<li><a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca1' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_rca1' ) ); ?></a></li>
-				<li><a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca2' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_rca2' ) ); ?></a> <?php echo esc_html( andonick_t( 'lbl_rca' ) ); ?></li>
-				<li><a href="tel:<?php echo esc_attr( andonick_tel( 'phone_fr' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_fr' ) ); ?></a> <?php echo esc_html( andonick_t( 'lbl_fr' ) ); ?></li>
-				<li><a href="mailto:<?php echo esc_attr( sanitize_email( andonick_t( 'contact_mail' ) ) ); ?>"><?php echo esc_html( andonick_t( 'contact_mail' ) ); ?></a></li>
-				<li class="footer-cities"><?php echo esc_html( andonick_t( 'foot_cities' ) ); ?></li>
+				<?php foreach ( $col3[1] as $link ) : ?>
+					<?php if ( '' === $link[1] ) : ?>
+						<li><?php echo esc_html( $link[0] ); ?></li>
+					<?php else : ?>
+						<li><a href="<?php echo esc_url( $link[1] ); ?>"><?php echo esc_html( $link[0] ); ?></a></li>
+					<?php endif; ?>
+				<?php endforeach; ?>
 			</ul>
 		</div>
+		<?php endif; ?>
+
+		<?php $col4 = andonick_footer_col( 4 ); ?>
+		<?php if ( $col4 ) : ?>
+		<div class="footer-col">
+			<h4><?php echo esc_html( $col4[0] ); ?></h4>
+			<ul class="footer-links">
+				<?php foreach ( $col4[1] as $link ) : ?>
+					<?php if ( '' === $link[1] ) : ?>
+						<li><?php echo esc_html( $link[0] ); ?></li>
+					<?php else : ?>
+						<li><a href="<?php echo esc_url( $link[1] ); ?>"><?php echo esc_html( $link[0] ); ?></a></li>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<?php endif; ?>
 	</div>
 	<div class="footer-bottom">
 		<div class="container footer-bottom-inner">

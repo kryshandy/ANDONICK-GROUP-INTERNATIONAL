@@ -196,6 +196,17 @@ function andonick_content() {
 			'aria_menu'       => 'Menu',
 			'aria_top'        => 'Retour en haut',
 
+			// Menu / bandeau du haut / colonnes du pied de page :
+			// laissés vides = comportement automatique (5 liens du menu,
+			// téléphones du bandeau, filiales & coordonnées du pied de page).
+			// Remplis = 1 ligne par lien au format « Libellé|URL » (vide = masqué).
+			'nav_links'        => '',
+			'topbar_links'     => '',
+			'foot_col2_links'  => '',
+			'foot_col3_links'  => '',
+			'foot_col4_title'  => '',
+			'foot_col4_links'  => '',
+
 			// Les 8 métiers.
 			'filiales'        => array(
 				array( 'num' => '01', 'title' => 'Informatique & Télécommunications', 'desc' => 'Distributeur officiel Starlink en RCA, déploiement de liaisons fibre optique et hertziennes, cybersécurité, réseaux d\'entreprise et supervision de systèmes d\'information.', 'tags' => array( 'Starlink', 'Fibre optique', 'Cybersécurité' ) ),
@@ -409,17 +420,24 @@ function andonick_content() {
 			'cityPlaceholder' => 'Bangui, Dakar, Bordeaux…',
 			'objectPlaceholder'=> 'Briefly describe the subject of your call',
 			'slots'           => array( 'Morning (8am–12pm)', 'Afternoon (1pm–5pm)', 'As soon as possible' ),
-			'toast_msg'       => 'Thank you — your request has been submitted.',
-			'foot_tag'        => 'Your success, our commitment. A multi-sector group present in the Central African Republic, Senegal and France.',
+'toast_msg'       => 'Thank you — your request has been submitted.',
+			'foot_tag'        => 'Your success is our commitment. A multi-sector group present in the Central African Republic, Senegal and France.',
 			'foot_cities'     => 'Bangui · Dakar · Bordeaux',
 			'foot_filiales'   => 'Subsidiaries',
 			'foot_contact'    => 'Contact',
 			'foot_copy'       => '© 2026 ANDONICK Group International. All rights reserved.',
-			'lang_fr'         => 'French',
+			'lang_fr'         => 'Français',
 			'lang_en'         => 'English',
 			'aria_nav'        => 'Main navigation',
 			'aria_menu'       => 'Menu',
 			'aria_top'        => 'Back to top',
+
+			'nav_links'        => '',
+			'topbar_links'     => '',
+			'foot_col2_links'  => '',
+			'foot_col3_links'  => '',
+			'foot_col4_title'  => '',
+			'foot_col4_links'  => '',
 
 			'filiales'        => array(
 				array( 'num' => '01', 'title' => 'IT & Telecommunications', 'desc' => 'Official Starlink distributor in the CAR, deployment of fibre-optic and wireless links, cybersecurity, enterprise networks and information-systems supervision.', 'tags' => array( 'Starlink', 'Fibre Optics', 'Cybersecurity' ) ),
@@ -569,11 +587,11 @@ function andonick_lines( $key, $default_lines ) {
 }
 
 /**
- * Les métiers (éditables) — 12 emplacements, les emplacements sans titre
- * ne sont pas affichés (le client peut ajouter des métiers plus tard).
+ * Les métiers — illimités et édités sans code.
+ * Champ « Les métiers » : 1 ligne = « Numéro|Titre|Description|Étiquette1;Étiquette2 ».
+ * Vide partiellement → comportement d'origine (les 8 métiers officiels).
  */
-function andonick_filiales() {
-	$lang   = andonick_lang();
+function andonick_filiales_legacy( $lang ) {
 	$defs   = andonick_content()[ $lang ]['filiales'];
 	$result = array();
 	for ( $i = 0; $i < 12; $i++ ) {
@@ -592,6 +610,42 @@ function andonick_filiales() {
 		);
 	}
 	return $result;
+}
+
+/**
+ * Format « une ligne par métier » correspondant aux valeurs actuelles
+ * (utilisé comme contenu pré-rempli du champ dans le Customizer).
+ */
+function andonick_format_filiales_rows( $lang ) {
+	$out = array();
+	foreach ( andonick_filiales_legacy( $lang ) as $f ) {
+		$out[] = $f['num'] . '|' . $f['title'] . '|' . $f['desc'] . '|' . implode( ';', $f['tags'] );
+	}
+	return implode( "\n", $out );
+}
+
+function andonick_filiales() {
+	$lang = andonick_lang();
+	$raw  = (string) get_theme_mod( "andonick_{$lang}_filiales_rows", '' );
+	if ( '' !== $raw ) {
+		$out = array();
+		foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
+			$parts = array_pad( array_map( 'trim', explode( '|', $line, 4 ) ), 4, '' );
+			if ( '' === $parts[1] ) {
+				continue;
+			}
+			$out[] = array(
+				'num'   => $parts[0],
+				'title' => $parts[1],
+				'desc'  => $parts[2],
+				'tags'  => array_values( array_filter( array_map( 'trim', explode( ';', $parts[3] ) ) ) ),
+			);
+		}
+		if ( ! empty( $out ) ) {
+			return $out;
+		}
+	}
+	return andonick_filiales_legacy( $lang );
 }
 
 /**
@@ -665,6 +719,106 @@ function andonick_legal_pages() {
 }
 
 /**
+ * Liens « Libellé|URL » (1 par ligne). Champ vide = repli sur $fallback.
+ */
+function andonick_links_from( $lang_key, $fallback ) {
+	$lang = andonick_lang();
+	$raw  = (string) get_theme_mod( 'andonick_' . $lang . '_' . $lang_key, '' );
+	if ( '' === $raw ) {
+		return $fallback;
+	}
+	$out = array();
+	foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
+		$parts = array_pad( array_map( 'trim', explode( '|', $line, 2 ) ), 2, '' );
+		if ( '' !== $parts[0] && '' !== $parts[1] ) {
+			$out[] = array( $parts[0], $parts[1] );
+		}
+	}
+	return $out;
+}
+
+/**
+ * Liens du menu principal (illimités). Vide = les 5 liens officiels.
+ * 1 ligne = « Libellé|URL » (ex. « Le Groupe|#groupe »).
+ */
+function andonick_nav_links() {
+	return andonick_links_from( 'nav_links', array(
+		array( andonick_t( 'nav_group' ), andonick_t( 'nav_group_href' ) ),
+		array( andonick_t( 'nav_filiales' ), andonick_t( 'nav_filiales_href' ) ),
+		array( andonick_t( 'nav_impact' ), andonick_t( 'nav_impact_href' ) ),
+		array( andonick_t( 'nav_refs' ), andonick_t( 'nav_refs_href' ) ),
+		array( andonick_t( 'nav_contact' ), andonick_t( 'nav_contact_href' ) ),
+	) );
+}
+
+/**
+ * Liens du bandeau supérieur (illimités). Vide = téléphones officiels.
+ */
+function andonick_topbar_links() {
+	return andonick_links_from( 'topbar_links', array(
+		array( andonick_t( 'wa_rca' ) . ' — ' . andonick_t( 'phone_fr' ), 'https://wa.me/' . andonick_wa( 'phone_fr' ) ),
+		array( andonick_t( 'phone_rca1' ), 'tel:' . andonick_tel( 'phone_rca1' ) ),
+		array( andonick_t( 'phone_rca2' ), 'tel:' . andonick_tel( 'phone_rca2' ) ),
+	) );
+}
+
+/**
+ * Colonnes du pied de page. Colonnes 2 et 3 : titres et liens éditables,
+ * vide = composition officielle. Colonne 4 : facultative, masquée si vide.
+ * Renvoie array( titre, array( array( Libellé, URL ), … ) ) ou null (masquée).
+ */
+function andonick_footer_col( $n ) {
+	$lang = andonick_lang();
+	if ( 4 === $n ) {
+		$title = trim( (string) get_theme_mod( "andonick_{$lang}_foot_col4_title", '' ) );
+		$links = andonick_links_from( 'foot_col4_links', array() );
+		if ( '' === $title && empty( $links ) ) {
+			return null;
+		}
+		return array( $title, $links );
+	}
+	$title = andonick_t( 2 === $n ? 'foot_filiales' : 'foot_contact' );
+	if ( 2 === $n ) {
+		$fallback = array();
+		foreach ( andonick_filiales() as $fil ) {
+			$fallback[] = array( $fil['title'], '#filiales' );
+		}
+	} else {
+		$fallback = array(
+			array( andonick_t( 'contact_addr' ), '' ),
+			array( andonick_t( 'phone_rca1' ), 'tel:' . andonick_tel( 'phone_rca1' ) ),
+			array( andonick_t( 'phone_rca2' ) . ' — ' . andonick_t( 'lbl_rca' ), 'tel:' . andonick_tel( 'phone_rca2' ) ),
+			array( andonick_t( 'phone_fr' ) . ' — ' . andonick_t( 'lbl_fr' ), 'tel:' . andonick_tel( 'phone_fr' ) ),
+			array( andonick_t( 'contact_mail' ), 'mailto:' . sanitize_email( andonick_t( 'contact_mail' ) ) ),
+			array( andonick_t( 'foot_cities' ), '' ),
+		);
+	}
+	$key = ( 2 === $n ) ? 'foot_col2_links' : 'foot_col3_links';
+	return array( $title, andonick_links_from( $key, $fallback ) );
+}
+
+/**
+ * Interrupteurs des formulaires (1 = affiché, 0 = masqué).
+ */
+function andonick_form_enabled( $form ) {
+	return '0' === get_theme_mod( 'andonick_' . $form . '_enabled', '1' ) ? false : true;
+}
+
+/**
+ * Nombre de mots des extraits d'articles (5–60, défaut 24).
+ */
+function andonick_excerpt_words() {
+	return min( 60, max( 5, absint( get_theme_mod( 'andonick_news_excerpt_words', 24 ) ) ) );
+}
+
+/**
+ * Afficher les commentaires des articles (1 = oui, 0 = non).
+ */
+function andonick_blog_comments() {
+	return '1' === get_theme_mod( 'andonick_blog_comments', '0' );
+}
+
+/**
  * Active ou non la section Actualités (1 = oui, 0 = non).
  */
 function andonick_news_enabled() {
@@ -714,20 +868,15 @@ function andonick_free_sections() {
 }
 
 /**
- * Les témoignages (éditables) — 6 emplacements, les vides sont ignorés.
+ * Témoignages — illimités, 1 ligne = « Citation|Nom|Rôle ».
  */
-function andonick_testis() {
-	$lang   = andonick_lang();
+function andonick_testis_raw( $lang ) {
 	$defs   = andonick_content()[ $lang ]['testis'];
 	$result = array();
 	for ( $i = 0; $i < 6; $i++ ) {
 		$t = isset( $defs[ $i ] ) ? $defs[ $i ] : array( '', '', '' );
-		$quote = get_theme_mod( "andonick_{$lang}_testis_{$i}_quote", $t[0] );
-		if ( '' === trim( $quote ) ) {
-			continue;
-		}
 		$result[] = array(
-			$quote,
+			get_theme_mod( "andonick_{$lang}_testis_{$i}_quote", $t[0] ),
 			get_theme_mod( "andonick_{$lang}_testis_{$i}_name", $t[1] ),
 			get_theme_mod( "andonick_{$lang}_testis_{$i}_role", $t[2] ),
 		);
@@ -735,25 +884,76 @@ function andonick_testis() {
 	return $result;
 }
 
+function andonick_format_testi_rows( $lang ) {
+	$out = array();
+	foreach ( andonick_testis_raw( $lang ) as $t ) {
+		if ( '' !== trim( $t[0] ) ) {
+			$out[] = implode( '|', $t );
+		}
+	}
+	return implode( "\n", $out );
+}
+
+function andonick_testis() {
+	$lang = andonick_lang();
+	$raw  = (string) get_theme_mod( "andonick_{$lang}_testi_rows", '' );
+	if ( '' !== $raw ) {
+		$out = array();
+		foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
+			$parts = array_pad( array_map( 'trim', explode( '|', $line, 3 ) ), 3, '' );
+			if ( '' !== $parts[0] ) {
+				$out[] = $parts;
+			}
+		}
+		if ( ! empty( $out ) ) {
+			return $out;
+		}
+	}
+	return andonick_testis_raw( $lang );
+}
+
 /**
- * Les impacts (éditables) — 8 emplacements, les vides sont ignorés.
+ * Impacts — illimités, 1 ligne = « Chiffre|Description ».
  */
-function andonick_impacts() {
-	$lang   = andonick_lang();
+function andonick_impacts_raw( $lang ) {
 	$defs   = andonick_content()[ $lang ]['impacts'];
 	$result = array();
 	for ( $i = 0; $i < 8; $i++ ) {
 		$imp = isset( $defs[ $i ] ) ? $defs[ $i ] : array( '', '' );
-		$title = get_theme_mod( "andonick_{$lang}_impacts_{$i}_title", $imp[0] );
-		if ( '' === trim( $title ) ) {
-			continue;
-		}
 		$result[] = array(
-			$title,
+			get_theme_mod( "andonick_{$lang}_impacts_{$i}_title", $imp[0] ),
 			get_theme_mod( "andonick_{$lang}_impacts_{$i}_desc", $imp[1] ),
 		);
 	}
 	return $result;
+}
+
+function andonick_format_impact_rows( $lang ) {
+	$out = array();
+	foreach ( andonick_impacts_raw( $lang ) as $imp ) {
+		if ( '' !== trim( $imp[0] ) ) {
+			$out[] = implode( '|', $imp );
+		}
+	}
+	return implode( "\n", $out );
+}
+
+function andonick_impacts() {
+	$lang = andonick_lang();
+	$raw  = (string) get_theme_mod( "andonick_{$lang}_impact_rows", '' );
+	if ( '' !== $raw ) {
+		$out = array();
+		foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
+			$parts = array_pad( array_map( 'trim', explode( '|', $line, 2 ) ), 2, '' );
+			if ( '' !== $parts[0] ) {
+				$out[] = $parts;
+			}
+		}
+		if ( ! empty( $out ) ) {
+			return $out;
+		}
+	}
+	return andonick_impacts_raw( $lang );
 }
 
 /**
@@ -806,11 +1006,13 @@ function andonick_slots() {
 }
 
 /**
- * Les photos de la galerie (éditables) — jusqu'à 12, les vides sont ignorés.
+ * Les photos de la galerie (éditables) — jusqu'à 40 emplacements,
+ * seuls les remplis sont affichés (vide = ignoré).
  */
 function andonick_gallery() {
-	$imgs = array();
-	for ( $i = 1; $i <= 12; $i++ ) {
+	$imgs  = array();
+	$slots = min( 40, max( 1, absint( get_theme_mod( 'andonick_gallery_slots', 12 ) ) ) );
+	for ( $i = 1; $i <= $slots; $i++ ) {
 		$url = andonick_img( 'gallery_' . $i );
 		if ( '' !== $url ) {
 			$imgs[] = $url;

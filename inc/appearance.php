@@ -459,6 +459,20 @@ function andonick_customize_appearance( $wp_customize ) {
 		'type'    => 'select',
 		'choices' => array( '1' => 'Activée (par défaut)', '0' => 'Désactivée — les chiffres s\'affichent tels quels' ),
 	) );
+	$wp_customize->add_setting( 'andonick_ap_counter_duration', array(
+		'default'           => '1600',
+		'sanitize_callback' => function ( $v ) {
+			return min( 5000, max( 500, absint( $v ) ) );
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_ap_counter_duration', array(
+		'label'       => 'Durée de l\'animation de comptage (500 à 5000 ms)',
+		'description' => '1600 ms = rythme actuel. 500 ms = décompte quasi instantané.',
+		'section'     => 'andonick_ap_motion',
+		'type'        => 'number',
+		'input_attrs' => array( 'min' => 500, 'max' => 5000, 'step' => 100 ),
+	) );
 
 	/* ---------------- Réinitialisation ---------------- */
 	$wp_customize->add_section( 'andonick_ap_reset', array(

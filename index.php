@@ -51,6 +51,9 @@ get_header();
 					<p><?php echo esc_html( andonick_t( 'page_404_body' ) ); ?></p>
 					<a class="btn" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( andonick_t( 'page_404_back' ) ); ?></a>
 				</div>
+				<?php if ( is_single() && 'post' === get_post_type() && andonick_blog_comments() ) : ?>
+					<?php comments_template(); ?>
+				<?php endif; ?>
 			</article>
 		<?php endif; ?>
 	</div>
