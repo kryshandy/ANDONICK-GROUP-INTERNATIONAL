@@ -772,9 +772,9 @@ function andonick_nav_links() {
  */
 function andonick_topbar_links() {
 	return andonick_links_from( 'topbar_links', array(
-		array( andonick_t( 'wa_rca' ) . ' — ' . andonick_t( 'phone_fr' ), 'https://wa.me/' . andonick_wa( 'phone_fr' ) ),
-		array( andonick_t( 'phone_rca1' ), 'tel:' . andonick_tel( 'phone_rca1' ) ),
-		array( andonick_t( 'phone_rca2' ), 'tel:' . andonick_tel( 'phone_rca2' ) ),
+		array( andonick_t( 'wa_rca' ) . ' — ' . andonick_t( 'phone_rca1' ), 'https://wa.me/' . andonick_wa( 'phone_rca1' ) ),
+		array( andonick_t( 'wa_fr' ) . ' — ' . andonick_t( 'phone_fr' ), 'https://wa.me/' . andonick_wa( 'phone_fr' ) ),
+		array( andonick_t( 'phone_rca2' ) . ' — ' . andonick_t( 'lbl_rca' ), 'tel:' . andonick_tel( 'phone_rca2' ) ),
 	) );
 }
 
