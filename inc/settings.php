@@ -145,6 +145,10 @@ function andonick_customize_register( $wp_customize ) {
 			'choices'     => array( 'left' => 'À gauche du texte', 'right' => 'À droite du texte' ),
 		) );
 	}
+	$filiale_imgs = array( 'telecom.jpg', 'solar.jpg', 'security.jpg', 'btp.jpg', 'transport.jpg', 'commerce.jpg', 'facility.jpg', 'ltd.jpg' );
+	foreach ( $filiale_imgs as $fi => $file ) {
+		andonick_cz_image( $wp_customize, 'filiale_' . ( $fi + 1 ), ANDONICK_URI . '/assets/img/metiers/' . $file, 'Les métiers — photo du métier ' . ( $fi + 1 ) . ' (photo officielle pré-remplie ; remplacez-la par la vôtre — les photos suivent la position des lignes « Les métiers »)', 'andonick_images' );
+	}
 	$wp_customize->add_setting( 'andonick_gallery_slots', array(
 		'default'           => '12',
 		'sanitize_callback' => function ( $v ) {

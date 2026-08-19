@@ -132,8 +132,14 @@ function andonick_section_filiales() {
 			</div>
 
 			<div class="filiales-grid">
-				<?php foreach ( $filiales as $filiale ) : ?>
-					<article class="filiale-card reveal" data-num="<?php echo esc_attr( $filiale['num'] ); ?>">
+				<?php $fi = 0; foreach ( $filiales as $filiale ) : $fi++; $img = andonick_filiale_img( $fi ); ?>
+					<article class="filiale-card reveal<?php echo $img ? ' has-media' : ''; ?>" data-num="<?php echo esc_attr( $filiale['num'] ); ?>">
+						<?php if ( $img ) : ?>
+							<div class="filiale-media">
+								<span class="filiale-badge"><?php echo esc_html( $filiale['num'] ); ?></span>
+								<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $filiale['title'] ); ?>" loading="lazy">
+							</div>
+						<?php endif; ?>
 						<div class="filiale-head">
 							<span class="filiale-num"><?php echo esc_html( $filiale['num'] ); ?></span>
 							<h3><?php echo esc_html( $filiale['title'] ); ?></h3>

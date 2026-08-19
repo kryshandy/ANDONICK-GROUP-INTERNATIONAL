@@ -1,9 +1,9 @@
-﻿/*
+/*
 Theme Name: ANDONICK Group International
 Theme URI: https://andonickgroup.com
 Author: Webmaster ANDONICK
 Description: Thème one-page bilingue (FR/EN) pour ANDONICK Group International. Charte graphique officielle : violet #461491, violet foncé #2A0A63, blanc #FFFFFF, gris #333333. Aucune autre couleur n'est autorisée.
-Version: 3.5.0
+Version: 3.5.1
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -842,6 +842,57 @@ button {
 .filiale-tags li:hover {
 	background: var(--violet);
 	color: var(--white);
+}
+
+/* Cartes avec photo (métiers) — la photo suit la position de la ligne */
+.filiale-card.has-media {
+	padding-top: 0;
+	border-top: none;
+}
+
+.filiale-card.has-media::before {
+	display: none;
+}
+
+.filiale-media {
+	position: relative;
+	height: 190px;
+	margin: -1px -1px 24px;
+	overflow: hidden;
+}
+
+.filiale-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.4s ease;
+}
+
+.filiale-card.has-media:hover .filiale-media img {
+	transform: scale(1.06);
+}
+
+.filiale-badge {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	background: rgba(42, 10, 99, 0.82);
+	color: var(--white);
+	font-size: 0.72rem;
+	font-weight: 800;
+	padding: 5px 10px;
+	border-radius: 999px;
+	letter-spacing: 0.08em;
+	z-index: 1;
+}
+
+.filiale-card.has-media .filiale-num {
+	display: none;
+}
+
+.filiale-card.has-media .filiale-head h3 {
+	padding-top: 0;
 }
 
 /* ==========================================================================
@@ -1704,8 +1755,17 @@ button {
 		font-size: 0.95rem;
 	}
 
-	.filiale-card {
+.filiale-card {
 		padding: 24px 20px 22px;
+	}
+
+	.filiale-card.has-media {
+		padding-top: 0;
+	}
+
+	.filiale-media {
+		height: 160px;
+		margin: -1px -1px 20px;
 	}
 
 	.gallery-grid {

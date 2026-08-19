@@ -552,6 +552,14 @@ function andonick_img( $key ) {
 		'gallery_10' => '',
 		'gallery_11' => '',
 		'gallery_12' => '',
+		'filiale_1'  => ANDONICK_URI . '/assets/img/metiers/telecom.jpg',
+		'filiale_2'  => ANDONICK_URI . '/assets/img/metiers/solar.jpg',
+		'filiale_3'  => ANDONICK_URI . '/assets/img/metiers/security.jpg',
+		'filiale_4'  => ANDONICK_URI . '/assets/img/metiers/btp.jpg',
+		'filiale_5'  => ANDONICK_URI . '/assets/img/metiers/transport.jpg',
+		'filiale_6'  => ANDONICK_URI . '/assets/img/metiers/commerce.jpg',
+		'filiale_7'  => ANDONICK_URI . '/assets/img/metiers/facility.jpg',
+		'filiale_8'  => ANDONICK_URI . '/assets/img/metiers/ltd.jpg',
 	);
 	$mod      = get_theme_mod( "andonick_img_{$key}", '' );
 	return ( '' !== $mod ) ? $mod : $defaults[ $key ];
@@ -584,6 +592,14 @@ function andonick_lines( $key, $default_lines ) {
 		}
 	}
 	return $default_lines;
+}
+
+/**
+ * Photo d'un métier (par position dans la liste « Les métiers »).
+ * Vide (ou position au-delà de 8) = carte sans photo, comme avant.
+ */
+function andonick_filiale_img( $index ) {
+	return andonick_img( 'filiale_' . $index );
 }
 
 /**
