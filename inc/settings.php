@@ -201,6 +201,15 @@ function andonick_customize_register( $wp_customize ) {
 			'nav_contact_href'  => 'Lien du menu « Contact » (ex. #contact)',
 			'nav_devis_href'    => 'Lien du bouton « Demander un devis » (ex. #devis)',
 			'contact_mail'      => 'E-mail de contact (affiché + destinataire des demandes)',
+			'phone_rca1'        => 'Numéro RCA 1 (utilisé par les boutons WhatsApp et les liens d\'appel)',
+			'phone_rca2'        => 'Numéro RCA 2 (liens d\'appel)',
+			'phone_fr'          => 'Numéro France (utilisé par les boutons WhatsApp et les liens d\'appel)',
+			'wa_rca'            => 'Bouton WhatsApp RCA — libellé',
+			'wa_fr'             => 'Bouton WhatsApp France — libellé',
+			'wa_msg'            => 'Message automatique du bouton WhatsApp flottant',
+			'call_direct'       => 'Bouton « Appeler directement » — libellé',
+			'lbl_rca'           => 'Étiquette « (RCA) » après un numéro',
+			'lbl_fr'            => 'Étiquette « (France) » après un numéro',
 		);
 		foreach ( $content[ $lang ] as $key => $value ) {
 			if ( is_array( $value ) || in_array( $key, array( 'filiales', 'services', 'impacts', 'testis', 'ref_headers', 'refs', 'partners', 'slots' ), true ) ) {
