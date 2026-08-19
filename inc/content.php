@@ -87,7 +87,11 @@ function andonick_content() {
 			'lbl_fr'          => '(France)',
 			'wa_rca'          => 'Discuter sur WhatsApp (RCA)',
 			'wa_fr'           => 'Discuter sur WhatsApp (France)',
+			'wa_msg'          => 'Bonjour ANDONICK Group, je souhaite un devis.',
 			'call_direct'     => 'Appeler directement',
+			'phone_rca1'      => '+236 75 00 06 49',
+			'phone_rca2'      => '+236 70 28 66 01',
+			'phone_fr'        => '+33 6 05 56 43 73',
 			'tab_devis'       => 'Demander un devis',
 			'tab_rappel'      => 'Être rappelé(e)',
 			'f_name'          => 'Nom complet *',
@@ -109,6 +113,7 @@ function andonick_content() {
 			'slots'           => array( 'Matin (8h–12h)', 'Après-midi (13h–17h)', 'Le plus rapidement possible' ),
 			'toast_msg'       => 'Merci — votre demande a bien été enregistrée.',
 			'foot_tag'        => 'Votre réussite, notre engagement. Groupe multisectoriel présent en République Centrafricaine, au Sénégal et en France.',
+			'foot_cities'     => 'Bangui · Dakar · Bordeaux',
 			'foot_filiales'   => 'Filiales',
 			'foot_contact'    => 'Contact',
 			'foot_copy'       => '© 2026 ANDONICK Group International. Tous droits réservés.',
@@ -231,7 +236,11 @@ function andonick_content() {
 			'lbl_fr'          => '(France)',
 			'wa_rca'          => 'Chat on WhatsApp (CAR)',
 			'wa_fr'           => 'Chat on WhatsApp (France)',
+			'wa_msg'          => 'Hello ANDONICK Group, I would like a quote.',
 			'call_direct'     => 'Call Directly',
+			'phone_rca1'      => '+236 75 00 06 49',
+			'phone_rca2'      => '+236 70 28 66 01',
+			'phone_fr'        => '+33 6 05 56 43 73',
 			'tab_devis'       => 'Request a Quote',
 			'tab_rappel'      => 'Request a Callback',
 			'f_name'          => 'Full Name *',
@@ -253,6 +262,7 @@ function andonick_content() {
 			'slots'           => array( 'Morning (8am–12pm)', 'Afternoon (1pm–5pm)', 'As soon as possible' ),
 			'toast_msg'       => 'Thank you — your request has been submitted.',
 			'foot_tag'        => 'Your success, our commitment. A multi-sector group present in the Central African Republic, Senegal and France.',
+			'foot_cities'     => 'Bangui · Dakar · Bordeaux',
 			'foot_filiales'   => 'Subsidiaries',
 			'foot_contact'    => 'Contact',
 			'foot_copy'       => '© 2026 ANDONICK Group International. All rights reserved.',
@@ -333,6 +343,22 @@ function andonick_t( $key ) {
  */
 function andonick_stat( $key ) {
 	return andonick_t( $key );
+}
+
+/**
+ * Numéro de téléphone en chiffres (pour les liens tel: et wa.me).
+ * Ex. andonick_tel( 'phone_rca1' ).
+ */
+function andonick_tel( $key ) {
+	return preg_replace( '/[^0-9+]/', '', andonick_t( $key ) );
+}
+
+/**
+ * Numéro de téléphone en chiffres uniquement (pour les liens WhatsApp).
+ * Ex. andonick_wa( 'phone_rca1' ).
+ */
+function andonick_wa( $key ) {
+	return preg_replace( '/[^0-9]/', '', andonick_t( $key ) );
 }
 
 /**

@@ -200,19 +200,19 @@ $impacts  = andonick_impacts();
 					<h4><?php echo esc_html( andonick_t( 'contact_coord' ) ); ?></h4>
 					<p><?php echo wp_kses_post( andonick_t( 'contact_addr' ) ); ?></p>
 					<p class="contact-phones">
-						<a href="tel:+23675000649">+236 75 00 06 49</a> /
-						<a href="tel:+23670286601">+236 70 28 66 01</a>
+						<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca1' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_rca1' ) ); ?></a> /
+						<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca2' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_rca2' ) ); ?></a>
 						<span class="lbl"><?php echo esc_html( andonick_t( 'lbl_rca' ) ); ?></span><br>
-						<a href="tel:+33605564373">+33 6 05 56 43 73</a>
+						<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_fr' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_fr' ) ); ?></a>
 						<span class="lbl"><?php echo esc_html( andonick_t( 'lbl_fr' ) ); ?></span><br>
 						<a href="mailto:contact@andonickgroup.com">contact@andonickgroup.com</a>
 					</p>
 				</div>
 
 				<div class="contact-channels">
-					<a class="btn btn-whatsapp" href="https://wa.me/23675000649" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_rca' ) ); ?></a>
-					<a class="btn btn-whatsapp" href="https://wa.me/33605564373" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_fr' ) ); ?></a>
-					<a class="btn btn-outline" href="tel:+23675000649"><?php echo esc_html( andonick_t( 'call_direct' ) ); ?></a>
+					<a class="btn btn-whatsapp" href="https://wa.me/<?php echo esc_attr( andonick_wa( 'phone_rca1' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_rca' ) ); ?></a>
+					<a class="btn btn-whatsapp" href="https://wa.me/<?php echo esc_attr( andonick_wa( 'phone_fr' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_fr' ) ); ?></a>
+					<a class="btn btn-outline" href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca1' ) ); ?>"><?php echo esc_html( andonick_t( 'call_direct' ) ); ?></a>
 				</div>
 			</div>
 

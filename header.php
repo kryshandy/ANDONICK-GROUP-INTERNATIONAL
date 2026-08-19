@@ -17,11 +17,11 @@
 <div class="topbar">
 	<div class="container topbar-inner">
 		<div class="topbar-links">
-			<a href="https://wa.me/33605564373" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_rca' ) ); ?> — <strong>+33 6 05 56 43 73</strong></a>
+			<a href="https://wa.me/<?php echo esc_attr( andonick_wa( 'phone_fr' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_rca' ) ); ?> — <strong><?php echo esc_html( andonick_t( 'phone_fr' ) ); ?></strong></a>
 			<span class="topbar-sep">|</span>
-			<a href="tel:+23675000649"><strong>+236 75 00 06 49</strong></a>
+			<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca1' ) ); ?>"><strong><?php echo esc_html( andonick_t( 'phone_rca1' ) ); ?></strong></a>
 			<span class="topbar-sep">|</span>
-			<a href="tel:+23670286601"><strong>+236 70 28 66 01</strong></a>
+			<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca2' ) ); ?>"><strong><?php echo esc_html( andonick_t( 'phone_rca2' ) ); ?></strong></a>
 		</div>
 	</div>
 </div>
