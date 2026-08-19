@@ -505,7 +505,8 @@ function andonick_t( $key ) {
 	$content = andonick_content();
 	$lang    = andonick_lang();
 	$default = isset( $content[ $lang ][ $key ] ) ? $content[ $lang ][ $key ] : '';
-	return get_theme_mod( "andonick_{$lang}_{$key}", $default );
+	$value   = get_theme_mod( "andonick_{$lang}_{$key}", $default );
+	return ( '' === $value ) ? $default : $value;
 }
 
 /**
