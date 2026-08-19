@@ -556,18 +556,28 @@ function andonick_gallery() {
 
 /**
  * URL de la page dans l'autre langue (préserve ancre et langue).
+ * Correcte même si WordPress est installé dans un sous-dossier
+ * (ex. http://localhost/wordpress/).
  */
 function andonick_lang_url( $target = 'en' ) {
-	$scheme = ( is_ssl() ) ? 'https' : 'http';
-	$parts  = wp_parse_url( $scheme . '://' . ( isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'localhost' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '/' ) );
-	$path   = isset( $parts['path'] ) ? $parts['path'] : '/';
-	$hash   = '';
-	if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-		$uri    = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
-		$hpos   = strpos( $uri, '#' );
-		if ( false !== $hpos ) {
-			$hash = substr( $uri, $hpos );
-		}
+	$request = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
+	$hash    = '';
+	$hpos    = strpos( $request, '#' );
+	if ( false !== $hpos ) {
+		$hash    = substr( $request, $hpos );
+		$request = substr( $request, 0, $hpos );
+	}
+	$parsed = wp_parse_url( $request );
+	$path   = isset( $parsed['path'] ) ? $parsed['path'] : '/';
+
+	// Supprime la profondeur d'installation (ex. /wordpress/) pour
+	// ne garder que le chemin relatif à la racine du site.
+	$home_path = rtrim( (string) wp_parse_url( home_url(), PHP_URL_PATH ), '/' );
+	if ( '' !== $home_path && 0 === strpos( $path, $home_path . '/' ) ) {
+		$path = substr( $path, strlen( $home_path ) );
+	}
+	if ( '' === $path ) {
+		$path = '/';
 	}
 	return home_url( $path ) . '?lang=' . $target . $hash;
 }
