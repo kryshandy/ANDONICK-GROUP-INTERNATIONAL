@@ -56,6 +56,7 @@ Tout le site est éditable depuis l'admin WordPress, sans toucher au code :
   - **Images** : photo du hero, photos des sections, **12 places de galerie** (6 remplies ; place vide = photo non affichée)
 - **Identité du site** (Réglages de base) : logo, titre, icône, description.
 - **Liens des menus & boutons**, grand titre, bandes du haut de page, valeurs, e-mail de contact : rien n'est figé, tout texte et tout lien peut être changé (2 langues).
+- **Apparence & Styles** (Personnalizer > ANDONICK — Apparence & Styles) : couleurs, polices, alignements, espacements, positions (hero, galerie, menu fixe) et arrière-plans — sans code, valeurs par défaut = design officiel.
 - Chaque modification est **prévisualisée en direct** ; « Publier » applique au site.
 - Les fichiers ne sont jamais à modifier : tout part de `inc/content.php` (valeurs par défaut, source officielle) et du Customizer (ce que le client voit et change).
 
@@ -83,6 +84,7 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 
 ## Versions
 
+- **3.2.0** — Nouveau panneau « ANDONICK — Apparence & Styles » : couleurs (8 réglages par roue chromatique), polices & taille de texte, alignement du haut de page, largeur du contenu, espacements des sections, hauteur du hero, colonnes de la galerie, coins arrondis, menu fixe oui/non, visibilité des photos, images de fond facultatives par section — le tout injecté en variables CSS (15/15 vérifications ok) + guide PDF du propriétaire enrichi (16 pages, 20 scénarios)
 - **3.1.0** — Audit « zéro élément figé » : plus rien d'en dur dans les gabarits. Grand titre du hero, suffixe des statistiques, liens des boutons & du menu éditables ; e-mail de contact (affiché + destinataire) ; listes ajoutables/retirables partout (bandes du haut de page, valeurs du Groupe) ; logo/alt/aria pilotés par l'identité du site ; pilule de langue localisée ; favicon déléguée à « Icône du site » si définie
 - **3.0.1** — Correctif bouton langue : les liens FR/EN ne contenaient plus le double chemin d'installation (sous-dossier `/wordpress/`) — la langue et la pilule actives basculent correctement
 - **3.0.0** — Personnalisation totale depuis WordPress : ordre & masquage des sections, 12 métiers (4 ajoutables), 6 témoignages, 8 impacts, 12 photos de galerie, références/partenaires illimités + service de langues complet (html lang, titre d'onglet, hreflang, canonical, locale) + audit exhaustif des 162 chaînes

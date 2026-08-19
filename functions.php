@@ -9,13 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.1.0' );
+define( 'ANDONICK_VERSION', '3.2.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
 require_once ANDONICK_DIR . '/inc/content.php';
 require_once ANDONICK_DIR . '/inc/settings.php';
 require_once ANDONICK_DIR . '/inc/sections.php';
+require_once ANDONICK_DIR . '/inc/appearance.php';
 
 /**
  * Configuration de base du thème.
@@ -44,6 +45,7 @@ add_action( 'after_setup_theme', 'andonick_setup' );
  */
 function andonick_assets() {
 	wp_enqueue_style( 'andonick-style', get_stylesheet_uri(), array(), ANDONICK_VERSION );
+	wp_add_inline_style( 'andonick-style', andonick_appearance_css() );
 	wp_enqueue_script( 'andonick-main', ANDONICK_URI . '/assets/js/main.js', array(), ANDONICK_VERSION, true );
 	wp_localize_script( 'andonick-main', 'AndonickData', array(
 		'ajaxUrl' => admin_url( 'admin-post.php' ),
