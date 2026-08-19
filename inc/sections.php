@@ -43,15 +43,15 @@ function andonick_section_hero() {
 		<div class="hero-bg" style="background-image:url('<?php echo esc_url( andonick_img( 'hero' ) ); ?>');"></div>
 		<div class="container hero-inner">
 			<span class="hero-tag"><span class="dot"></span><?php echo esc_html( andonick_t( 'hero_tag' ) ); ?></span>
-			<h1 class="hero-title">ANDONICK GROUP <em><?php echo esc_html( andonick_t( 'hero_title_tail' ) ); ?></em></h1>
+			<h1 class="hero-title"><?php echo esc_html( andonick_t( 'hero_title_main' ) ); ?> <em><?php echo esc_html( andonick_t( 'hero_title_tail' ) ); ?></em></h1>
 			<p class="hero-lead"><?php echo esc_html( andonick_t( 'hero_lead' ) ); ?></p>
 			<div class="hero-cta">
-				<a href="#devis" class="btn"><?php echo esc_html( andonick_t( 'hero_cta1' ) ); ?></a>
-				<a href="#filiales" class="btn btn-outline-light"><?php echo esc_html( andonick_t( 'hero_cta2' ) ); ?></a>
+				<a href="<?php echo esc_url( andonick_t( 'hero_cta1_href' ) ); ?>" class="btn"><?php echo esc_html( andonick_t( 'hero_cta1' ) ); ?></a>
+				<a href="<?php echo esc_url( andonick_t( 'hero_cta2_href' ) ); ?>" class="btn btn-outline-light"><?php echo esc_html( andonick_t( 'hero_cta2' ) ); ?></a>
 			</div>
 
 			<div class="hero-stats">
-				<div class="stat reveal"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat1_num' ) ); ?>" data-suffix="+"><?php echo esc_html( andonick_stat( 'stat1_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat1' ) ); ?></span></div>
+				<div class="stat reveal"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat1_num' ) ); ?>" data-suffix="<?php echo esc_attr( andonick_t( 'stat1_suffix' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat1_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat1' ) ); ?></span></div>
 				<div class="stat reveal reveal-delay-1"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat2_num' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat2_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat2' ) ); ?></span></div>
 				<div class="stat reveal reveal-delay-2"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat3_num' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat3_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat3' ) ); ?></span></div>
 			</div>
@@ -59,11 +59,9 @@ function andonick_section_hero() {
 
 		<div class="hero-strip">
 			<div class="container strip-inner">
-				<span><?php echo esc_html( andonick_t( 'strip1' ) ); ?></span>
-				<span><?php echo esc_html( andonick_t( 'strip2' ) ); ?></span>
-				<span><?php echo esc_html( andonick_t( 'strip3' ) ); ?></span>
-				<span><?php echo esc_html( andonick_t( 'strip4' ) ); ?></span>
-				<span><?php echo esc_html( andonick_t( 'strip5' ) ); ?></span>
+				<?php foreach ( andonick_strips() as $strip ) : ?>
+					<span><?php echo esc_html( $strip ); ?></span>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</section>
@@ -82,10 +80,9 @@ function andonick_section_groupe() {
 				<h2><?php echo esc_html( andonick_t( 's2_title' ) ); ?></h2>
 				<p><?php echo wp_kses_post( andonick_t( 's2_body' ) ); ?></p>
 				<ul class="value-list">
-					<li><b><?php echo esc_html( andonick_t( 'val1' ) ); ?></b></li>
-					<li><b><?php echo esc_html( andonick_t( 'val2' ) ); ?></b></li>
-					<li><b><?php echo esc_html( andonick_t( 'val3' ) ); ?></b></li>
-					<li><b><?php echo esc_html( andonick_t( 'val4' ) ); ?></b></li>
+					<?php foreach ( andonick_values() as $value ) : ?>
+						<li><b><?php echo esc_html( $value ); ?></b></li>
+					<?php endforeach; ?>
 				</ul>
 			</div>
 			<figure class="group-media reveal reveal-delay-2">
@@ -283,7 +280,7 @@ function andonick_section_contact() {
 						<span class="lbl"><?php echo esc_html( andonick_t( 'lbl_rca' ) ); ?></span><br>
 						<a href="tel:<?php echo esc_attr( andonick_tel( 'phone_fr' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_fr' ) ); ?></a>
 						<span class="lbl"><?php echo esc_html( andonick_t( 'lbl_fr' ) ); ?></span><br>
-						<a href="mailto:contact@andonickgroup.com">contact@andonickgroup.com</a>
+						<a href="mailto:<?php echo esc_attr( sanitize_email( andonick_t( 'contact_mail' ) ) ); ?>"><?php echo esc_html( andonick_t( 'contact_mail' ) ); ?></a>
 					</p>
 				</div>
 

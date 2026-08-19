@@ -9,7 +9,7 @@
 <footer class="site-footer">
 	<div class="container footer-grid">
 		<div class="footer-col footer-brand">
-			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="Logo ANDONICK Group" class="footer-logo">
+			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="footer-logo">
 			<p><?php echo esc_html( andonick_t( 'foot_tag' ) ); ?></p>
 		</div>
 
@@ -29,7 +29,7 @@
 				<li><a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca1' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_rca1' ) ); ?></a></li>
 				<li><a href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca2' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_rca2' ) ); ?></a> <?php echo esc_html( andonick_t( 'lbl_rca' ) ); ?></li>
 				<li><a href="tel:<?php echo esc_attr( andonick_tel( 'phone_fr' ) ); ?>"><?php echo esc_html( andonick_t( 'phone_fr' ) ); ?></a> <?php echo esc_html( andonick_t( 'lbl_fr' ) ); ?></li>
-				<li><a href="mailto:contact@andonickgroup.com">contact@andonickgroup.com</a></li>
+				<li><a href="mailto:<?php echo esc_attr( sanitize_email( andonick_t( 'contact_mail' ) ) ); ?>"><?php echo esc_html( andonick_t( 'contact_mail' ) ); ?></a></li>
 				<li class="footer-cities"><?php echo esc_html( andonick_t( 'foot_cities' ) ); ?></li>
 			</ul>
 		</div>

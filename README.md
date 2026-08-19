@@ -55,6 +55,7 @@ Tout le site est éditable depuis l'admin WordPress, sans toucher au code :
   - **Formulaires & listes — FR / EN** : impacts (8 places, 4 libres), partenaires, liste déroulante des services, créneaux de rappel, statistiques (chiffres + libellés)
   - **Images** : photo du hero, photos des sections, **12 places de galerie** (6 remplies ; place vide = photo non affichée)
 - **Identité du site** (Réglages de base) : logo, titre, icône, description.
+- **Liens des menus & boutons**, grand titre, bandes du haut de page, valeurs, e-mail de contact : rien n'est figé, tout texte et tout lien peut être changé (2 langues).
 - Chaque modification est **prévisualisée en direct** ; « Publier » applique au site.
 - Les fichiers ne sont jamais à modifier : tout part de `inc/content.php` (valeurs par défaut, source officielle) et du Customizer (ce que le client voit et change).
 
@@ -82,6 +83,8 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 
 ## Versions
 
+- **3.1.0** — Audit « zéro élément figé » : plus rien d'en dur dans les gabarits. Grand titre du hero, suffixe des statistiques, liens des boutons & du menu éditables ; e-mail de contact (affiché + destinataire) ; listes ajoutables/retirables partout (bandes du haut de page, valeurs du Groupe) ; logo/alt/aria pilotés par l'identité du site ; pilule de langue localisée ; favicon déléguée à « Icône du site » si définie
+- **3.0.1** — Correctif bouton langue : les liens FR/EN ne contenaient plus le double chemin d'installation (sous-dossier `/wordpress/`) — la langue et la pilule actives basculent correctement
 - **3.0.0** — Personnalisation totale depuis WordPress : ordre & masquage des sections, 12 métiers (4 ajoutables), 6 témoignages, 8 impacts, 12 photos de galerie, références/partenaires illimités + service de langues complet (html lang, titre d'onglet, hreflang, canonical, locale) + audit exhaustif des 162 chaînes
 - **2.2.1** — Bouton FR/EN fiable : le changement de langue conserve la section en cours (plus de retour en haut), photos du hero/impact plus visibles (zoom supprimé, opacité relevée), galerie rééquilibrée (photo paysage), légende sous la photo « Le Groupe »
 - **2.2.0** — Rendu image professionnel : galerie en masonry (chaque photo affichée en entier, aucun recadrage), photo « Le Groupe » au ratio naturel 2:3, téléphones / villes / message WhatsApp éditables depuis le Customizer

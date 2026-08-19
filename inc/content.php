@@ -20,41 +20,56 @@ function andonick_content() {
 	return array(
 		'fr' => array(
 			// Navigation.
-			'nav_group'     => 'Le Groupe',
-			'nav_filiales'  => 'Filiales & Activités',
-			'nav_impact'    => 'Impact',
-			'nav_refs'      => 'Références',
-			'nav_contact'   => 'Contact',
-			'nav_devis'     => 'Demander un devis',
+			'nav_group'       => 'Le Groupe',
+			'nav_filiales'    => 'Filiales & Activités',
+			'nav_impact'      => 'Impact',
+			'nav_refs'        => 'Références',
+			'nav_contact'     => 'Contact',
+			'nav_devis'       => 'Demander un devis',
+			'nav_group_href'  => '#groupe',
+			'nav_filiales_href' => '#filiales',
+			'nav_impact_href' => '#impact',
+			'nav_refs_href'   => '#references',
+			'nav_contact_href'=> '#contact',
+			'nav_devis_href'  => '#devis',
 
 			// Hero.
-			'hero_tag'      => 'Groupe multisectoriel panafricain',
+			'hero_tag'        => 'Groupe multisectoriel panafricain',
+			'hero_title_main' => 'ANDONICK GROUP',
 			'hero_title_tail' => 'INTERNATIONAL',
-			'hero_title'    => 'ANDONICK GROUP INTERNATIONAL',
-			'hero_lead'     => 'Télécommunications, énergie solaire, sécurité, BTP, transport & logistique, commerce général, facility management et conseil : un partenaire technique unique, présent à Bangui, Dakar et Bordeaux.',
-			'hero_cta1'     => 'Demander un devis en ligne',
-			'hero_cta2'     => 'Découvrir nos filiales',
-			'stat1'         => 'ans d\'expertise en Centrafrique',
-			'stat2'         => 'filiales complémentaires',
-			'stat3'         => 'pays — RCA · Sénégal · France',
-			'stat1_num'     => '15+',
-			'stat2_num'     => '8',
-			'stat3_num'     => '3',
-			'hero_cap'      => 'Nos équipes techniques et logistiques, mobilisées à travers l\'Afrique',
-			'strip1'        => 'Distributeur officiel Starlink RCA',
-			'strip2'        => 'Fibre optique & Cybersécurité',
-			'strip3'        => 'Énergie solaire clé en main',
-			'strip4'        => 'Vidéosurveillance intelligente',
-			'strip5'        => 'Conseil & Formation',
+			'hero_title'      => 'ANDONICK GROUP INTERNATIONAL',
+			'hero_lead'       => 'Télécommunications, énergie solaire, sécurité, BTP, transport & logistique, commerce général, facility management et conseil : un partenaire technique unique, présent à Bangui, Dakar et Bordeaux.',
+			'hero_cta1'       => 'Demander un devis en ligne',
+			'hero_cta2'       => 'Découvrir nos filiales',
+			'hero_cta1_href'  => '#devis',
+			'hero_cta2_href'  => '#filiales',
+			'stat1'           => 'ans d\'expertise en Centrafrique',
+			'stat2'           => 'filiales complémentaires',
+			'stat3'           => 'pays — RCA · Sénégal · France',
+			'stat1_num'       => '15+',
+			'stat2_num'       => '8',
+			'stat3_num'       => '3',
+			'stat1_suffix'    => '+',
+			'hero_cap'        => 'Nos équipes techniques et logistiques, mobilisées à travers l\'Afrique',
+			'contact_mail'    => 'contact@andonickgroup.com',
+			'strip'           => array(
+				'Distributeur officiel Starlink RCA',
+				'Fibre optique & Cybersécurité',
+				'Énergie solaire clé en main',
+				'Vidéosurveillance intelligente',
+				'Conseil & Formation',
+			),
 
 			// Le Groupe.
 			's2_eyebrow'    => 'Le Groupe',
 			's2_title'      => 'Un acteur technologique et industriel intégré',
 			's2_body'       => 'ANDONICK Group International est une entreprise multisectorielle basée à Bangui (République Centrafricaine), avec une présence à Dakar (Sénégal) et à Bordeaux (France). Dirigé par son Président-Directeur Général, M. Nico Andonick, le Groupe accompagne depuis plus de quinze ans les institutions publiques, les organisations humanitaires, les entreprises et les particuliers dans leurs projets d\'infrastructures, de connectivité et de services. Structuré en filiales spécialisées et complémentaires, le Groupe apporte une réponse intégrée : étude, déploiement, exploitation et maintenance, avec un même niveau d\'exigence sur l\'ensemble du territoire centrafricain et au-delà.',
-			'val1'          => 'Fiabilité',
-			'val2'          => 'Innovation',
-			'val3'          => 'Engagement',
-			'val4'          => 'Partenariat durable',
+			'values'        => array(
+				'Fiabilité',
+				'Innovation',
+				'Engagement',
+				'Partenariat durable',
+			),
 			'img_team_name' => 'Équipe ANDONICK Group sur site logistique',
 
 			// Filiales.
@@ -184,33 +199,48 @@ function andonick_content() {
 			'nav_refs'      => 'References',
 			'nav_contact'   => 'Contact',
 			'nav_devis'     => 'Request a Quote',
+			'nav_group_href'  => '#groupe',
+			'nav_filiales_href' => '#filiales',
+			'nav_impact_href' => '#impact',
+			'nav_refs_href'   => '#references',
+			'nav_contact_href'=> '#contact',
+			'nav_devis_href'  => '#devis',
 
 			'hero_tag'      => 'Pan-African multi-sector group',
+			'hero_title_main' => 'ANDONICK GROUP',
 			'hero_title_tail' => 'INTERNATIONAL',
 			'hero_title'    => 'ANDONICK GROUP INTERNATIONAL',
 			'hero_lead'     => 'Telecommunications, solar energy, security, construction, transport & logistics, general trade, facility management and consulting: a single technical partner, present in Bangui, Dakar and Bordeaux.',
 			'hero_cta1'     => 'Request a Quote Online',
 			'hero_cta2'     => 'Discover Our Subsidiaries',
+			'hero_cta1_href'  => '#devis',
+			'hero_cta2_href'  => '#filiales',
 			'stat1'         => 'years of expertise in Central Africa',
 			'stat2'         => 'complementary subsidiaries',
 			'stat3'         => 'countries — CAR · Senegal · France',
 			'stat1_num'     => '15+',
 			'stat2_num'     => '8',
 			'stat3_num'     => '3',
+			'stat1_suffix'  => '+',
 			'hero_cap'      => 'Our technical and logistics teams, mobilised across Africa',
-			'strip1'        => 'Official Starlink Distributor CAR',
-			'strip2'        => 'Fibre Optics & Cybersecurity',
-			'strip3'        => 'Turnkey Solar Energy',
-			'strip4'        => 'Smart CCTV',
-			'strip5'        => 'Consulting & Training',
+			'contact_mail'  => 'contact@andonickgroup.com',
+			'strip'         => array(
+				'Official Starlink Distributor CAR',
+				'Fibre Optics & Cybersecurity',
+				'Turnkey Solar Energy',
+				'Smart CCTV',
+				'Consulting & Training',
+			),
 
 			's2_eyebrow'    => 'The Group',
 			's2_title'      => 'An integrated technology and industrial group',
 			's2_body'       => 'ANDONICK Group International is a multi-sector company headquartered in Bangui (Central African Republic), with a presence in Dakar (Senegal) and Bordeaux (France). Led by its Chief Executive Officer, Mr. Nico Andonick, the Group has spent over fifteen years supporting public institutions, humanitarian organisations, businesses and individuals with their infrastructure, connectivity and service projects. Organised into specialised, complementary subsidiaries, the Group delivers an integrated response — study, deployment, operation and maintenance — with the same standard of excellence across the entire Central African territory and beyond.',
-			'val1'          => 'Reliability',
-			'val2'          => 'Innovation',
-			'val3'          => 'Commitment',
-			'val4'          => 'Lasting Partnership',
+			'values'        => array(
+				'Reliability',
+				'Innovation',
+				'Commitment',
+				'Lasting Partnership',
+			),
 			'img_team_name' => 'ANDONICK Group team on a logistics site',
 
 			's3_eyebrow'    => 'Our Subsidiaries & Business Lines',
@@ -446,6 +476,20 @@ function andonick_filiales() {
 		);
 	}
 	return $result;
+}
+
+/**
+ * Les bandes du bandeau du haut de page (éditables, 1 ligne = 1 bande).
+ */
+function andonick_strips() {
+	return andonick_lines( 'strip', andonick_content()[ andonick_lang() ]['strip'] );
+}
+
+/**
+ * Les valeurs du Groupe (éditables, 1 ligne = 1 valeur).
+ */
+function andonick_values() {
+	return andonick_lines( 'values', andonick_content()[ andonick_lang() ]['values'] );
 }
 
 /**

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.0.0' );
+define( 'ANDONICK_VERSION', '3.1.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
@@ -121,9 +121,13 @@ function andonick_body_lang_class( $classes ) {
 add_filter( 'body_class', 'andonick_body_lang_class' );
 
 /**
- * Favicon du thème (logo officiel).
+ * Favicon du thème (logo officiel), sauf si l'utilisateur a défini
+ * sa propre icône dans Réglages → Général → Icône du site.
  */
 function andonick_favicon() {
+	if ( has_site_icon() ) {
+		return;
+	}
 	echo '<link rel="icon" type="image/png" href="' . esc_url( ANDONICK_URI . '/assets/img/favicon.png' ) . '" sizes="64x64">';
 }
 add_action( 'wp_head', 'andonick_favicon', 5 );
@@ -167,7 +171,7 @@ function andonick_handle_form() {
 	$body .= "\nEnvoyé depuis : " . esc_url_raw( wp_get_referer() );
 
 	wp_mail(
-		'contact@andonickgroup.com',
+		andonick_t( 'contact_mail' ),
 		'[ANDONICK] Nouvelle demande ' . $type . ' (' . $lang . ')',
 		$body
 	);

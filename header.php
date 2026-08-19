@@ -28,20 +28,20 @@
 
 <header class="site-header" id="siteHeader">
 	<div class="container header-inner">
-		<a class="brand" href="#accueil" aria-label="ANDONICK Group International">
-			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="Logo ANDONICK Group" class="brand-logo">
+		<a class="brand" href="#accueil" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="brand-logo">
 		</a>
 
 		<nav class="main-nav" id="mainNav" aria-label="<?php echo esc_attr( andonick_t( 'aria_nav' ) ); ?>">
-			<a href="#groupe"><?php echo esc_html( andonick_t( 'nav_group' ) ); ?></a>
-			<a href="#filiales"><?php echo esc_html( andonick_t( 'nav_filiales' ) ); ?></a>
-			<a href="#impact"><?php echo esc_html( andonick_t( 'nav_impact' ) ); ?></a>
-			<a href="#references"><?php echo esc_html( andonick_t( 'nav_refs' ) ); ?></a>
-			<a href="#contact"><?php echo esc_html( andonick_t( 'nav_contact' ) ); ?></a>
-			<a href="#devis" class="btn btn-sm btn-white"><?php echo esc_html( andonick_t( 'nav_devis' ) ); ?></a>
+			<a href="<?php echo esc_url( andonick_t( 'nav_group_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_group' ) ); ?></a>
+			<a href="<?php echo esc_url( andonick_t( 'nav_filiales_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_filiales' ) ); ?></a>
+			<a href="<?php echo esc_url( andonick_t( 'nav_impact_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_impact' ) ); ?></a>
+			<a href="<?php echo esc_url( andonick_t( 'nav_refs_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_refs' ) ); ?></a>
+			<a href="<?php echo esc_url( andonick_t( 'nav_contact_href' ) ); ?>"><?php echo esc_html( andonick_t( 'nav_contact' ) ); ?></a>
+			<a href="<?php echo esc_url( andonick_t( 'nav_devis_href' ) ); ?>" class="btn btn-sm btn-white"><?php echo esc_html( andonick_t( 'nav_devis' ) ); ?></a>
 		</nav>
 
-		<div class="lang-switch" role="group" aria-label="Français / English">
+		<div class="lang-switch" role="group" aria-label="<?php echo esc_attr( andonick_t( 'lang_fr' ) . ' / ' . andonick_t( 'lang_en' ) ); ?>">
 			<?php if ( 'en' === andonick_lang() ) : ?>
 				<a href="<?php echo esc_url( andonick_lang_url( 'fr' ) ); ?>" aria-label="Version française">FR</a>
 				<span class="lang-slash" aria-hidden="true"></span>

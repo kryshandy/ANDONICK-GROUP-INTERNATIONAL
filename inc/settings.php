@@ -152,6 +152,20 @@ function andonick_customize_register( $wp_customize ) {
 		) );
 
 		/* Textes simples (scalaires) */
+		$nice_labels = array(
+			'hero_title_main'   => 'Héros — grand titre (partie principale)',
+			'hero_title_tail'   => 'Héros — fin du grand titre (en violet)',
+			'hero_cta1_href'    => 'Lien du 1er bouton du haut de page (ex. #devis)',
+			'hero_cta2_href'    => 'Lien du 2e bouton du haut de page (ex. #filiales)',
+			'nav_group_href'    => 'Lien du menu « Le Groupe » (ex. #groupe)',
+			'nav_filiales_href' => 'Lien du menu « Filiales » (ex. #filiales)',
+			'nav_impact_href'   => 'Lien du menu « Impact » (ex. #impact)',
+			'nav_refs_href'     => 'Lien du menu « Références » (ex. #references)',
+			'nav_contact_href'  => 'Lien du menu « Contact » (ex. #contact)',
+			'nav_devis_href'    => 'Lien du bouton « Demander un devis » (ex. #devis)',
+			'stat1_suffix'      => 'Suffixe de la 1ère statistique (ex. +)',
+			'contact_mail'      => 'E-mail de contact (affiché + destinataire des demandes)',
+		);
 		foreach ( $content[ $lang ] as $key => $value ) {
 			if ( is_array( $value ) || in_array( $key, array( 'filiales', 'services', 'impacts', 'testis', 'ref_headers', 'refs', 'partners', 'slots' ), true ) ) {
 				continue;
@@ -163,6 +177,17 @@ function andonick_customize_register( $wp_customize ) {
 				andonick_cz_text( $wp_customize, $lang, $key, $value, $sec_texts );
 			}
 		}
+		/* Libellés lisibles pour certains champs techniques. */
+		foreach ( $nice_labels as $key => $label ) {
+			$setting_id = "andonick_{$lang}_{$key}";
+			$control    = $wp_customize->get_control( $setting_id );
+			if ( $control ) {
+				$control->label = $label;
+			}
+		}
+		/* Listes : valeurs du Groupe et bandes du haut de page (1 ligne = 1 élément). */
+		andonick_cz_textarea( $wp_customize, $lang, 'values', implode( "\n", $content[ $lang ]['values'] ), $sec_texts, 'Le Groupe — valeurs (1 par ligne)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'strip', implode( "\n", $content[ $lang ]['strip'] ), $sec_texts, 'Bandes du haut de page (1 par ligne)' );
 
 		/* Les métiers — 12 emplacements (8 remplis par défaut, 4 vides pour la suite) */
 		for ( $i = 0; $i < 12; $i++ ) {
