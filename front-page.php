@@ -62,6 +62,7 @@ $impacts  = andonick_impacts();
 			</div>
 			<figure class="group-media reveal reveal-delay-2">
 				<img src="<?php echo esc_url( andonick_img( 'group' ) ); ?>" alt="<?php echo esc_attr( andonick_t( 'img_team_name' ) ); ?>">
+				<figcaption><?php echo esc_html( andonick_t( 'hero_cap' ) ); ?></figcaption>
 			</figure>
 		</div>
 	</section>

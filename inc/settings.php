@@ -84,7 +84,7 @@ function andonick_customize_register( $wp_customize ) {
 	andonick_cz_image( $wp_customize, 'hero', ANDONICK_URI . '/assets/img/hero.jpg', 'Photo du haut de page (hero)', 'andonick_images' );
 	andonick_cz_image( $wp_customize, 'group', ANDONICK_URI . '/assets/img/domaines.jpg', 'Photo section « Le Groupe »', 'andonick_images' );
 	andonick_cz_image( $wp_customize, 'impact', ANDONICK_URI . '/assets/img/impact.jpg', 'Photo fond section « Impact »', 'andonick_images' );
-	$gallery_defaults = array( 'hero.jpg', 'domaines.jpg', 'impact.jpg', 'photo-07.jpg', 'photo-08.jpg', 'photo-11.jpg' );
+	$gallery_defaults = array( 'hero.jpg', 'photo-10.jpg', 'impact.jpg', 'photo-07.jpg', 'photo-08.jpg', 'photo-11.jpg' );
 	foreach ( $gallery_defaults as $gi => $file ) {
 		andonick_cz_image( $wp_customize, 'gallery_' . ( $gi + 1 ), ANDONICK_URI . '/assets/img/' . $file, 'Galerie — photo ' . ( $gi + 1 ), 'andonick_images' );
 	}

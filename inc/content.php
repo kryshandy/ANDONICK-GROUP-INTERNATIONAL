@@ -371,7 +371,7 @@ function andonick_img( $key ) {
 		'group'     => ANDONICK_URI . '/assets/img/domaines.jpg',
 		'impact'    => ANDONICK_URI . '/assets/img/impact.jpg',
 		'gallery_1' => ANDONICK_URI . '/assets/img/hero.jpg',
-		'gallery_2' => ANDONICK_URI . '/assets/img/domaines.jpg',
+		'gallery_2' => ANDONICK_URI . '/assets/img/photo-10.jpg',
 		'gallery_3' => ANDONICK_URI . '/assets/img/impact.jpg',
 		'gallery_4' => ANDONICK_URI . '/assets/img/photo-07.jpg',
 		'gallery_5' => ANDONICK_URI . '/assets/img/photo-08.jpg',

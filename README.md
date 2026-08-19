@@ -66,6 +66,7 @@ Les valeurs par défaut restent dans `inc/content.php` (source officielle du sit
 
 ## Versions
 
+- **2.2.1** — Bouton FR/EN fiable : le changement de langue conserve la section en cours (plus de retour en haut), photos du hero/impact plus visibles (zoom supprimé, opacité relevée), galerie rééquilibrée (photo paysage), légende sous la photo « Le Groupe »
 - **2.2.0** — Rendu image professionnel : galerie en masonry (chaque photo affichée en entier, aucun recadrage), photo « Le Groupe » au ratio naturel 2:3, téléphones / villes / message WhatsApp éditables depuis le Customizer
 - **2.1.0** — Sélecteur de langue FR/EN visible dans le header (bouton segmenté, desktop + mobile), statistiques du hero corrigées (15+, 8, 3), contenu 100 % éditable depuis le Customizer + audit complet des traductions
 - **2.0.0** — Refonte design premium : animations au scroll, compteurs animés, scrollspy, barre de progression, WhatsApp flottant, galerie réalisations, responsiveness profond (320–1440px)

@@ -82,6 +82,18 @@
 			}, 5000);
 		}
 
+		/* ============ Sélecteur de langue : on reste sur la section en cours ============ */
+		document.querySelectorAll('.lang-switch a').forEach(function (link) {
+			link.addEventListener('click', function (e) {
+				var hash = window.location.hash || '';
+				var href = link.getAttribute('href');
+				if (href && href.indexOf('#') === -1) {
+					e.preventDefault();
+					window.location.href = href + hash;
+				}
+			});
+		});
+
 		/* ============ Soumission AJAX des formulaires ============ */
 		document.querySelectorAll('.andonick-form').forEach(function (form) {
 			form.addEventListener('submit', function (e) {
