@@ -10,21 +10,23 @@ Site vitrine one-page bilingue (FR/EN) de **ANDONICK Group International** (Bang
 
 - **Environnement local** : XAMPP (Apache + MySQL + PHP 8.x) — WordPress 7.0
 - **Thème** : `andonick` (classique, sans builder, zéro plugin additionnel)
-- **Multilingue** : FR (défaut) / EN via `?lang=en`
-- **Contenu** : 8 métiers (filiales), témoignages, références, partenaires, formulaires devis/rappel, galerie réalisations
+- **Multilingue** : FR (défaut) / EN via `?lang=en` — service de langue complet (locale WP, `<html lang>`, titre d'onglet, hreflang, canonical)
+- **Contenu** : 8 métiers (extensible à 12 dès le Customizer), témoignages (6 places), références (illimité), partenaires (illimité), formulaires devis/rappel, galerie réalisations (12 places)
 
 ## Structure du thème
 
 ```
 wp-content/themes/andonick/
 ├── style.css              → déclaration du thème + CSS complet (charte)
-├── functions.php          → setup, assets, favicon, envoi des formulaires
-├── header.php             → topbar, navigation, toggle FR/EN
+├── functions.php          → setup, assets, service de langues, envoi des formulaires
+├── header.php             → topbar, navigation, bouton FR/EN
 ├── footer.php             → footer, WhatsApp flottant, retour en haut
-├── front-page.php         → one-page complète (8 sections)
+├── front-page.php         → orchestre les sections dans l'ordre du Customizer
 ├── index.php              → repli (redirige vers l'accueil)
 ├── inc/
-│   └── content.php        → TOUT le contenu bilingue (textes des pages)
+│   ├── content.php        → contenu bilingue par défaut + helpers éditables
+│   ├── sections.php       → les 7 sections de la page d'accueil
+│   └── settings.php       → enregistrement de tout le Customizer
 ├── assets/
 │   ├── img/               → logo officiel HD, favicon, photos du site officiel
 │   └── js/main.js         → menu mobile, scrollspy, reveal, compteurs, AJAX
@@ -43,16 +45,30 @@ wp-content/themes/andonick/
 
 ## Modifier le site SANS code — Apparence → Personnaliser
 
-Tout le contenu est éditable depuis l'admin WordPress, sans toucher au code :
+Tout le site est éditable depuis l'admin WordPress, sans toucher au code :
 
-- **Panneau « ANDONICK — Contenu du site »** : textes principaux FR et EN, les 8 métiers (numéro/titre/description/étiquettes), témoignages, références (1 ligne = `Catégorie | Nom | Fonction | Téléphone`), impacts, partenaires, listes des formulaires, créneaux, statistiques.
-- **Section « Images »** : photo du hero, photos des sections, les 6 photos de la galerie (sélecteur de fichiers WordPress).
-- **Identité du site** (réglages de base) : logo, titre, icône.
+- **Panneau « ANDONICK — Contenu du site »** :
+  - **Structure & Ordre** : l'ordre d'affichage des 7 sections (une ligne = une section, retirez la ligne pour masquer)
+  - **Textes principaux — FR / EN** : tous les textes de la page dans chaque langue
+  - **Les métiers — FR / EN** : 12 emplacements (8 remplis par défaut, **4 libres pour ajouter de nouveaux métiers plus tard**)
+  - **Témoignages & Références — FR / EN** : 6 emplacements de témoignages (3 remplis), références illimitées (1 ligne = `Catégorie | Nom | Fonction | Téléphone`), en-têtes du tableau
+  - **Formulaires & listes — FR / EN** : impacts (8 places, 4 libres), partenaires, liste déroulante des services, créneaux de rappel, statistiques (chiffres + libellés)
+  - **Images** : photo du hero, photos des sections, **12 places de galerie** (6 remplies ; place vide = photo non affichée)
+- **Identité du site** (Réglages de base) : logo, titre, icône, description.
 - Chaque modification est **prévisualisée en direct** ; « Publier » applique au site.
-
-Les valeurs par défaut restent dans `inc/content.php` (source officielle du site ANDONICK).
+- Les fichiers ne sont jamais à modifier : tout part de `inc/content.php` (valeurs par défaut, source officielle) et du Customizer (ce que le client voit et change).
 
 **Règles** : ne jamais modifier les couleurs, ni le logo (fichier officiel, à conserver intact), ni ajouter de couleur hors charte.
+
+## Service de langues (complet, sans plugin)
+
+L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro requête DB, pas de plugin lourd). Pour être complet et SEO-correct :
+- `switch_to_locale('en_US')` → tout WordPress parle anglais (admin bar, dates, plugins)
+- `<html lang="en-US">` (fr-FR par défaut)
+- Titre de l'onglet traduit (« ANDONICK Group International — Pan-African multi-sector group »)
+- `hreflang` réciproques fr/en + `x-default`, `canonical` auto-référent par langue
+- `body class="lang-en"` / `lang-fr`
+- Tout texte visible est traduit (162 chaînes auditées à chaque build — 0 texte non traduit)
 
 ## Mise en production — checklist
 
@@ -66,6 +82,7 @@ Les valeurs par défaut restent dans `inc/content.php` (source officielle du sit
 
 ## Versions
 
+- **3.0.0** — Personnalisation totale depuis WordPress : ordre & masquage des sections, 12 métiers (4 ajoutables), 6 témoignages, 8 impacts, 12 photos de galerie, références/partenaires illimités + service de langues complet (html lang, titre d'onglet, hreflang, canonical, locale) + audit exhaustif des 162 chaînes
 - **2.2.1** — Bouton FR/EN fiable : le changement de langue conserve la section en cours (plus de retour en haut), photos du hero/impact plus visibles (zoom supprimé, opacité relevée), galerie rééquilibrée (photo paysage), légende sous la photo « Le Groupe »
 - **2.2.0** — Rendu image professionnel : galerie en masonry (chaque photo affichée en entier, aucun recadrage), photo « Le Groupe » au ratio naturel 2:3, téléphones / villes / message WhatsApp éditables depuis le Customizer
 - **2.1.0** — Sélecteur de langue FR/EN visible dans le header (bouton segmenté, desktop + mobile), statistiques du hero corrigées (15+, 8, 3), contenu 100 % éditable depuis le Customizer + audit complet des traductions

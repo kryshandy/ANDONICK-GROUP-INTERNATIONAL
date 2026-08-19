@@ -32,7 +32,7 @@
 			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="Logo ANDONICK Group" class="brand-logo">
 		</a>
 
-		<nav class="main-nav" id="mainNav" aria-label="Navigation principale">
+		<nav class="main-nav" id="mainNav" aria-label="<?php echo esc_attr( andonick_t( 'aria_nav' ) ); ?>">
 			<a href="#groupe"><?php echo esc_html( andonick_t( 'nav_group' ) ); ?></a>
 			<a href="#filiales"><?php echo esc_html( andonick_t( 'nav_filiales' ) ); ?></a>
 			<a href="#impact"><?php echo esc_html( andonick_t( 'nav_impact' ) ); ?></a>
@@ -53,7 +53,7 @@
 			<?php endif; ?>
 		</div>
 
-		<button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+		<button class="nav-toggle" id="navToggle" aria-label="<?php echo esc_attr( andonick_t( 'aria_menu' ) ); ?>" aria-expanded="false" aria-controls="mainNav">
 			<span></span><span></span><span></span>
 		</button>
 	</div>

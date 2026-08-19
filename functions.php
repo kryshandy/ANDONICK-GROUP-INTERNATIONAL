@@ -9,12 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '1.0.0' );
+define( 'ANDONICK_VERSION', '3.0.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
 require_once ANDONICK_DIR . '/inc/content.php';
 require_once ANDONICK_DIR . '/inc/settings.php';
+require_once ANDONICK_DIR . '/inc/sections.php';
 
 /**
  * Configuration de base du thème.
@@ -50,6 +51,74 @@ function andonick_assets() {
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'andonick_assets' );
+
+/**
+ * ========================================================================
+ * SERVICE DE LANGUES COMPLET
+ * La langue active (?lang=fr|en) pilote TOUT WordPress :
+ * locale, <html lang>, titre de l'onglet, hreflang, canonical, body class.
+ * ========================================================================
+ */
+
+/**
+ * Active la locale anglaise de WordPress quand ?lang=en
+ * (dates, plugins, admin bar suivent l'anglais).
+ */
+function andonick_apply_locale() {
+	if ( 'en' === andonick_lang() ) {
+		switch_to_locale( 'en_US' );
+	}
+}
+add_action( 'init', 'andonick_apply_locale', 1 );
+
+/**
+ * <html lang="en-US"> (ou fr-FR par défaut) sur la page EN.
+ */
+function andonick_html_language( $attr, $doctype ) {
+	if ( 'en' === andonick_lang() ) {
+		$attr = 'lang="en-US"';
+	}
+	return $attr;
+}
+add_filter( 'language_attributes', 'andonick_html_language', 10, 2 );
+
+/**
+ * Titre de l'onglet par langue — on voit immédiatement la langue active.
+ */
+function andonick_document_title( $title ) {
+	$name = get_bloginfo( 'name' );
+	$tag  = andonick_t( 'hero_tag' );
+	if ( 'en' === andonick_lang() ) {
+		return $name . ' — ' . $tag;
+	}
+	return $name . ' — ' . $tag;
+}
+add_filter( 'pre_get_document_title', 'andonick_document_title' );
+
+/**
+ * hreflang réciproques (fr, en, x-default) + canonical auto-référent.
+ * URL FR = site, URL EN = site?lang=en.
+ */
+function andonick_seo_lang_links() {
+	$home = home_url( '/' );
+	$en   = $home . '?lang=en';
+	$fr   = $home;
+	$cur  = ( 'en' === andonick_lang() ) ? $en : $fr;
+	echo '<link rel="canonical" href="' . esc_url( $cur ) . '">' . "\n";
+	echo '<link rel="alternate" hreflang="fr" href="' . esc_url( $fr ) . '">' . "\n";
+	echo '<link rel="alternate" hreflang="en" href="' . esc_url( $en ) . '">' . "\n";
+	echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( $fr ) . '">' . "\n";
+}
+add_action( 'wp_head', 'andonick_seo_lang_links', 1 );
+
+/**
+ * Classe CSS de langue sur <body> (lang-fr / lang-en).
+ */
+function andonick_body_lang_class( $classes ) {
+	$classes[] = ( 'en' === andonick_lang() ) ? 'lang-en' : 'lang-fr';
+	return $classes;
+}
+add_filter( 'body_class', 'andonick_body_lang_class' );
 
 /**
  * Favicon du thème (logo officiel).

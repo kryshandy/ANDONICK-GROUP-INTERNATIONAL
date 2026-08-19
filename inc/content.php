@@ -119,6 +119,9 @@ function andonick_content() {
 			'foot_copy'       => '© 2026 ANDONICK Group International. Tous droits réservés.',
 			'lang_fr'         => 'Français',
 			'lang_en'         => 'English',
+			'aria_nav'        => 'Navigation principale',
+			'aria_menu'       => 'Menu',
+			'aria_top'        => 'Retour en haut',
 
 			// Les 8 métiers.
 			'filiales'        => array(
@@ -266,8 +269,11 @@ function andonick_content() {
 			'foot_filiales'   => 'Subsidiaries',
 			'foot_contact'    => 'Contact',
 			'foot_copy'       => '© 2026 ANDONICK Group International. All rights reserved.',
-			'lang_fr'         => 'Français',
+			'lang_fr'         => 'French',
 			'lang_en'         => 'English',
+			'aria_nav'        => 'Main navigation',
+			'aria_menu'       => 'Menu',
+			'aria_top'        => 'Back to top',
 
 			'filiales'        => array(
 				array( 'num' => '01', 'title' => 'IT & Telecommunications', 'desc' => 'Official Starlink distributor in the CAR, deployment of fibre-optic and wireless links, cybersecurity, enterprise networks and information-systems supervision.', 'tags' => array( 'Starlink', 'Fibre Optics', 'Cybersecurity' ) ),
@@ -367,15 +373,21 @@ function andonick_wa( $key ) {
  */
 function andonick_img( $key ) {
 	$defaults = array(
-		'hero'      => ANDONICK_URI . '/assets/img/hero.jpg',
-		'group'     => ANDONICK_URI . '/assets/img/domaines.jpg',
-		'impact'    => ANDONICK_URI . '/assets/img/impact.jpg',
-		'gallery_1' => ANDONICK_URI . '/assets/img/hero.jpg',
-		'gallery_2' => ANDONICK_URI . '/assets/img/photo-10.jpg',
-		'gallery_3' => ANDONICK_URI . '/assets/img/impact.jpg',
-		'gallery_4' => ANDONICK_URI . '/assets/img/photo-07.jpg',
-		'gallery_5' => ANDONICK_URI . '/assets/img/photo-08.jpg',
-		'gallery_6' => ANDONICK_URI . '/assets/img/photo-11.jpg',
+		'hero'       => ANDONICK_URI . '/assets/img/hero.jpg',
+		'group'      => ANDONICK_URI . '/assets/img/domaines.jpg',
+		'impact'     => ANDONICK_URI . '/assets/img/impact.jpg',
+		'gallery_1'  => ANDONICK_URI . '/assets/img/hero.jpg',
+		'gallery_2'  => ANDONICK_URI . '/assets/img/photo-10.jpg',
+		'gallery_3'  => ANDONICK_URI . '/assets/img/impact.jpg',
+		'gallery_4'  => ANDONICK_URI . '/assets/img/photo-07.jpg',
+		'gallery_5'  => ANDONICK_URI . '/assets/img/photo-08.jpg',
+		'gallery_6'  => ANDONICK_URI . '/assets/img/photo-11.jpg',
+		'gallery_7'  => '',
+		'gallery_8'  => '',
+		'gallery_9'  => '',
+		'gallery_10' => '',
+		'gallery_11' => '',
+		'gallery_12' => '',
 	);
 	$mod      = get_theme_mod( "andonick_img_{$key}", '' );
 	return ( '' !== $mod ) ? $mod : $defaults[ $key ];
@@ -411,18 +423,24 @@ function andonick_lines( $key, $default_lines ) {
 }
 
 /**
- * Les 8 métiers (éditables).
+ * Les métiers (éditables) — 12 emplacements, les emplacements sans titre
+ * ne sont pas affichés (le client peut ajouter des métiers plus tard).
  */
 function andonick_filiales() {
 	$lang   = andonick_lang();
 	$defs   = andonick_content()[ $lang ]['filiales'];
 	$result = array();
-	foreach ( $defs as $i => $f ) {
+	for ( $i = 0; $i < 12; $i++ ) {
+		$f = isset( $defs[ $i ] ) ? $defs[ $i ] : array( 'num' => '', 'title' => '', 'desc' => '', 'tags' => array() );
 		$tags_raw = get_theme_mod( "andonick_{$lang}_filiales_{$i}_tags", '' );
-		$tags     = ( '' !== $tags_raw ) ? array_values( array_filter( array_map( 'trim', explode( "\n", $tags_raw ) ) ) ) : $f['tags'];
+		$title    = get_theme_mod( "andonick_{$lang}_filiales_{$i}_title", $f['title'] );
+		if ( '' === trim( $title ) ) {
+			continue;
+		}
+		$tags = ( '' !== $tags_raw ) ? array_values( array_filter( array_map( 'trim', explode( "\n", $tags_raw ) ) ) ) : $f['tags'];
 		$result[] = array(
 			'num'   => get_theme_mod( "andonick_{$lang}_filiales_{$i}_num", $f['num'] ),
-			'title' => get_theme_mod( "andonick_{$lang}_filiales_{$i}_title", $f['title'] ),
+			'title' => $title,
 			'desc'  => get_theme_mod( "andonick_{$lang}_filiales_{$i}_desc", $f['desc'] ),
 			'tags'  => $tags,
 		);
@@ -431,15 +449,20 @@ function andonick_filiales() {
 }
 
 /**
- * Les témoignages (éditables).
+ * Les témoignages (éditables) — 6 emplacements, les vides sont ignorés.
  */
 function andonick_testis() {
 	$lang   = andonick_lang();
 	$defs   = andonick_content()[ $lang ]['testis'];
 	$result = array();
-	foreach ( $defs as $i => $t ) {
+	for ( $i = 0; $i < 6; $i++ ) {
+		$t = isset( $defs[ $i ] ) ? $defs[ $i ] : array( '', '', '' );
+		$quote = get_theme_mod( "andonick_{$lang}_testis_{$i}_quote", $t[0] );
+		if ( '' === trim( $quote ) ) {
+			continue;
+		}
 		$result[] = array(
-			get_theme_mod( "andonick_{$lang}_testis_{$i}_quote", $t[0] ),
+			$quote,
 			get_theme_mod( "andonick_{$lang}_testis_{$i}_name", $t[1] ),
 			get_theme_mod( "andonick_{$lang}_testis_{$i}_role", $t[2] ),
 		);
@@ -448,15 +471,20 @@ function andonick_testis() {
 }
 
 /**
- * Les impacts (éditables).
+ * Les impacts (éditables) — 8 emplacements, les vides sont ignorés.
  */
 function andonick_impacts() {
 	$lang   = andonick_lang();
 	$defs   = andonick_content()[ $lang ]['impacts'];
 	$result = array();
-	foreach ( $defs as $i => $imp ) {
+	for ( $i = 0; $i < 8; $i++ ) {
+		$imp = isset( $defs[ $i ] ) ? $defs[ $i ] : array( '', '' );
+		$title = get_theme_mod( "andonick_{$lang}_impacts_{$i}_title", $imp[0] );
+		if ( '' === trim( $title ) ) {
+			continue;
+		}
 		$result[] = array(
-			get_theme_mod( "andonick_{$lang}_impacts_{$i}_title", $imp[0] ),
+			$title,
 			get_theme_mod( "andonick_{$lang}_impacts_{$i}_desc", $imp[1] ),
 		);
 	}
@@ -513,12 +541,15 @@ function andonick_slots() {
 }
 
 /**
- * Les 6 images de la galerie (éditables).
+ * Les photos de la galerie (éditables) — jusqu'à 12, les vides sont ignorés.
  */
 function andonick_gallery() {
 	$imgs = array();
-	for ( $i = 1; $i <= 6; $i++ ) {
-		$imgs[] = andonick_img( 'gallery_' . $i );
+	for ( $i = 1; $i <= 12; $i++ ) {
+		$url = andonick_img( 'gallery_' . $i );
+		if ( '' !== $url ) {
+			$imgs[] = $url;
+		}
 	}
 	return $imgs;
 }

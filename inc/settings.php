@@ -64,6 +64,22 @@ function andonick_cz_image( $wp_customize, $key, $default, $label, $section ) {
 }
 
 /**
+ * Filet de sécurité pour l'ordre des sections : uniquement des noms connus,
+ * uniques, sans doublon.
+ */
+function andonick_sanitize_section_order( $input ) {
+	$allowed = array( 'hero', 'groupe', 'filiales', 'impact', 'realisations', 'references', 'contact' );
+	$order   = array();
+	foreach ( explode( "\n", $input ) as $line ) {
+		$item = sanitize_key( trim( $line ) );
+		if ( in_array( $item, $allowed, true ) && ! in_array( $item, $order, true ) ) {
+			$order[] = $item;
+		}
+	}
+	return empty( $order ) ? implode( "\n", $allowed ) : implode( "\n", $order );
+}
+
+/**
  * Enregistrement de tous les réglages.
  */
 function andonick_customize_register( $wp_customize ) {
@@ -74,6 +90,25 @@ function andonick_customize_register( $wp_customize ) {
 		'title'       => 'ANDONICK — Contenu du site',
 		'description' => 'Modifiez ici tout le contenu du site (textes, listes, images) sans toucher au code. Sauvegardez = publié.',
 		'priority'    => 20,
+	) );
+
+	/* ---- Section structure & ordre (commune, pas par langue) ---- */
+	$wp_customize->add_section( 'andonick_structure', array(
+		'title'       => 'Structure & Ordre des sections',
+		'description' => 'Ordre d\'affichage des sections de la page d\'accueil. Une ligne = une section. Retirez une ligne pour masquer la section.',
+		'panel'       => 'andonick_panel',
+	) );
+	$wp_customize->add_setting( 'andonick_section_order', array(
+		'default'           => "hero\ngroupe\nfiliales\nimpact\nrealisations\nreferences\ncontact",
+		'sanitize_callback' => 'andonick_sanitize_section_order',
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_section_order', array(
+		'label'       => 'Ordre des sections',
+		'description' => "Noms possibles : hero, groupe, filiales, impact, realisations, references, contact",
+		'section'     => 'andonick_structure',
+		'type'        => 'textarea',
+		'input_attrs' => array( 'rows' => 8 ),
 	) );
 
 	/* ---- Section images (commune) ---- */
@@ -88,6 +123,9 @@ function andonick_customize_register( $wp_customize ) {
 	foreach ( $gallery_defaults as $gi => $file ) {
 		andonick_cz_image( $wp_customize, 'gallery_' . ( $gi + 1 ), ANDONICK_URI . '/assets/img/' . $file, 'Galerie — photo ' . ( $gi + 1 ), 'andonick_images' );
 	}
+	for ( $gi = 7; $gi <= 12; $gi++ ) {
+		andonick_cz_image( $wp_customize, 'gallery_' . $gi, '', 'Galerie — photo ' . $gi . ' (vide = non affichée)', 'andonick_images' );
+	}
 
 	/* ---- Sections par langue ---- */
 	foreach ( array( 'fr' => 'Français', 'en' => 'English' ) as $lang => $label ) {
@@ -101,7 +139,7 @@ function andonick_customize_register( $wp_customize ) {
 			'panel' => 'andonick_panel',
 		) );
 		$wp_customize->add_section( $sec_filiales, array(
-			'title' => "Les 8 métiers — $label",
+			'title' => "Les métiers — $label",
 			'panel' => 'andonick_panel',
 		) );
 		$wp_customize->add_section( $sec_testis, array(
@@ -126,16 +164,18 @@ function andonick_customize_register( $wp_customize ) {
 			}
 		}
 
-		/* Les 8 métiers */
-		foreach ( $content[ $lang ]['filiales'] as $i => $f ) {
+		/* Les métiers — 12 emplacements (8 remplis par défaut, 4 vides pour la suite) */
+		for ( $i = 0; $i < 12; $i++ ) {
+			$f = isset( $content[ $lang ]['filiales'][ $i ] ) ? $content[ $lang ]['filiales'][ $i ] : array( 'num' => '', 'title' => '', 'desc' => '', 'tags' => array() );
 			andonick_cz_text( $wp_customize, $lang, "filiales_{$i}_num", $f['num'], $sec_filiales );
 			andonick_cz_text( $wp_customize, $lang, "filiales_{$i}_title", $f['title'], $sec_filiales );
-			andonick_cz_textarea( $wp_customize, $lang, "filiales_{$i}_desc", $f['desc'], $sec_filiales, "Métier " . ( $i + 1 ) . ' — description' );
-			andonick_cz_textarea( $wp_customize, $lang, "filiales_{$i}_tags", implode( "\n", $f['tags'] ), $sec_filiales, "Métier " . ( $i + 1 ) . ' — étiquettes' );
+			andonick_cz_textarea( $wp_customize, $lang, "filiales_{$i}_desc", $f['desc'], $sec_filiales, 'Métier ' . ( $i + 1 ) . ' — description' );
+			andonick_cz_textarea( $wp_customize, $lang, "filiales_{$i}_tags", implode( "\n", $f['tags'] ), $sec_filiales, 'Métier ' . ( $i + 1 ) . ' — étiquettes' );
 		}
 
-		/* Témoignages */
-		foreach ( $content[ $lang ]['testis'] as $i => $t ) {
+		/* Témoignages — 6 emplacements */
+		for ( $i = 0; $i < 6; $i++ ) {
+			$t = isset( $content[ $lang ]['testis'][ $i ] ) ? $content[ $lang ]['testis'][ $i ] : array( '', '', '' );
 			andonick_cz_textarea( $wp_customize, $lang, "testis_{$i}_quote", $t[0], $sec_testis, 'Témoignage ' . ( $i + 1 ) . ' — citation' );
 			andonick_cz_text( $wp_customize, $lang, "testis_{$i}_name", $t[1], $sec_testis );
 			andonick_cz_text( $wp_customize, $lang, "testis_{$i}_role", $t[2], $sec_testis );
@@ -149,8 +189,9 @@ function andonick_customize_register( $wp_customize ) {
 		andonick_cz_textarea( $wp_customize, $lang, 'refs_rows', implode( "\n", $refs_default ), $sec_testis, 'Références (1 par ligne : Catégorie | Nom | Fonction | Téléphone)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'ref_headers', implode( "\n", $content[ $lang ]['ref_headers'] ), $sec_testis, 'En-têtes du tableau références' );
 
-		/* Impacts et listes */
-		foreach ( $content[ $lang ]['impacts'] as $i => $imp ) {
+		/* Impacts — 8 emplacements */
+		for ( $i = 0; $i < 8; $i++ ) {
+			$imp = isset( $content[ $lang ]['impacts'][ $i ] ) ? $content[ $lang ]['impacts'][ $i ] : array( '', '' );
 			andonick_cz_text( $wp_customize, $lang, "impacts_{$i}_title", $imp[0], $sec_struct );
 			andonick_cz_text( $wp_customize, $lang, "impacts_{$i}_desc", $imp[1], $sec_struct );
 		}
