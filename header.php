@@ -23,13 +23,6 @@
 			<span class="topbar-sep">|</span>
 			<a href="tel:+23670286601"><strong>+236 70 28 66 01</strong></a>
 		</div>
-		<div class="topbar-lang">
-			<?php if ( 'en' === andonick_lang() ) : ?>
-				<a href="<?php echo esc_url( andonick_lang_url( 'fr' ) ); ?>">Français</a>
-			<?php else : ?>
-				<a href="<?php echo esc_url( andonick_lang_url( 'en' ) ); ?>">English</a>
-			<?php endif; ?>
-		</div>
 	</div>
 </div>
 
@@ -47,6 +40,18 @@
 			<a href="#contact"><?php echo esc_html( andonick_t( 'nav_contact' ) ); ?></a>
 			<a href="#devis" class="btn btn-sm btn-white"><?php echo esc_html( andonick_t( 'nav_devis' ) ); ?></a>
 		</nav>
+
+		<div class="lang-switch" role="group" aria-label="Français / English">
+			<?php if ( 'en' === andonick_lang() ) : ?>
+				<a href="<?php echo esc_url( andonick_lang_url( 'fr' ) ); ?>" aria-label="Version française">FR</a>
+				<span class="lang-slash" aria-hidden="true"></span>
+				<span class="lang-active" aria-current="true">EN</span>
+			<?php else : ?>
+				<span class="lang-active" aria-current="true">FR</span>
+				<span class="lang-slash" aria-hidden="true"></span>
+				<a href="<?php echo esc_url( andonick_lang_url( 'en' ) ); ?>" aria-label="English version">EN</a>
+			<?php endif; ?>
+		</div>
 
 		<button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
 			<span></span><span></span><span></span>

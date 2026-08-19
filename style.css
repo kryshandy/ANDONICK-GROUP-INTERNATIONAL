@@ -3,7 +3,7 @@ Theme Name: ANDONICK Group International
 Theme URI: https://andonickgroup.com
 Author: Webmaster ANDONICK
 Description: Thème one-page bilingue (FR/EN) pour ANDONICK Group International. Charte graphique officielle : violet #461491, violet foncé #2A0A63, blanc #FFFFFF, gris #333333. Aucune autre couleur n'est autorisée.
-Version: 2.0.0
+Version: 2.1.0
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -310,32 +310,17 @@ button {
 	gap: 4px 10px;
 }
 
-.topbar-links a,
-.topbar-lang a {
+.topbar-links a {
 	color: var(--white);
 	text-decoration: none;
 }
 
-.topbar-links a:hover,
-.topbar-lang a:hover {
+.topbar-links a:hover {
 	text-decoration: underline;
 }
 
 .topbar-sep {
 	opacity: 0.35;
-}
-
-.topbar-lang a {
-	font-weight: 700;
-	border: 1px solid rgba(255, 255, 255, 0.4);
-	border-radius: 999px;
-	padding: 2px 12px;
-	transition: background 0.2s ease;
-}
-
-.topbar-lang a:hover {
-	background: rgba(255, 255, 255, 0.15);
-	text-decoration: none;
 }
 
 /* ==========================================================================
@@ -451,6 +436,48 @@ button {
 .nav-overlay.open {
 	opacity: 1;
 	pointer-events: auto;
+}
+
+/* Sélecteur de langue FR / EN */
+.lang-switch {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	border: 2px solid var(--violet);
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.lang-switch a,
+.lang-switch .lang-active {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 46px;
+	padding: 5px 14px;
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	line-height: 1;
+	text-decoration: none;
+	color: var(--violet);
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lang-switch a:hover {
+	background: rgba(70, 20, 145, 0.09);
+}
+
+.lang-switch .lang-active {
+	background: var(--violet);
+	color: var(--white);
+	cursor: default;
+}
+
+.lang-switch .lang-slash {
+	width: 1px;
+	height: 18px;
+	background: rgba(70, 20, 145, 0.25);
 }
 
 /* ==========================================================================
@@ -1498,6 +1525,14 @@ button {
 
 	.header-inner {
 		height: var(--header-h);
+		gap: 14px;
+	}
+
+	.lang-switch a,
+	.lang-switch .lang-active {
+		min-width: 38px;
+		padding: 4px 10px;
+		font-size: 0.8rem;
 	}
 
 	.brand-logo {

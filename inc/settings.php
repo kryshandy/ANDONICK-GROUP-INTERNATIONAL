@@ -158,11 +158,8 @@ function andonick_customize_register( $wp_customize ) {
 		andonick_cz_textarea( $wp_customize, $lang, 'services', implode( "\n", $content[ $lang ]['services'] ), $sec_struct, 'Liste déroulante « Filiale / service concerné »' );
 		andonick_cz_textarea( $wp_customize, $lang, 'slots', implode( "\n", $content[ $lang ]['slots'] ), $sec_struct, 'Créneaux de rappel' );
 
-		/* Nombres des statistiques */
-		$stats_defaults = array( 'stat1_num' => '15+', 'stat2_num' => '8', 'stat3_num' => '3' );
-		foreach ( $stats_defaults as $sk => $sv ) {
-			andonick_cz_text( $wp_customize, $lang, $sk, $sv, $sec_texts );
-		}
+		/* Les statistiques (numéros) sont enregistrées comme textes simples
+		   via la boucle des scalaires (stat1_num, stat2_num, stat3_num). */
 	}
 }
 add_action( 'customize_register', 'andonick_customize_register' );

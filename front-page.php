@@ -321,14 +321,6 @@ $impacts  = andonick_impacts();
 		</div>
 	</section>
 
-	<div class="page-switcher">
-		<?php if ( 'fr' === $lang ) : ?>
-			<p>Voir cette page en <a href="<?php echo esc_url( andonick_lang_url( 'en' ) ); ?>">English</a></p>
-		<?php else : ?>
-			<p>View this page in <a href="<?php echo esc_url( andonick_lang_url( 'fr' ) ); ?>">Français</a></p>
-		<?php endif; ?>
-	</div>
-
 </main>
 
 <?php get_footer(); ?>

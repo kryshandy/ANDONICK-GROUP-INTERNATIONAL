@@ -66,7 +66,7 @@ Les valeurs par défaut restent dans `inc/content.php` (source officielle du sit
 
 ## Versions
 
-- **2.1.0** — Contenu 100 % éditable depuis le Customizer WordPress (textes, listes, témoignages, images, FR/EN) + audit complet des traductions
+- **2.1.0** — Sélecteur de langue FR/EN visible dans le header (bouton segmenté, desktop + mobile), statistiques du hero corrigées (15+, 8, 3), contenu 100 % éditable depuis le Customizer + audit complet des traductions
 - **2.0.0** — Refonte design premium : animations au scroll, compteurs animés, scrollspy, barre de progression, WhatsApp flottant, galerie réalisations, responsiveness profond (320–1440px)
 - **1.0.0** — Création du thème one-page bilingue conforme à la charte
 
