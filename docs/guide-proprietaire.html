@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANDONICK Group International — Guide d'administration du site (sans code)</title>
+<style>
+	:root{
+		--violet:#461491; --violet-fonce:#2A0A63; --gris:#333333; --clair:#f7f4fc; --ligne:#e4dcf2;
+	}
+	*{box-sizing:border-box; margin:0; padding:0;}
+	body{font-family:'Segoe UI', Arial, sans-serif; color:var(--gris); font-size:10.5pt; line-height:1.55;}
+	.wrap{max-width:780px; margin:0 auto; padding:24px;}
+	h1,h2,h3,h4{color:var(--violet); line-height:1.25;}
+
+	.cover{height:250px; background:linear-gradient(135deg, var(--violet-fonce), var(--violet)); color:#fff; display:flex; flex-direction:column; justify-content:center; padding:0 48px; border-radius:14px; margin-bottom:28px; page-break-after:always;}
+	.cover .logo{font-weight:800; font-size:22pt; letter-spacing:.5px;}
+	.cover h1{color:#fff; font-size:17pt; margin-top:10px;}
+	.cover p{color:#d9cbf0; font-size:10.5pt; margin-top:8px;}
+
+	h2{font-size:15pt; border-bottom:2px solid var(--ligne); padding-bottom:5px; margin:28px 0 12px; page-break-after:avoid;}
+	h3{font-size:12pt; margin:18px 0 8px; page-break-after:avoid;}
+	h4{font-size:11pt; margin:14px 0 6px;}
+	p{margin:6px 0;}
+	ul,ol{margin:6px 0 10px 22px;}
+	li{margin:3px 0;}
+	strong{color:var(--violet-fonce);}
+	code{background:var(--clair); border:1px solid var(--ligne); border-radius:4px; padding:0 5px; font-size:9.5pt; color:var(--violet-fonce);}
+	pre{background:var(--clair); border:1px solid var(--ligne); border-radius:8px; padding:10px 14px; font-size:9.5pt; margin:8px 0; white-space:pre-wrap;}
+	table{width:100%; border-collapse:collapse; margin:10px 0; font-size:9.5pt;}
+	th{background:var(--violet); color:#fff; text-align:left; padding:7px 10px;}
+	td{border:1px solid var(--ligne); padding:6px 10px; vertical-align:top;}
+	tr:nth-child(even) td{background:#faf8fd;}
+	.etape{background:var(--clair); border-left:4px solid var(--violet); border-radius:8px; padding:10px 14px; margin:10px 0; page-break-inside:avoid;}
+	.warn{background:#fdf3e7; border-left:4px solid #d97706; border-radius:8px; padding:10px 14px; margin:10px 0; page-break-inside:avoid;}
+	.bien{background:#eaf7ee; border-left:4px solid #178a3f; border-radius:8px; padding:10px 14px; margin:10px 0; page-break-inside:avoid;}
+	.toc{background:var(--clair); border:1px solid var(--ligne); border-radius:10px; padding:16px 20px;}
+	.toc li{margin:5px 0;}
+	.small{font-size:9pt; color:#666;}
+	.pill{display:inline-block; background:var(--violet); color:#fff; border-radius:20px; padding:2px 12px; font-size:8.5pt; font-weight:700; letter-spacing:.4px;}
+	@page{size:A4; margin:16mm 14mm 18mm;}
+	@media print{ .cover{height:230px;} .pagebreak{page-break-before:always;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+	<!-- ============ COUVERTURE ============ -->
+	<div class="cover">
+		<div class="logo">ANDONICK GROUP<br>INTERNATIONAL</div>
+		<h1>Guide d&#8217;administration du site internet</h1>
+		<p>Personnaliser et gérer votre site 100&nbsp;% sans code, depuis WordPress &#8212; du haut de page au pied de page</p>
+		<p class="small" style="color:#d9cbf0; margin-top:14px;">Thème ANDONICK v3.1.0 &#183; WordPress 7.0.x &#183; Bilingue français / anglais</p>
+	</div>
+
+	<!-- ============ SOMMAIRE ============ -->
+	<div class="toc">
+		<h2 style="margin-top:0;">Sommaire</h2>
+		<ol>
+			<li>Votre site en un coup d&#8217;œil : qui fait quoi </li>
+			<li>Accéder à l&#8217;administration de votre site</li>
+			<li>Le panneau de personnalisation « ANDONICK &#8212; Contenu du site »</li>
+			<li>Les guides pas à pas (15 scénarios du quotidien)</li>
+			<li>Le site est bilingue : pensez toujours aux deux langues</li>
+			<li>Les formulaires de demande (devis &amp; rappel)</li>
+			<li>Ce qu&#8217;il ne faut JAMAIS faire</li>
+			<li>Sécurité, sauvegardes et mises à jour</li>
+			<li>Que faire si quelque chose ne va pas (FAQ)</li>
+			<li>Annexe : identifiants et informations techniques</li>
+		</ol>
+	</div>
+
+	<!-- ============ 1 ============ -->
+	<h2 class="pagebreak">1. Votre site en un coup d&#8217;œil</h2>
+	<p>Votre site est un <strong>site vitrine one-page</strong> : une seule et unique page, longue, qui présente tout le Groupe&#8230; et qui se découpe en <strong>sections</strong> (haut de page, Le Groupe, les métiers, l&#8217;impact, la galerie, les références, le contact). Il est construit sur <strong>WordPress</strong>&nbsp;:</p>
+	<table>
+		<tr><th>Brique</th><th>Rôle</th><th>Pour vous</th></tr>
+		<tr><td><strong>WordPress</strong> (le moteur)</td><td>Gère les comptes, les médias, les réglages généraux, le panneau de personnalisation</td><td>Vous l&#8217;utilisez sans jamais voir de code</td></tr>
+		<tr><td><strong>Thème ANDONICK Group</strong> (v3.1.0)</td><td>Le design violet {% 461491 %}, la mise en page, la version anglaise</td><td>Il est déjà réglé : vous n&#8217;avez qu&#8217;à y mettre votre contenu</td></tr>
+		<tr><td><strong>Base de données</strong></td><td>Stocke tous vos textes, numéros, images personnalisés</td><td>Chaque modification est enregistrée sans toucher aux fichiers</td></tr>
+	</table>
+	<div class="bien"><strong>&#9733; Le principe majeur :</strong> tout ce que vous changez dans WordPress est <strong>immédiatement appliqué à votre site</strong> (après clic sur « Publier ») et <strong>jamais perdu</strong> : le site affiche toujours vos valeurs personnalisées, les valeurs d&#8217;origine ne servant que de secours.</div>
+
+	<!-- ============ 2 ============ -->
+	<h2 class="pagebreak">2. Accéder à l&#8217;administration</h2>
+	<ol>
+		<li>Dans votre navigateur, ajoutez <code>/wp-admin</code> après l&#8217;adresse de votre site :
+			<ul><li>Ordinateur de développement : <code>http://localhost/wordpress/wp-admin</code></li>
+			<li>Site en ligne : <code>https://www.votre-domaine.com/wp-admin</code></li></ul></li>
+		<li>Saisissez votre <strong>identifiant</strong> et votre <strong>mot de passe</strong> (fournis par votre développeur), puis « Se connecter ».</li>
+		<li>Recommandation de sécurité : changez ce mot de passe dès la première connexion (Réglages &#8594; Profil).</li>
+	</ol>
+	<p>À partir de là, vous arrivez sur le <strong>tableau de bord</strong>. Tout ce qui concerne le contenu de votre site se trouve dans <strong>Apparence &#8594; Personnaliser</strong>.</p>
+
+	<!-- ============ 3 ============ -->
+	<h2 class="pagebreak">3. Le panneau « ANDONICK &#8212; Contenu du site »</h2>
+	<p>Chemin : <code>Apparence &#8594; Personnaliser</code>. Le Customizer fonctionne en <strong>prévisualisation directe</strong> : à droite, votre site en temps réel ; à gauche, les réglages. Chaque changement peut être <strong>annulé</strong> tant que vous n&#8217;avez pas cliqué sur <strong>« Publier »</strong>.</p>
+	<p>Voici l&#8217;arborescence complète du panneau « ANDONICK &#8212; Contenu du site » :</p>
+	<table>
+		<tr><th>Section du panneau</th><th>Ce que vous pouvez y modifier</th></tr>
+		<tr><td>1. Structure &amp; Ordre des sections</td><td>L&#8217;ordre d&#8217;affichage des 7 sections (1 ligne = 1 section). Déplacer une ligne = déplacer la section. Retirer une ligne = <strong>masquer</strong> la section. Noms possibles : hero, groupe, filiales, impact, realisations, references, contact.</td></tr>
+		<tr><td>2. Images (photos du site)</td><td>Photo du haut de page (hero), photo « Le Groupe », fond « Impact », et les <strong>12 emplacements de la galerie</strong> (place vide = photo non affichée).</td></tr>
+		<tr><td>3. Textes principaux &#8212; Français</td><td>Chaque texte du site en français : menu, grand titre, accroche, statistiques, bandes, valeurs, téléphones, e-mail, adresse, boutons, formulaires, pied de page&#8230;</td></tr>
+		<tr><td>4. Textes principaux &#8212; English</td><td>Les mêmes textes, en anglais (obligatoire : voir chapitre 5).</td></tr>
+		<tr><td>5. Les métiers &#8212; Français / English</td><td><strong>12 emplacements</strong> : 8 métiers remplis + 4 libres. Chaque métier : numéro, titre, description, étiquettes (1 par ligne). Un métier avec titre vide n&#8217;est pas affiché.</td></tr>
+		<tr><td>6. Témoignages &amp; Références &#8212; Français / English</td><td><strong>6 témoignages</strong> (citation, nom, rôle). Plus le <strong>tableau des références</strong> : 1 ligne = 1 référence au format <code>Catégorie | Nom | Fonction | Téléphone</code>. Et les en-têtes du tableau.</td></tr>
+		<tr><td>7. Formulaires &amp; listes &#8212; Français / English</td><td>Les <strong>8 impacts</strong> (titre + description), les <strong>partenaires</strong> (1 par ligne), la liste déroulante des services du formulaire, les créneaux de rappel, les bandes du haut de page, les valeurs du Groupe, et le réglage général « E-mail de contact ».</td></tr>
+		<tr><td>Identité du site (WordPress)</td><td>Le logo officiel (Apparence &#8594; Personnaliser &#8594; Identité du site), le nom du site, le slogan, l&#8217;icône du site (favicon, Réglages &#8594; Général).</td></tr>
+	</table>
+
+	<h3>Comment se lit un champ ?</h3>
+	<ul>
+		<li>Un champ texte simple : tapez votre texte, il s&#8217;affiche en direct à droite.</li>
+		<li>Un champ « zone de texte » : texte long (paragraphes) <strong>ou liste</strong> (1 ligne = 1 élément, ex. partenaires, étiquettes, bandes).</li>
+		<li>Un champ image : « Téléverser » une nouvelle photo ou « Choisir une image » dans la bibliothèque (format paysage conseillé pour hero/galerie).</li>
+		<li>Après toute modification : bouton bleu <strong>« Publier »</strong> (en haut du panneau). Sans publier, rien n&#8217;est appliqué.</li>
+	</ul>
+
+	<!-- ============ 4 ============ -->
+	<h2 class="pagebreak">4. Les guides pas à pas (15 scénarios du quotidien)</h2>
+
+	<h3>Métier : 1. Changer un numéro de téléphone</h3>
+	<div class="etape"><strong>1.</strong> Apparence &#8594; Personnaliser &#8594; Textes principaux — Français &#8594; champ <code>phone_rca1</code> (Ex. +236 75 00 06 49).<br>
+	<strong>2.</strong> Saisissez le nouveau numéro avec espaces (ex. +236 70 00 00 00).<br>
+	<strong>3.</strong> Répétez dans « — English » si le numéro est le même, pas besoin : les téléphones sont uniques (1 seul champ, mis à jour partout).<br>
+	<strong>4.</strong> Publier. Les liens <code>tel:</code> et <code>wa.me</code> sont recalculés automatiquement.</div>
+
+	<h3>Métier : 2. Changer l&#8217;e-mail de contact</h3>
+	<div class="etape"><strong>1.</strong> Personnaliser &#8594; Formulaires &amp; listes &#8594; champ « E-mail de contact ».<br>
+	<strong>2.</strong> Indiquez le nouvel e-mail (il apparaît alors partout : bloc contact, pied de page) et c&#8217;est lui qui reçoit les demandes des formulaires.<br>
+	<strong>3.</strong> Publier.</div>
+
+	<h3>Métier : 3. Ajouter un 9&#232;me métier</h3>
+	<div class="etape"><strong>1.</strong> Personnaliser &#8594; Les métiers — Français &#8594; « Métier 9 » : remplir numéro, titre, description, étiquettes.<br>
+	<strong>2.</strong> Recommencer dans « Les métiers — English » (le site reste bilingue).<br>
+	<strong>3.</strong> Publier : le métier apparaît dans la grille « Huit métiers… » <em>(le titre de section s&#8217;adaptera si vous le modifiez)</em> et dans le pied de page.</div>
+
+	<h3>Métier : 4. Retirer un métier</h3>
+	<div class="etape"><strong>1.</strong> Les métiers — Français &#8594; vider le champ « titre » de ce métier.<br>
+	<strong>2.</strong> Faire de même en anglais.<br>
+	<strong>3.</strong> Publier : le métier disparaît (les autres sont renumérotés automatiquement).</div>
+
+	<h3>Métier : 5. Ajouter un témoignage</h3>
+	<div class="etape"><strong>1.</strong> Témoignages &amp; Références — Français &#8594; Témoignage 4 : citation + nom + rôle.<br>
+	<strong>2.</strong> Traduisez en « — English ».<br>
+	<strong>3.</strong> Publier.</div>
+
+	<h3>Métier : 6. Ajouter une référence au tableau</h3>
+	<div class="etape"><strong>1.</strong> Témoignages &amp; Références — Français &#8594; champ « Références » : nouvelle ligne au format <code>Catégorie | Nom | Fonction | Téléphone</code>.<br>
+	<strong>2.</strong> Même chose en anglais.<br>
+	<strong>3.</strong> Publier. Le téléphone se transforme en lien « appeler » automatiquement.</div>
+
+	<h3>Métier : 7. Ajouter une photo à la galerie</h3>
+	<div class="etape"><strong>1.</strong> Images &#8594; « Galerie — photo 7 » ; puis Téléverser.<br>
+	<strong>2.</strong> Publier : la photo s&#8217;ajoute à la grille (la galerie agrandit automatiquement). Pour retirer, vider la place.</div>
+
+	<h3>Métier : 8. Changer la grande photo du haut de page</h3>
+	<div class="etape"><strong>1.</strong> Images &#8594; « Photo du haut de page (hero) » &#8594; Téléverser.<br>
+	<strong>2.</strong> Large (1920 px) de préférence, puis Publier.</div>
+
+	<h3>Métier : 9. Masquer une section (ex. la galerie)</h3>
+	<div class="etape"><strong>1.</strong> Structure &amp; Ordre &#8594; supprimer la ligne <code>realisations</code>.<br>
+	<strong>2.</strong> Publier : la section disparaît. Pour la réafficher : re-taper <code>realisations</code> dans la liste.</div>
+
+	<h3>Métier : 10. Inverser deux sections</h3>
+	<div class="etape"><strong>1.</strong> Structure &amp; Ordre &#8594; couper-coller les lignes pour changer leur ordre écran.<br>
+	<strong>2.</strong> Publier : le site se réorganise instantanément.</div>
+
+	<h3>Métier : 11. Modifier le message de bienvenue WhatsApp</h3>
+	<div class="etape"><strong>1.</strong> Textes principaux — Français &#8594; champ <code>wa_msg</code> (« Bonjour ANDONICK Group, je souhaite un devis. »).<br>
+	<strong>2.</strong> Traduisez en anglais.<br>
+	<strong>3.</strong> Publier : c&#8217;est le message pré-rempli du bouton WhatsApp flottant.</div>
+
+	<h3>Métier : 12. Changer le slogan ou le nom du site</h3>
+	<div class="etape"><strong>1.</strong> Réglages &#8594; Général &#8594; « Nom du site » / « Slogan ». (Il alimente l&#8217;onglet du navigateur et l&#8217;affichage du logo.)</div>
+
+	<h3>Métier : 13. Changer la pilule de langue / les bandes du haut</h3>
+	<div class="etape"><strong>1.</strong> Les bandes (Starlink, fibre, solaire&#8230;) : Formulaires &amp; listes &#8594; « Bandes du haut de page » : 1 ligne = 1 bande, ajoutez ou retirez librement (2 langues).</div>
+
+	<h3>Métier : 14. Modifier les statistiques du haut de page</h3>
+	<div class="etape"><strong>1.</strong> Textes principaux — Français &#8594; <code>stat1_num</code> (15+), <code>stat2_num</code> (8), <code>stat3_num</code> (3) et <code>stat1_suffix</code> (+).<br>
+	<strong>2.</strong> Modifiez les chiffres <strong>et les libellés</strong> (stat1, stat2, stat3), puis Publier.</div>
+
+	<h3>Métier : 15. Changer la cible d&#8217;un bouton ou d&#8217;un menu</h3>
+	<div class="etape"><strong>1.</strong> Textes principaux &#8594; champs « Lien de&#8230; » (menu, boutons du haut de page). Format d&#8217;une ancre : <code>#contact</code>. Pour un lien externe : <code>https://…</code>.</div>
+
+	<div class="bien"><strong>&#9733; Rappel :</strong> chaque scénario existe en 2 langues. Vérifiez systématiquement la page anglaise après une modification.</div>
+
+	<!-- ============ 5 ============ -->
+	<h2 class="pagebreak">5. Le site est bilingue : pensez aux deux langues</h2>
+	<p>Le site existe en français (par défaut) et en anglais (bouton « EN » en haut à droite, URL <code>?lang=en</code>). La totalité des textes est traduite et <strong>chacune des deux versions a ses propres champs</strong> dans le panneau de personnalisation :</p>
+	<table>
+		<tr><th>Côté français</th><th>Côté anglais</th></tr>
+		<tr><td>Textes principaux — Français</td><td>Textes principaux — English</td></tr>
+		<tr><td>Les métiers — Français</td><td>Les métiers — English</td></tr>
+		<tr><td>Témoignages &amp; Références — Français</td><td>Témoignages &amp; Références — English</td></tr>
+		<tr><td>Formulaires &amp; listes — Français</td><td>Formulaires &amp; listes — English</td></tr>
+	</table>
+	<ul>
+		<li>Les <strong>images</strong> et la <strong>structure</strong> sont communes aux deux langues (1 seul endroit à modifier).</li>
+		<li>Les <strong>téléphones, e-mail, adresse</strong> : champs uniques (identiques en FR et EN) — modifiez-les une seule fois.</li>
+		<li>Si un texte anglais reste vide, le site affiche la version française sans bloquer (sécurité automatique).</li>
+		<li>Le titre de l&#8217;onglet aussi change de langue (« ANDONICK Group International — Groupe multisectoriel panafricain » / « &#8230; — Pan-African multi-sector group »).</li>
+	</ul>
+
+	<!-- ============ 6 ============ -->
+	<h2 class="pagebreak">6. Les formulaires de demande (devis &amp; rappel)</h2>
+	<p>La section Contact contient deux formulaires : « Demander un devis » et « Être rappelé(e) ». Ce qu&#8217;il faut savoir :</p>
+	<ul>
+		<li>Chaque envoi part par e-mail à l&#8217;adresse définie dans « Formulaires &amp; listes &#8594; E-mail de contact », puis la page se recharge.</li>
+		<li>Un message de confirmation (« Merci — votre demande a bien été enregistrée. ») s&#8217;affiche en bas de l&#8217;écran.</li>
+		<li>Tout est protégé : un code anti-spam invisible (« honeypot ») et une validation automatique des champs obligatoires (nom + téléphone).</li>
+		<li><strong>Important pour la mise en ligne :</strong> l&#8217;envoi d&#8217;e-mails nécessite la configuration d&#8217;un serveur SMTP (plugin « WP Mail SMTP » + compte Gmail/Office 365…) faite par votre développeur lors du déploiement. Sans cela, les demandes risquent de ne pas partir.</li>
+	</ul>
+
+	<!-- ============ 7 ============ -->
+	<h2 class="pagebreak">7. Ce qu&#8217;il ne faut JAMAIS faire</h2>
+	<div class="warn"><strong>&#9888; 1. Ne modifiez jamais les fichiers du thème.</strong> Le thème (dossier <code>andonick</code>) est versionné et prévu pour être modifié uniquement par des réglages WordPress. Toucher aux fichiers (ou les supprimer) peut casser l&#8217;intégralité du site.</div>
+	<div class="warn"><strong>&#9888; 2. N&#8217;activez jamais un autre thème</strong> (Twenty Twenty-Five, etc.) : le design, le bilinguisme et tous vos réglages disparaîtraient de l&#8217;affichage.</div>
+	<div class="warn"><strong>&#9888; 3. Pas de jaune, pas d&#8217;orange, pas de bleu.</strong> La charte est stricte : violet <code>#461491</code>, violet foncé <code>#2A0A63</code>, blanc et gris. Vos futurs visuels (photos, bannières) doivent respecter cette charte et conserver le logo officiel intact.</div>
+	<div class="warn"><strong>&#9888; 4. N&#8217;installez pas de constructeur de pages</strong> (Elementor, Divi…), ni de plugin de traduction automatique : doublons, lenteurs, risques de conflit. Tout est déjà couvert nativement.</div>
+	<div class="bien"><strong>&#9733; Et si un besoin nécessite du code ou un nouveau champ ?</strong> Contactez votre développeur : il ajoutera une option dans le panneau sans casser l&#8217;existant (c&#8217;est exactement ainsi que le site a été conçu).</div>
+
+	<!-- ============ 8 ============ -->
+	<h2 class="pagebreak">8. Sécurité, sauvegardes et mises à jour</h2>
+	<h3>Sécurité</h3>
+	<ul>
+		<li>Mot de passe <strong>unique et fort</strong>, changé régulièrement.</li>
+		<li>Limitez le nombre de comptes administrateurs ; un compte « éditeur » suffit pour modifier les textes (le contenu), l&#8217;admin reste pour la structure.</li>
+		<li>En production : certificat SSL obligatoire (https).</li>
+	</ul>
+	<h3>Sauvegardes</h3>
+	<ul>
+		<li><strong>Avant toute opération importante</strong> (mise à jour de WordPress, changement d&#8217;hébergeur), faites une sauvegarde complète (fichiers + base de données). Outil recommandé : widget « UpdraftPlus » ou l&#8217;outil de votre hébergeur.</li>
+	</ul>
+	<h3>Mises à jour</h3>
+	<ul>
+		<li>WordPress se met à jour automatiquement en arrière-plan &#8212; c&#8217;est sain, il n&#8217;y a rien à faire.</li>
+		<li>Si un jour le thème ANDONICK propose une mise à jour : <strong>pas de mise à jour destructive</strong> par conception, mais vérifiez le site après (vidage du cache navigateur avec Ctrl+F5).</li>
+	</ul>
+
+	<!-- ============ 9 ============ -->
+	<h2 class="pagebreak">9. Que faire si quelque chose ne va pas (FAQ)</h2>
+	<table>
+		<tr><th>Situation</th><th>Solution</th></tr>
+		<tr><td>Le site n&#8217;affiche plus mes modifications</td><td>Videz le cache du navigateur (<code>Ctrl+F5</code>) — surtout après des changements de langue.</td></tr>
+		<tr><td>J&#8217;ai publié une erreur (texte, numéro)</td><td>Rien n&#8217;est irréversible : retournez dans le Customizer, corrigez, republiez.</td></tr>
+		<tr><td>Le site reste en français quand je clique « EN »</td><td>Vérifiez l&#8217;URL : elle doit contenir <code>?lang=en</code>. Sinon, rechargez (Ctrl+F5).</td></tr>
+		<tr><td>Je veux réafficher une section masquée</td><td>Structure &amp; Ordre : ajoutez la ligne correspondante (hero, groupe, filiales, impact, realisations, references, contact).</td></tr>
+		<tr><td>Un formulaire ne part pas</td><td>Vérifiez le plugin SMTP (voir chapitre 6) et l&#8217;e-mail de contact.</td></tr>
+		<tr><td>Le site affiche une erreur (page blanche, texte d&#8217;erreur)</td><td>Ne paniquez pas : c&#8217;est généralement WordPress qui gère. Contactez le développeur avec le lien exact et le message affiché (ou le fichier <code>debug.log</code>).</td></tr>
+		<tr><td>J&#8217;ai oublié mon mot de passe WordPress</td><td>Écran de connexion &#8594; « Mot de passe oublié ? ». Sinon, votre développeur peut le réinitialiser en 2 minutes.</td></tr>
+	</table>
+
+	<!-- ============ 10 ============ -->
+	<h2 class="pagebreak">10. Annexe : informations techniques</h2>
+	<table>
+		<tr><th>Élément</th><th>Valeur</th></tr>
+		<tr><td>Plateforme</td><td>WordPress 7.0.x &#183; PHP 8+ &#183; MySQL/MariaDB</td></tr>
+		<tr><td>Thème</td><td>ANDONICK Group International &#8212; v3.1.0 (thème classique, Customizer)</td></tr>
+		<tr><td>Langues</td><td>fr (par défaut) &#183; en (<code>?lang=en</code>)</td></tr>
+		<tr><td>Sections</td><td>hero &#183; groupe &#183; filiales &#183; impact &#183; realisations &#183; references &#183; contact</td></tr>
+		<tr><td>Charte</td><td>Violet <code>#461491</code> &#183; Violet foncé <code>#2A0A63</code> &#183; Blanc &#183; Gris <code>#333333</code></td></tr>
+		<tr><td>Formulaires</td><td>Devis + Rappel &#8594; e-mail (nécessite SMTP en production)</td></tr>
+		<tr><td>Le contenu vit</td><td>Dans le Customizer (base de données) ; les valeurs par défaut dans <code>inc/content.php</code> (à ne pas toucher)</td></tr>
+		<tr><td>Dépôt du code</td><td>GitHub &#8212; branche main (historique complet des versions)</td></tr>
+	</table>
+	<div class="etape"><strong>Développeur du site :</strong> <em>&#8212; à compléter : nom, e-mail, téléphone &#8212;</em><br>
+	<em>En cas d&#8217;incident, joindre le message d&#8217;erreur exact, le lien de la page concernée et la date/heure.</em></div>
+
+	<p class="small" style="margin-top:28px; text-align:center;">ANDONICK Group International &#183; Guide d&#8217;administration &#183; Mis à jour le 19 août 2026 &#183; Document destiné au propriétaire du site.</p>
+</div>
+</body>
+</html>
