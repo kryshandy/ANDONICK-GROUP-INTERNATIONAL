@@ -11,6 +11,14 @@
 		<div class="footer-col footer-brand">
 			<img src="<?php echo esc_url( andonick_logo() ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="footer-logo">
 			<p><?php echo esc_html( andonick_t( 'foot_tag' ) ); ?></p>
+			<?php $socials = andonick_socials(); ?>
+			<?php if ( ! empty( $socials ) ) : ?>
+				<ul class="social-links">
+					<?php foreach ( $socials as $social ) : ?>
+						<li><a href="<?php echo esc_url( $social[1] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( $social[0] ); ?>"><?php echo esc_html( $social[0] ); ?></a></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
 		</div>
 
 		<div class="footer-col">
@@ -35,8 +43,18 @@
 		</div>
 	</div>
 	<div class="footer-bottom">
-		<div class="container">
+		<div class="container footer-bottom-inner">
 			<p><?php echo esc_html( andonick_t( 'foot_copy' ) ); ?></p>
+			<?php $legal_ids = andonick_legal_pages(); ?>
+			<?php if ( ! empty( $legal_ids ) ) : ?>
+				<nav class="footer-legal" aria-label="Pages légales">
+					<ul>
+						<?php foreach ( $legal_ids as $legal_id ) : ?>
+							<li><a href="<?php echo esc_url( get_permalink( $legal_id ) ); ?>"><?php echo esc_html( get_the_title( $legal_id ) ); ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</nav>
+			<?php endif; ?>
 		</div>
 	</div>
 </footer>

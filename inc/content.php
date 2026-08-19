@@ -43,15 +43,23 @@ function andonick_content() {
 			'hero_cta2'       => 'Découvrir nos filiales',
 			'hero_cta1_href'  => '#devis',
 			'hero_cta2_href'  => '#filiales',
-			'stat1'           => 'ans d\'expertise en Centrafrique',
-			'stat2'           => 'filiales complémentaires',
-			'stat3'           => 'pays — RCA · Sénégal · France',
-			'stat1_num'       => '15+',
-			'stat2_num'       => '8',
-			'stat3_num'       => '3',
-			'stat1_suffix'    => '+',
 			'hero_cap'        => 'Nos équipes techniques et logistiques, mobilisées à travers l\'Afrique',
 			'contact_mail'    => 'contact@andonickgroup.com',
+			'stats'           => array(
+				'15+|ans d\'expertise en Centrafrique',
+				'8|filiales complémentaires',
+				'3|pays — RCA · Sénégal · France',
+			),
+			'map_embed'       => '',
+			'map_url'         => '',
+			'map_lien'        => 'Voir sur la carte',
+			'map_dir'         => 'ANDONICK Group — Quartier Sica 1, Rue du Languedoc, Bangui, République Centrafricaine',
+			'socials'         => array(),
+			'news_eyebrow'    => 'Actualités',
+			'news_title'      => 'L\'actualité du Groupe',
+			'news_sub'        => '',
+			'news_more'       => 'Lire la suite',
+			'news_count'      => '3',
 			'strip'           => array(
 				'Distributeur officiel Starlink RCA',
 				'Fibre optique & Cybersécurité',
@@ -215,15 +223,23 @@ function andonick_content() {
 			'hero_cta2'     => 'Discover Our Subsidiaries',
 			'hero_cta1_href'  => '#devis',
 			'hero_cta2_href'  => '#filiales',
-			'stat1'         => 'years of expertise in Central Africa',
-			'stat2'         => 'complementary subsidiaries',
-			'stat3'         => 'countries — CAR · Senegal · France',
-			'stat1_num'     => '15+',
-			'stat2_num'     => '8',
-			'stat3_num'     => '3',
-			'stat1_suffix'  => '+',
 			'hero_cap'      => 'Our technical and logistics teams, mobilised across Africa',
 			'contact_mail'  => 'contact@andonickgroup.com',
+			'stats'         => array(
+				'15+|years of expertise in Central Africa',
+				'8|complementary subsidiaries',
+				'3|countries — CAR · Senegal · France',
+			),
+			'map_embed'     => '',
+			'map_url'       => '',
+			'map_lien'      => 'View on the map',
+			'map_dir'       => 'ANDONICK Group — Quartier Sica 1, Rue du Languedoc, Bangui, Central African Republic',
+			'socials'       => array(),
+			'news_eyebrow'  => 'News',
+			'news_title'    => 'Group News',
+			'news_sub'      => '',
+			'news_more'     => 'Read more',
+			'news_count'    => '3',
 			'strip'         => array(
 				'Official Starlink Distributor CAR',
 				'Fibre Optics & Cybersecurity',
@@ -490,6 +506,69 @@ function andonick_strips() {
  */
 function andonick_values() {
 	return andonick_lines( 'values', andonick_content()[ andonick_lang() ]['values'] );
+}
+
+/**
+ * Les statistiques du haut de page (éditables et illimitées).
+ * 1 ligne = « nombre|libellé » (ex. « 15+|ans d'expertise »).
+ * Les lignes vides sont ignorées.
+ */
+function andonick_stats() {
+	$default = implode( "\n", andonick_content()[ andonick_lang() ]['stats'] );
+	$raw     = (string) get_theme_mod( 'andonick_' . andonick_lang() . '_stats', $default );
+	$out     = array();
+	foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
+		$parts  = array_map( 'trim', explode( '|', $line, 2 ) );
+		$num    = isset( $parts[0] ) ? $parts[0] : '';
+		$label  = isset( $parts[1] ) ? $parts[1] : '';
+		if ( '' === $num && '' === $label ) {
+			continue;
+		}
+		$out[] = array( $num, $label );
+	}
+	return $out;
+}
+
+/**
+ * Les réseaux sociaux (éditables, illimités).
+ * 1 ligne = « Nom|URL » (ex. « Facebook|https://facebook.com/… »).
+ * Vide = aucun lien affiché.
+ */
+function andonick_socials() {
+	$raw = get_theme_mod( 'andonick_' . andonick_lang() . '_socials', '' );
+	if ( '' === $raw ) {
+		return array();
+	}
+	$out = array();
+	foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
+		$parts = array_map( 'trim', explode( '|', $line, 2 ) );
+		if ( isset( $parts[1] ) && '' !== $parts[0] ) {
+			$out[] = array( $parts[0], $parts[1] );
+		}
+	}
+	return $out;
+}
+
+/**
+ * Les pages légales (liens du pied de page) — choisies dans les pages WordPress.
+ * Rendu uniquement si des pages existent.
+ */
+function andonick_legal_pages() {
+	$ids = array();
+	foreach ( array( '1', '2', '3' ) as $n ) {
+		$id = absint( get_theme_mod( 'andonick_legal_page_' . $n, 0 ) );
+		if ( $id > 0 && 'publish' === get_post_status( $id ) ) {
+			$ids[] = $id;
+		}
+	}
+	return $ids;
+}
+
+/**
+ * Active ou non la section Actualités (1 = oui, 0 = non).
+ */
+function andonick_news_enabled() {
+	return '0' === get_theme_mod( 'andonick_news_enabled', '1' ) ? false : true;
 }
 
 /**

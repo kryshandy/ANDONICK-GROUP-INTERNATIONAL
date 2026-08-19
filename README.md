@@ -11,7 +11,7 @@ Site vitrine one-page bilingue (FR/EN) de **ANDONICK Group International** (Bang
 - **Environnement local** : XAMPP (Apache + MySQL + PHP 8.x) — WordPress 7.0
 - **Thème** : `andonick` (classique, sans builder, zéro plugin additionnel)
 - **Multilingue** : FR (défaut) / EN via `?lang=en` — service de langue complet (locale WP, `<html lang>`, titre d'onglet, hreflang, canonical)
-- **Contenu** : 8 métiers (extensible à 12 dès le Customizer), témoignages (6 places), références (illimité), partenaires (illimité), formulaires devis/rappel, galerie réalisations (12 places)
+- **Contenu** : 8 métiers (extensible à 12 dès le Customizer), témoignages (6 places), références (illimité), partenaires (illimité), statistiques du haut de page (illimitées), actualités (articles WordPress), réseaux sociaux (illimités), carte Google Maps, formulaires devis/rappel, galerie réalisations (12 places)
 
 ## Structure du thème
 
@@ -22,11 +22,12 @@ wp-content/themes/andonick/
 ├── header.php             → topbar, navigation, bouton FR/EN
 ├── footer.php             → footer, WhatsApp flottant, retour en haut
 ├── front-page.php         → orchestre les sections dans l'ordre du Customizer
-├── index.php              → repli (redirige vers l'accueil)
+├── index.php              → pages & articles (mentions légales, blog) + 404
 ├── inc/
 │   ├── content.php        → contenu bilingue par défaut + helpers éditables
-│   ├── sections.php       → les 7 sections de la page d'accueil
-│   └── settings.php       → enregistrement de tout le Customizer
+│   ├── sections.php       → les 8 sections de la page d'accueil
+│   ├── settings.php       → enregistrement de tout le Customizer (contenu)
+│   └── appearance.php     → panneau « Apparence & Styles » + réinitialisation
 ├── assets/
 │   ├── img/               → logo officiel HD, favicon, photos du site officiel
 │   └── js/main.js         → menu mobile, scrollspy, reveal, compteurs, AJAX
@@ -48,15 +49,17 @@ wp-content/themes/andonick/
 Tout le site est éditable depuis l'admin WordPress, sans toucher au code :
 
 - **Panneau « ANDONICK — Contenu du site »** :
-  - **Structure & Ordre** : l'ordre d'affichage des 7 sections (une ligne = une section, retirez la ligne pour masquer)
-  - **Textes principaux — FR / EN** : tous les textes de la page dans chaque langue
+  - **Structure & Ordre** : l'ordre d'affichage des 8 sections (une ligne = une section, retirez la ligne pour masquer)
+  - **Textes principaux — FR / EN** : tous les textes de la page dans chaque langue (dont carte : lien d'intégration + bouton « Voir sur la carte » ; actualités : titres, sous-titre, nombre d'articles)
   - **Les métiers — FR / EN** : 12 emplacements (8 remplis par défaut, **4 libres pour ajouter de nouveaux métiers plus tard**)
   - **Témoignages & Références — FR / EN** : 6 emplacements de témoignages (3 remplis), références illimitées (1 ligne = `Catégorie | Nom | Fonction | Téléphone`), en-têtes du tableau
-  - **Formulaires & listes — FR / EN** : impacts (8 places, 4 libres), partenaires, liste déroulante des services, créneaux de rappel, statistiques (chiffres + libellés)
+  - **Formulaires & listes — FR / EN** : impacts (8 places, 4 libres), partenaires, liste déroulante des services, créneaux de rappel, **statistiques illimitées** (1 ligne = `Nombre|Libellé`, ex. `15+|ans d'expertise`), **réseaux sociaux illimités** (1 ligne = `Nom|URL`)
+  - **Pages légales & Actualités** : 3 liens de pied de page choisis parmi vos pages WordPress (Mentions légales, Politique de confidentialité…), interrupteur d'affichage de la section Actualités (articles du blog)
   - **Images** : photo du hero, photos des sections, **12 places de galerie** (6 remplies ; place vide = photo non affichée)
 - **Identité du site** (Réglages de base) : logo, titre, icône, description.
 - **Liens des menus & boutons**, grand titre, bandes du haut de page, valeurs, e-mail de contact : rien n'est figé, tout texte et tout lien peut être changé (2 langues).
-- **Apparence & Styles** (Personnalizer > ANDONICK — Apparence & Styles) : couleurs, polices, alignements, espacements, positions (hero, galerie, menu fixe) et arrière-plans — sans code, valeurs par défaut = design officiel.
+- **Apparence & Styles** (Personnaliser > ANDONICK — Apparence & Styles) : couleurs, polices, alignements, espacements, positions (hero, galerie, menu fixe), **hauteur du menu, taille des boutons**, **animations au défilement et compteurs (oui/non)**, **bouton « Réinitialiser »** — sans code, valeurs par défaut = design officiel.
+- **Règle d'or** : un champ laissé vide ne s'affiche jamais (carte, réseaux sociaux, statistiques, liens légaux) — le site garde alors son apparence d'origine.
 - Chaque modification est **prévisualisée en direct** ; « Publier » applique au site.
 - Les fichiers ne sont jamais à modifier : tout part de `inc/content.php` (valeurs par défaut, source officielle) et du Customizer (ce que le client voit et change).
 
@@ -81,9 +84,12 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 - [ ] CDN Cloudflare (perfs + protection)
 - [ ] Sauvegardes régulières (UpdraftPlus)
 - [ ] Remplacer les URL locales (`http://localhost/wordpress`) par le domaine
+- [ ] Créer ses pages légales (Pages → Ajouter) et relier les 3 liens du pied de page (Customizer → Pages légales)
+- [ ] Publier des articles (Articles → Ajouter) pour alimenter la section Actualités (invisible tant qu'aucun article n'existe)
 
 ## Versions
 
+- **3.3.0** — Dernière étape « 100 % sans code » : statistiques illimitées (1 ligne = `Nombre|Libellé`, vide = masquée), réseaux sociaux illimités (1 ligne = `Nom|URL`, vide = aucun lien), carte Google Maps dans le Contact (lien d'intégration + bouton + adresse, vide = masquée), section Actualités alimentée par les articles WordPress (interrupteur on/off + nombre d'articles), pages légales dans le pied de page (3 liens choisis parmi vos pages), la redirection « tout vers l'accueil » remplacée par de vraies pages/articles — plus hauteur du menu, taille des boutons, bouton « Réinitialiser » et interrupteurs d'animations (défilement + compteurs) ; règle d'or : tout champ vide reste invisible (9/9 vérifications ok)
 - **3.2.0** — Nouveau panneau « ANDONICK — Apparence & Styles » : couleurs (8 réglages par roue chromatique), polices & taille de texte, alignement du haut de page, largeur du contenu, espacements des sections, hauteur du hero, colonnes de la galerie, coins arrondis, menu fixe oui/non, visibilité des photos, images de fond facultatives par section — le tout injecté en variables CSS (15/15 vérifications ok) + guide PDF du propriétaire enrichi (16 pages, 20 scénarios)
 - **3.1.0** — Audit « zéro élément figé » : plus rien d'en dur dans les gabarits. Grand titre du hero, suffixe des statistiques, liens des boutons & du menu éditables ; e-mail de contact (affiché + destinataire) ; listes ajoutables/retirables partout (bandes du haut de page, valeurs du Groupe) ; logo/alt/aria pilotés par l'identité du site ; pilule de langue localisée ; favicon déléguée à « Icône du site » si définie
 - **3.0.1** — Correctif bouton langue : les liens FR/EN ne contenaient plus le double chemin d'installation (sous-dossier `/wordpress/`) — la langue et la pilule actives basculent correctement

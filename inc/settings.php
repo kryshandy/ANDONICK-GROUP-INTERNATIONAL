@@ -68,7 +68,7 @@ function andonick_cz_image( $wp_customize, $key, $default, $label, $section ) {
  * uniques, sans doublon.
  */
 function andonick_sanitize_section_order( $input ) {
-	$allowed = array( 'hero', 'groupe', 'filiales', 'impact', 'realisations', 'references', 'contact' );
+	$allowed = array( 'hero', 'groupe', 'filiales', 'impact', 'actualites', 'realisations', 'references', 'contact' );
 	$order   = array();
 	foreach ( explode( "\n", $input ) as $line ) {
 		$item = sanitize_key( trim( $line ) );
@@ -99,16 +99,16 @@ function andonick_customize_register( $wp_customize ) {
 		'panel'       => 'andonick_panel',
 	) );
 	$wp_customize->add_setting( 'andonick_section_order', array(
-		'default'           => "hero\ngroupe\nfiliales\nimpact\nrealisations\nreferences\ncontact",
+		'default'           => "hero\ngroupe\nfiliales\nimpact\nactualites\nrealisations\nreferences\ncontact",
 		'sanitize_callback' => 'andonick_sanitize_section_order',
 		'type'              => 'theme_mod',
 	) );
 	$wp_customize->add_control( 'andonick_section_order', array(
 		'label'       => 'Ordre des sections',
-		'description' => "Noms possibles : hero, groupe, filiales, impact, realisations, references, contact",
+		'description' => 'Noms possibles : hero, groupe, filiales, impact, actualites, realisations, references, contact (la section actualites ne s\'affiche que si des articles existent)',
 		'section'     => 'andonick_structure',
 		'type'        => 'textarea',
-		'input_attrs' => array( 'rows' => 8 ),
+		'input_attrs' => array( 'rows' => 9 ),
 	) );
 
 	/* ---- Section images (commune) ---- */
@@ -163,7 +163,6 @@ function andonick_customize_register( $wp_customize ) {
 			'nav_refs_href'     => 'Lien du menu « Références » (ex. #references)',
 			'nav_contact_href'  => 'Lien du menu « Contact » (ex. #contact)',
 			'nav_devis_href'    => 'Lien du bouton « Demander un devis » (ex. #devis)',
-			'stat1_suffix'      => 'Suffixe de la 1ère statistique (ex. +)',
 			'contact_mail'      => 'E-mail de contact (affiché + destinataire des demandes)',
 		);
 		foreach ( $content[ $lang ] as $key => $value ) {
@@ -188,6 +187,9 @@ function andonick_customize_register( $wp_customize ) {
 		/* Listes : valeurs du Groupe et bandes du haut de page (1 ligne = 1 élément). */
 		andonick_cz_textarea( $wp_customize, $lang, 'values', implode( "\n", $content[ $lang ]['values'] ), $sec_texts, 'Le Groupe — valeurs (1 par ligne)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'strip', implode( "\n", $content[ $lang ]['strip'] ), $sec_texts, 'Bandes du haut de page (1 par ligne)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'stats', implode( "\n", $content[ $lang ]['stats'] ), $sec_texts, 'Statistiques du haut de page (1 par ligne : Nombre|Libellé — vide = non affichée)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'socials', implode( "\n", $content[ $lang ]['socials'] ), $sec_texts, 'Réseaux sociaux (1 par ligne : Nom|URL — vide = aucun lien affiché)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'map_dir', $content[ $lang ]['map_dir'], $sec_texts, 'Adresse affichée sur la carte (bloc Contact)' );
 
 		/* Les métiers — 12 emplacements (8 remplis par défaut, 4 vides pour la suite) */
 		for ( $i = 0; $i < 12; $i++ ) {
@@ -223,9 +225,59 @@ function andonick_customize_register( $wp_customize ) {
 		andonick_cz_textarea( $wp_customize, $lang, 'partners', implode( "\n", $content[ $lang ]['partners'] ), $sec_struct, 'Partenaires institutionnels' );
 		andonick_cz_textarea( $wp_customize, $lang, 'services', implode( "\n", $content[ $lang ]['services'] ), $sec_struct, 'Liste déroulante « Filiale / service concerné »' );
 		andonick_cz_textarea( $wp_customize, $lang, 'slots', implode( "\n", $content[ $lang ]['slots'] ), $sec_struct, 'Créneaux de rappel' );
+	}
 
-		/* Les statistiques (numéros) sont enregistrées comme textes simples
-		   via la boucle des scalaires (stat1_num, stat2_num, stat3_num). */
+	/* ---- Pages légales du pied de page (communes) ---- */
+	$wp_customize->add_section( 'andonick_legal', array(
+		'title' => 'Pages légales & Actualités',
+		'panel' => 'andonick_panel',
+	) );
+	$wp_customize->add_setting( 'andonick_news_enabled', array(
+		'default'           => '1',
+		'sanitize_callback' => function ( $v ) {
+			return andonick_ap_sanitize_choice( $v, array( '1', '0' ), '1' );
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_news_enabled', array(
+		'label'       => 'Afficher la section « Actualités » (articles WordPress)',
+		'description' => 'La section n\'apparaît que si la case est activée ET si au moins un article est publié. Créez vos articles dans « Articles → Ajouter » (sans code, éditeur visuel).',
+		'section'     => 'andonick_legal',
+		'type'        => 'select',
+		'choices'     => array( '1' => 'Activée', '0' => 'Désactivée' ),
+	) ) ;
+	for ( $n = 1; $n <= 3; $n++ ) {
+		$wp_customize->add_setting( 'andonick_legal_page_' . $n, array(
+			'default'           => 0,
+			'sanitize_callback' => 'absint',
+			'type'              => 'theme_mod',
+		) );
+		$wp_customize->add_control( 'andonick_legal_page_' . $n, array(
+			'label'       => 'Lien de pied de page n°' . $n . ' (page WordPress)',
+			'description' => 'Choisissez « Aucune » pour ne pas afficher ce lien. Créez vos pages dans « Pages → Ajouter » (ex. Mentions légales, Politique de confidentialité).',
+			'section'     => 'andonick_legal',
+			'type'        => 'dropdown-pages',
+		) );
+	}
+
+	/* Libellés lisibles supplémentaires (après boucle, toutes langues). */
+	$nice_labels = array(
+		'map_embed'     => 'Carte (lien d\'intégration Google Maps) — laisser vide pour masquer la carte',
+		'map_url'       => 'Lien externe de la carte (optionnel)',
+		'map_lien'      => 'Texte du bouton « Voir sur la carte »',
+		'news_eyebrow'  => 'Actualités — petit titre',
+		'news_title'    => 'Actualités — grand titre',
+		'news_sub'      => 'Actualités — sous-titre (facultatif)',
+		'news_more'     => 'Actualités — texte du lien « Lire la suite »',
+		'news_count'    => 'Actualités — nombre d\'articles affichés',
+	);
+	foreach ( array( 'fr', 'en' ) as $lang ) {
+		foreach ( $nice_labels as $key => $label ) {
+			$control = $wp_customize->get_control( "andonick_{$lang}_{$key}" );
+			if ( $control ) {
+				$control->label = $label;
+			}
+		}
 	}
 }
 add_action( 'customize_register', 'andonick_customize_register' );

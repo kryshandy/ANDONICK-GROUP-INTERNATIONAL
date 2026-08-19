@@ -93,6 +93,9 @@ function andonick_appearance_css() {
 	$hero_h        = andonick_ap_sanitize_int( andonick_ap( 'hero_height', '90' ), 80, 100, 90 );
 	$hero_align    = andonick_ap_sanitize_choice( andonick_ap( 'hero_align', 'center' ), array( 'center', 'left', 'right' ), 'center' );
 	$header_fixed  = andonick_ap_sanitize_choice( andonick_ap( 'header_fixed', '1' ), array( '1', '0' ), '1' );
+	$header_h      = andonick_ap_sanitize_int( andonick_ap( 'header_height', '76' ), 60, 96, 76 );
+	$btn_size      = andonick_ap_sanitize_choice( andonick_ap( 'btn_size', 'medium' ), array( 'small', 'medium', 'large' ), 'medium' );
+	$btn_pad       = array( 'small' => '8px 18px', 'medium' => '12px 26px', 'large' => '16px 34px' );
 	$hero_op       = andonick_ap_sanitize_opacity( andonick_ap( 'hero_opacity', '0.24' ) );
 	$impact_op     = andonick_ap_sanitize_opacity( andonick_ap( 'impact_opacity', '0.16' ) );
 	$hero_pad      = array( '80' => '72px', '90' => '92px', '100' => '120px' );
@@ -129,6 +132,12 @@ function andonick_appearance_css() {
 	$css .= '.impact-bg{opacity:' . $impact_op . ';}';
 	if ( '0' === $header_fixed ) {
 		$css .= '.site-header{position:static;}';
+	}
+	$css .= ':root{--header-h:' . $header_h . 'px;}';
+	$css .= '@media(max-width:768px){:root{--header-h:66px;}}';
+	$css .= '.btn,.btn-outline,.btn-outline-light,.btn-whatsapp{padding:' . $btn_pad[ $btn_size ] . ';}';
+	if ( '0' === andonick_ap( 'reveal', '1' ) ) {
+		$css .= '.reveal{opacity:1 !important;transform:none !important;}';
 	}
 
 	// Images de fond facultatives des sections (fine surimpression blanche).
@@ -342,6 +351,94 @@ function andonick_customize_appearance( $wp_customize ) {
 		'type'    => 'select',
 		'choices' => array( '1' => 'Oui — menu fixe (par défaut)', '0' => 'Non — menu qui défile avec la page' ),
 	) );
+	$wp_customize->add_setting( 'andonick_ap_header_height', array(
+		'default'           => '76',
+		'sanitize_callback' => function ( $v ) {
+			return (string) andonick_ap_sanitize_int( $v, 60, 96, 76 );
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_ap_header_height', array(
+		'label'   => 'Hauteur du menu (barre du haut)',
+		'section' => 'andonick_ap_layout',
+		'type'    => 'select',
+		'choices' => array( '60' => '60 px (compact)', '76' => '76 px (par défaut)', '88' => '88 px (haut)', '96' => '96 px (très haut)' ),
+	) );
+	$wp_customize->add_setting( 'andonick_ap_btn_size', array(
+		'default'           => 'medium',
+		'sanitize_callback' => function ( $v ) {
+			return andonick_ap_sanitize_choice( $v, array( 'small', 'medium', 'large' ), 'medium' );
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_ap_btn_size', array(
+		'label'   => 'Taille des boutons',
+		'section' => 'andonick_ap_layout',
+		'type'    => 'select',
+		'choices' => array( 'small' => 'Petits', 'medium' => 'Moyens (par défaut)', 'large' => 'Grands' ),
+	) );
+
+	/* ---------------- Comportement & animations ---------------- */
+	$wp_customize->add_section( 'andonick_ap_motion', array(
+		'title' => 'Animations & transitions',
+		'panel' => 'andonick_appearance',
+	) );
+	$wp_customize->add_setting( 'andonick_ap_reveal', array(
+		'default'           => '1',
+		'sanitize_callback' => function ( $v ) {
+			return andonick_ap_sanitize_choice( $v, array( '1', '0' ), '1' );
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_ap_reveal', array(
+		'label'   => 'Apparition douce des blocs au défilement',
+		'section' => 'andonick_ap_motion',
+		'type'    => 'select',
+		'choices' => array( '1' => 'Activée (par défaut)', '0' => 'Désactivée — tout est visible immédiatement' ),
+	) );
+	$wp_customize->add_setting( 'andonick_ap_counter', array(
+		'default'           => '1',
+		'sanitize_callback' => function ( $v ) {
+			return andonick_ap_sanitize_choice( $v, array( '1', '0' ), '1' );
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_ap_counter', array(
+		'label'   => 'Animation de comptage des statistiques',
+		'section' => 'andonick_ap_motion',
+		'type'    => 'select',
+		'choices' => array( '1' => 'Activée (par défaut)', '0' => 'Désactivée — les chiffres s\'affichent tels quels' ),
+	) );
+
+	/* ---------------- Réinitialisation ---------------- */
+	$wp_customize->add_section( 'andonick_ap_reset', array(
+		'title' => 'Réinitialisation',
+		'panel' => 'andonick_appearance',
+	) );
+	if ( class_exists( 'WP_Customize_Control' ) && ! class_exists( 'Andonick_Reset_Control' ) ) {
+		class Andonick_Reset_Control extends WP_Customize_Control {
+			public $type = 'andonick_reset';
+			public function render_content() {
+				?>
+				<label>
+					<span class="customize-control-title">Réinitialiser tous les réglages ANDONICK</span>
+					<span class="description customize-control-description">Restaure la charte, les textes, les listes et les images d'origine — sans toucher aux articles et pages WordPress.</span>
+				</label>
+				<button type="button" class="button button-secondary" id="andonick-reset-btn" style="margin-top:8px;">Réinitialiser maintenant</button>
+				<span id="andonick-reset-msg" class="description" style="display:block;margin-top:8px;"></span>
+				<?php
+			}
+		}
+	}
+	$wp_customize->add_setting( 'andonick_ap_reset_trigger', array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( new Andonick_Reset_Control( $wp_customize, 'andonick_ap_reset_trigger', array(
+		'section'     => 'andonick_ap_reset',
+		'settings'    => 'andonick_ap_reset_trigger',
+	) ) );
 
 	/* ---------------- Arrière-plans ---------------- */
 	$wp_customize->add_section( 'andonick_ap_bg', array(
@@ -391,3 +488,41 @@ function andonick_customize_appearance( $wp_customize ) {
 	}
 }
 add_action( 'customize_register', 'andonick_customize_appearance' );
+
+/**
+ * JavaScript du bouton « Réinitialiser » (panneau Apparence & Styles).
+ * Remet chaque réglage ANDONICK à sa valeur par défaut enregistrée.
+ */
+function andonick_reset_control_js() {
+	global $wp_customize;
+	if ( ! $wp_customize ) {
+		return;
+	}
+	$defaults = array();
+	foreach ( $wp_customize->settings() as $id => $setting ) {
+		if ( 0 === strpos( $id, 'andonick_' ) ) {
+			$defaults[ $id ] = $setting->default;
+		}
+	}
+	wp_register_script( 'andonick-reset', '', array( 'customize-controls' ), ANDONICK_VERSION, true );
+	wp_localize_script( 'andonick-reset', 'andonickDefaults', $defaults );
+	wp_enqueue_script( 'andonick-reset' );
+	wp_add_inline_script( 'andonick-reset', '
+		document.addEventListener("click", function (e) {
+			if (e.target && e.target.id === "andonick-reset-btn") {
+				var msg = document.getElementById("andonick-reset-msg");
+				var n = 0;
+				Object.keys(andonickDefaults).forEach(function (id) {
+					wp.customize(id, function (s) {
+						var d = andonickDefaults[id];
+						if (String(s.get()) !== String(d)) { s.set(d); n++; }
+					});
+				});
+				setTimeout(function () {
+					msg.textContent = n + " r\u00e9glage(s) restaur\u00e9(s). Cliquez maintenant sur \u00ab Publier \u00bb pour appliquer.";
+				}, 400);
+			}
+		});
+	' );
+}
+add_action( 'customize_controls_enqueue_scripts', 'andonick_reset_control_js' );

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Ordre des sections (éditable) : liste blanche, un nom par ligne.
  */
 function andonick_section_order() {
-	$default = array( 'hero', 'groupe', 'filiales', 'impact', 'realisations', 'references', 'contact' );
+	$default = array( 'hero', 'groupe', 'filiales', 'impact', 'actualites', 'realisations', 'references', 'contact' );
 	$raw     = get_theme_mod( 'andonick_section_order', '' );
 	if ( '' !== $raw ) {
 		$order = array();
@@ -50,11 +50,31 @@ function andonick_section_hero() {
 				<a href="<?php echo esc_url( andonick_t( 'hero_cta2_href' ) ); ?>" class="btn btn-outline-light"><?php echo esc_html( andonick_t( 'hero_cta2' ) ); ?></a>
 			</div>
 
-			<div class="hero-stats">
-				<div class="stat reveal"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat1_num' ) ); ?>" data-suffix="<?php echo esc_attr( andonick_t( 'stat1_suffix' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat1_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat1' ) ); ?></span></div>
-				<div class="stat reveal reveal-delay-1"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat2_num' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat2_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat2' ) ); ?></span></div>
-				<div class="stat reveal reveal-delay-2"><b><span data-count="<?php echo esc_attr( (int) andonick_stat( 'stat3_num' ) ); ?>"><?php echo esc_html( andonick_stat( 'stat3_num' ) ); ?></span></b><span><?php echo esc_html( andonick_t( 'stat3' ) ); ?></span></div>
-			</div>
+			<?php $stats = andonick_stats(); ?>
+			<?php if ( ! empty( $stats ) ) : ?>
+				<div class="hero-stats">
+					<?php $si = 0; ?>
+					<?php foreach ( $stats as $stat ) : ?>
+						<?php
+						$num    = isset( $stat[0] ) ? trim( (string) $stat[0] ) : '';
+						$label  = isset( $stat[1] ) ? trim( (string) $stat[1] ) : '';
+						$count  = preg_replace( '/[^0-9]/', '', $num );
+						$suffix = ( false !== strpos( $num, '+' ) ) ? '+' : '';
+						if ( '' === $num && '' === $label ) {
+							continue;
+						}
+						$anim   = ( '1' === andonick_ap( 'counter', '1' ) );
+						$reveal = ( '1' === andonick_ap( 'reveal', '1' ) );
+						$classes = $reveal ? 'stat reveal reveal-delay-' . ( $si % 3 ) : 'stat';
+						?>
+						<div class="<?php echo esc_attr( $classes ); ?>">
+							<b><?php if ( $anim ) : ?><span data-count="<?php echo esc_attr( $count ); ?>" data-suffix="<?php echo esc_attr( $suffix ); ?>"><?php echo esc_html( $num ); ?></span><?php else : ?><span><?php echo esc_html( $num ); ?></span><?php endif; ?></b>
+							<span><?php echo esc_html( $label ); ?></span>
+						</div>
+						<?php $si++; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 		</div>
 
 		<div class="hero-strip">
@@ -188,6 +208,55 @@ function andonick_section_realisations() {
 }
 
 /**
+ * Section ACTUALITÉS — dernière doublée des articles WordPress.
+ * Ne s'affiche que si activée ET si au moins un article existe.
+ */
+function andonick_section_actualites() {
+	if ( ! andonick_news_enabled() ) {
+		return;
+	}
+	$count = absint( andonick_t( 'news_count' ) );
+	if ( $count < 1 ) {
+		$count = 3;
+	}
+	$q = new WP_Query( array(
+		'post_type'           => 'post',
+		'posts_per_page'      => min( $count, 9 ),
+		'no_found_rows'       => true,
+		'ignore_sticky_posts' => true,
+	) );
+	if ( empty( $q->posts ) ) {
+		return;
+	}
+	?>
+	<section class="section section-news" id="actualites">
+		<div class="container">
+			<div class="section-head reveal">
+				<span class="eyebrow"><?php echo esc_html( andonick_t( 'news_eyebrow' ) ); ?></span>
+				<h2><?php echo esc_html( andonick_t( 'news_title' ) ); ?></h2>
+				<?php if ( '' !== trim( andonick_t( 'news_sub' ) ) ) : ?>
+					<p><?php echo esc_html( andonick_t( 'news_sub' ) ); ?></p>
+				<?php endif; ?>
+			</div>
+			<div class="news-grid">
+				<?php foreach ( $q->posts as $news ) : ?>
+					<article class="news-card reveal">
+						<?php if ( has_post_thumbnail( $news ) ) : ?>
+							<a class="news-thumb" href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo get_the_post_thumbnail( $news, 'medium_large' ); ?></a>
+						<?php endif; ?>
+						<time datetime="<?php echo esc_attr( get_the_date( 'c', $news ) ); ?>"><?php echo esc_html( get_the_date( '', $news ) ); ?></time>
+						<h3><a href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo esc_html( get_the_title( $news ) ); ?></a></h3>
+						<p><?php echo esc_html( wp_trim_words( get_the_excerpt( $news ), 24, '…' ) ); ?></p>
+						<a class="news-more" href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo esc_html( andonick_t( 'news_more' ) ); ?></a>
+					</article>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+	<?php
+}
+
+/**
  * Section RÉFÉRENCES — témoignages, tableau des références, partenaires.
  */
 function andonick_section_references() {
@@ -289,6 +358,23 @@ function andonick_section_contact() {
 					<a class="btn btn-whatsapp" href="https://wa.me/<?php echo esc_attr( andonick_wa( 'phone_fr' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_fr' ) ); ?></a>
 					<a class="btn btn-outline" href="tel:<?php echo esc_attr( andonick_tel( 'phone_rca1' ) ); ?>"><?php echo esc_html( andonick_t( 'call_direct' ) ); ?></a>
 				</div>
+
+				<?php $map_embed = trim( (string) andonick_t( 'map_embed' ) ); ?>
+				<?php $map_url   = trim( (string) andonick_t( 'map_url' ) ); ?>
+				<?php $map_dir   = trim( (string) andonick_t( 'map_dir' ) ); ?>
+				<?php if ( '' !== $map_embed || '' !== $map_url ) : ?>
+					<div class="contact-map">
+						<?php if ( '' !== $map_dir ) : ?>
+							<p class="map-dir"><?php echo esc_html( $map_dir ); ?></p>
+						<?php endif; ?>
+						<?php if ( '' !== $map_embed ) : ?>
+							<iframe src="<?php echo esc_url( $map_embed ); ?>" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+						<?php endif; ?>
+						<?php if ( '' !== $map_url ) : ?>
+							<a class="btn btn-outline" href="<?php echo esc_url( $map_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'map_lien' ) ); ?></a>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
 			</div>
 
 			<div class="contact-form-wrap reveal reveal-delay-2" id="devis">
