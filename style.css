@@ -3,7 +3,7 @@ Theme Name: ANDONICK Group International
 Theme URI: https://andonickgroup.com
 Author: Webmaster ANDONICK
 Description: Thème one-page bilingue (FR/EN) pour ANDONICK Group International. Charte graphique officielle : violet #461491, violet foncé #2A0A63, blanc #FFFFFF, gris #333333. Aucune autre couleur n'est autorisée.
-Version: 3.5.5
+Version: 3.5.6
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -241,19 +241,6 @@ button {
 
 .btn:active {
 	transform: translateY(-1px);
-}
-
-/* Bouton WhatsApp de l'en-tête (comme le site officiel) */
-.btn-wa {
-	background: #25d366;
-	border-color: #25d366;
-	box-shadow: 0 10px 24px -10px rgba(37, 211, 102, 0.55);
-}
-
-.btn-wa:hover {
-	background: #1ebe5a;
-	border-color: #1ebe5a;
-	box-shadow: 0 14px 30px -10px rgba(37, 211, 102, 0.6);
 }
 
 .btn-outline {

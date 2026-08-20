@@ -41,7 +41,6 @@
 				<a href="<?php echo esc_url( $nav_link[1] ); ?>"><?php echo esc_html( $nav_link[0] ); ?></a>
 			<?php endforeach; ?>
 			<a href="<?php echo esc_url( andonick_t( 'nav_devis_href' ) ); ?>" class="btn btn-sm btn-white"><?php echo esc_html( andonick_t( 'nav_devis' ) ); ?></a>
-			<a href="https://wa.me/<?php echo esc_attr( andonick_wa( 'phone_fr' ) ); ?>" class="btn btn-sm btn-wa" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'wa_btn' ) ); ?></a>
 		</nav>
 
 		<div class="lang-switch" role="group" aria-label="<?php echo esc_attr( andonick_t( 'lang_fr' ) . ' / ' . andonick_t( 'lang_en' ) ); ?>">

@@ -91,7 +91,8 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 
 ## Versions
 
-- **3.5.5** — Bouton **« 💬 WhatsApp » ajouté dans l&#8217;en-tête** (vert, à côté de « Demander un devis »), comme le site officiel : il ouvre la conversation sur le numéro France (+33 6 05 56 43 73), libellé modifiable dans Textes principaux — hit-test vérifié dans un vrai navigateur (le clic atteint le lien, FR + EN)
+- **3.5.6** — Retour aux **deux boutons WhatsApp initiaux** de la section Contact (RCA + France) : le bouton vert d&#8217;en-tête (ajouté en 3.5.5, puis retiré à la demande) est démonté. Preuve navigateur : clic → `defaultPrevented=false` (aucune interception), `target="_blank"` → nouvel onglet `api.whatsapp.com/send/?phone=…` qui fonctionne sur PC et mobile
+- **3.5.5** — (ajout puis retiré en 3.5.6) Bouton « 💬 WhatsApp » vert dans l&#8217;en-tête
 - **3.5.4** — Ancres internes corrigées : sur une page d&#8217;article de blog (où les sections n&#8217;existent pas), cliquer « Demander un devis » / menu « Filiales »… **redirige vers l&#8217;accueil avec l&#8217;ancre** (la langue est conservée), comme le site officiel — vérifié dans un vrai navigateur (accueil : défiler sur place ; article : redirection)
 - **3.5.3** — Durcissement : **tout champ texte vidé revient automatiquement à la valeur officielle** (ex. si vous videz un numéro de téléphone, le site réaffiche celui d'origine au lieu de casser les liens WhatsApp/tel:) — ceinture + bretelles, site vérifié en base
 - **3.5.2** — Bandeau supérieur : les liens WhatsApp par défaut pointent maintenant vers **leurs bon numéros** (RCA 75 00 06 49 / France +33 6 05 56 43 73, comme le site officiel) — tout reste modifiable via « Bandeau du haut — liens »
