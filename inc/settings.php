@@ -206,6 +206,7 @@ function andonick_customize_register( $wp_customize ) {
 			'phone_fr'          => 'Numéro France (utilisé par les boutons WhatsApp et les liens d\'appel)',
 			'wa_rca'            => 'Bouton WhatsApp RCA — libellé',
 			'wa_fr'             => 'Bouton WhatsApp France — libellé',
+			'wa_btn'            => 'Bouton « WhatsApp » de l\'en-tête — libellé (lié au numéro France)',
 			'wa_msg'            => 'Message automatique du bouton WhatsApp flottant',
 			'call_direct'       => 'Bouton « Appeler directement » — libellé',
 			'lbl_rca'           => 'Étiquette « (RCA) » après un numéro',
