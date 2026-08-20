@@ -892,6 +892,9 @@ function andonick_testis_raw( $lang ) {
 	$result = array();
 	for ( $i = 0; $i < 6; $i++ ) {
 		$t = isset( $defs[ $i ] ) ? $defs[ $i ] : array( '', '', '' );
+		if ( '' === trim( $t[0] ) ) {
+			continue;
+		}
 		$result[] = array(
 			get_theme_mod( "andonick_{$lang}_testis_{$i}_quote", $t[0] ),
 			get_theme_mod( "andonick_{$lang}_testis_{$i}_name", $t[1] ),
@@ -937,6 +940,9 @@ function andonick_impacts_raw( $lang ) {
 	$result = array();
 	for ( $i = 0; $i < 8; $i++ ) {
 		$imp = isset( $defs[ $i ] ) ? $defs[ $i ] : array( '', '' );
+		if ( '' === trim( $imp[0] ) ) {
+			continue;
+		}
 		$result[] = array(
 			get_theme_mod( "andonick_{$lang}_impacts_{$i}_title", $imp[0] ),
 			get_theme_mod( "andonick_{$lang}_impacts_{$i}_desc", $imp[1] ),

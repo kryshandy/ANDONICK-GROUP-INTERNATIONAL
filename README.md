@@ -91,6 +91,7 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 
 ## Versions
 
+- **3.5.7** — **Cartes de témoignages vides supprimées** : si un emplacement témoignage (ou impact) n&#8217;a pas de citation, la carte ne s&#8217;affiche plus ; l&#8217;en-tête « Témoignages » disparaît quand la liste est vide. Objectif : ne montrer que ce qui est rempli dans Personnaliser (site 100 % personnalisable sans code)
 - **3.5.6** — Retour aux **deux boutons WhatsApp initiaux** de la section Contact (RCA + France) : le bouton vert d&#8217;en-tête (ajouté en 3.5.5, puis retiré à la demande) est démonté. Preuve navigateur : clic → `defaultPrevented=false` (aucune interception), `target="_blank"` → nouvel onglet `api.whatsapp.com/send/?phone=…` qui fonctionne sur PC et mobile
 - **3.5.5** — (ajout puis retiré en 3.5.6) Bouton « 💬 WhatsApp » vert dans l&#8217;en-tête
 - **3.5.4** — Ancres internes corrigées : sur une page d&#8217;article de blog (où les sections n&#8217;existent pas), cliquer « Demander un devis » / menu « Filiales »… **redirige vers l&#8217;accueil avec l&#8217;ancre** (la langue est conservée), comme le site officiel — vérifié dans un vrai navigateur (accueil : défiler sur place ; article : redirection)

@@ -269,14 +269,14 @@ function andonick_section_references() {
 	$testis  = andonick_testis();
 	$partners = andonick_partners();
 	?>
-	<section class="section section-refs" id="references">
+<section class="section section-refs" id="references">
 		<div class="container">
-			<div class="section-head reveal">
-				<span class="eyebrow"><?php echo esc_html( andonick_t( 'testi_eyebrow' ) ); ?></span>
-				<h2><?php echo esc_html( andonick_t( 'testi_title' ) ); ?></h2>
-			</div>
-
 			<?php if ( ! empty( $testis ) ) : ?>
+				<div class="section-head reveal">
+					<span class="eyebrow"><?php echo esc_html( andonick_t( 'testi_eyebrow' ) ); ?></span>
+					<h2><?php echo esc_html( andonick_t( 'testi_title' ) ); ?></h2>
+				</div>
+
 				<div class="testi-grid">
 					<?php foreach ( $testis as $ti => $testi ) : ?>
 						<blockquote class="testi-card reveal reveal-delay-<?php echo esc_attr( ( $ti % 3 ) + 1 ); ?>">
