@@ -14,6 +14,9 @@ get_header();
 <main id="accueil">
 	<?php
 	foreach ( andonick_section_order() as $section ) {
+		if ( '0' === get_theme_mod( 'andonick_sec_' . $section . '_enabled', '1' ) ) {
+			continue;
+		}
 		$render = 'andonick_section_' . $section;
 		if ( function_exists( $render ) ) {
 			$render();

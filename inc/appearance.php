@@ -125,6 +125,8 @@ function andonick_appearance_css() {
 	$width         = andonick_ap_sanitize_int( andonick_ap( 'container_width', '1200' ), 1100, 1280, 1200 );
 	$pad           = andonick_ap_sanitize_int( andonick_ap( 'section_pad', '96' ), 60, 120, 96 );
 	$gal           = andonick_ap_sanitize_int( andonick_ap( 'gallery_cols', '3' ), 2, 4, 3 );
+	$metiers_cols  = andonick_ap_sanitize_int( andonick_ap( 'metiers_cols', '3' ), 1, 4, 3 );
+	$testis_cols   = andonick_ap_sanitize_int( andonick_ap( 'testis_cols', '3' ), 1, 4, 3 );
 	$radius        = andonick_ap_sanitize_int( andonick_ap( 'radius', '12' ), 0, 16, 12 );
 	$hero_h        = andonick_ap_sanitize_int( andonick_ap( 'hero_height', '90' ), 80, 100, 90 );
 	$hero_align    = andonick_ap_sanitize_choice( andonick_ap( 'hero_align', 'center' ), array( 'center', 'left', 'right' ), 'center' );
@@ -155,6 +157,8 @@ function andonick_appearance_css() {
 	$css .= '--container-w:' . $width . 'px;';
 	$css .= '--section-pad:' . $pad . 'px;';
 	$css .= '--gal-col:' . $gal . ';';
+	$css .= '--metiers-cols:' . $metiers_cols . ';';
+	$css .= '--testis-cols:' . $testis_cols . ';';
 	$css .= '}';
 
 	$css .= 'body{font-size:' . $size . 'px;}';
@@ -427,6 +431,50 @@ function andonick_customize_appearance( $wp_customize ) {
 		'type'    => 'select',
 		'choices' => array( 'small' => 'Petits', 'medium' => 'Moyens (par défaut)', 'large' => 'Grands' ),
 	) );
+
+	/* ---------------- Fonds des sections & grilles ---------------- */
+	$wp_customize->add_section( 'andonick_ap_secbg', array(
+		'title' => 'Fonds des sections & grilles',
+		'panel' => 'andonick_appearance',
+	) );
+	$secbg_defaults = array(
+		'groupe'      => 'light',
+		'filiales'    => 'tint',
+		'actualites'  => 'light',
+		'realisations'=> 'light',
+		'references'  => 'light',
+		'contact'     => 'tint',
+	);
+	foreach ( $secbg_defaults as $secbg_key => $secbg_default ) {
+		$wp_customize->add_setting( 'andonick_ap_secbg_' . $secbg_key, array(
+			'default'           => $secbg_default,
+			'sanitize_callback' => function ( $v ) {
+				return andonick_ap_sanitize_choice( $v, array( 'light', 'tint', 'dark' ), 'light' );
+			},
+			'type'              => 'theme_mod',
+		) );
+		$wp_customize->add_control( 'andonick_ap_secbg_' . $secbg_key, array(
+			'label'   => 'Fond de « ' . $secbg_key . ' »',
+			'section' => 'andonick_ap_secbg',
+			'type'    => 'select',
+			'choices' => array( 'light' => 'Clair (blanc)', 'tint' => 'Teinté (violet clair)', 'dark' => 'Violet foncé (texte blanc)' ),
+		) );
+	}
+	foreach ( array( 'metiers' => 'Nombre de colonnes des cartes « Les métiers » (1 à 4)', 'testis' => 'Nombre de colonnes des témoignages (1 à 4)' ) as $cols_key => $cols_label ) {
+		$wp_customize->add_setting( 'andonick_ap_' . $cols_key . '_cols', array(
+			'default'           => '3',
+			'sanitize_callback' => function ( $v ) {
+				return min( 4, max( 1, absint( $v ) ) );
+			},
+			'type'              => 'theme_mod',
+		) );
+		$wp_customize->add_control( 'andonick_ap_' . $cols_key . '_cols', array(
+			'label'   => $cols_label,
+			'section' => 'andonick_ap_secbg',
+			'type'    => 'number',
+			'input_attrs' => array( 'min' => 1, 'max' => 4, 'step' => 1 ),
+		) );
+	}
 
 	/* ---------------- Comportement & animations ---------------- */
 	$wp_customize->add_section( 'andonick_ap_motion', array(

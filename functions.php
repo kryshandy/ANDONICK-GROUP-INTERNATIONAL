@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.5.7' );
+define( 'ANDONICK_VERSION', '3.6.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
@@ -200,6 +200,27 @@ function andonick_handle_form() {
 		'[ANDONICK] Nouvelle demande ' . $kind . ' (' . $labels[ $lang ] . ')',
 		$body
 	);
+
+	/* Copie de confirmation au visiteur (si activé ET une adresse e-mail valide
+	 * a été saisie dans un champ de type email). */
+	if ( '1' === get_theme_mod( 'andonick_forms_copy', '0' ) ) {
+		$visitor_email = '';
+		foreach ( $config as $i => $field ) {
+			if ( 'email' === $field['type'] && ! empty( $_POST[ 'andonick_f' . $i ] ) ) {
+				$visitor_email = sanitize_email( wp_unslash( $_POST[ 'andonick_f' . $i ] ) );
+				if ( '' !== $visitor_email ) {
+					break;
+				}
+			}
+		}
+		if ( '' !== $visitor_email ) {
+			wp_mail(
+				$visitor_email,
+				andonick_t( 'form_copy_subject' ),
+				andonick_t( 'form_copy_body' ) . "\n\n" . implode( "\n", $lines )
+			);
+		}
+	}
 
 	wp_safe_redirect( wp_get_referer() );
 	exit;

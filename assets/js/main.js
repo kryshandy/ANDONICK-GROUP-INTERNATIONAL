@@ -241,5 +241,95 @@
 				el.textContent = el.dataset.count + (el.dataset.suffix || '');
 			});
 		}
+
+		/* ============ Bandeau cookies (RGPD) ============ */
+		var cookieBanner = document.getElementById('cookieBanner');
+		if (cookieBanner) {
+			var cookieChoice = null;
+			try {
+				cookieChoice = window.localStorage.getItem('andonick_cookies');
+			} catch (e) { /* stockage indisponible : bandeau affiché à chaque visite */ }
+			if (cookieChoice) {
+				cookieBanner.remove();
+			} else {
+				window.setTimeout(function () { cookieBanner.classList.add('open'); }, 600);
+				cookieBanner.querySelectorAll('button[data-cookie]').forEach(function (btn) {
+					btn.addEventListener('click', function () {
+						try {
+							window.localStorage.setItem('andonick_cookies', btn.dataset.cookie);
+						} catch (e) { /* ignore */ }
+						cookieBanner.classList.remove('open');
+						window.setTimeout(function () { cookieBanner.remove(); }, 450);
+					});
+				});
+			}
+		}
+
+		/* ============ Lightbox galerie ============ */
+		var galleryLinks = Array.prototype.slice.call(document.querySelectorAll('.gallery-link'));
+		if (galleryLinks.length) {
+			var lb = null;
+			var lbState = { items: galleryLinks, index: 0 };
+
+			function lbBuild() {
+				lb = document.createElement('div');
+				lb.className = 'lightbox';
+				lb.setAttribute('role', 'dialog');
+				lb.setAttribute('aria-modal', 'true');
+				lb.innerHTML =
+					'<button type="button" class="lightbox-close" aria-label="Fermer">&times;</button>' +
+					'<button type="button" class="lightbox-prev" aria-label="Précédente">&lsaquo;</button>' +
+					'<button type="button" class="lightbox-next" aria-label="Suivante">&rsaquo;</button>' +
+					'<div class="lightbox-count"></div>' +
+					'<img alt="">' +
+					'<div class="lightbox-caption"></div>';
+				document.body.appendChild(lb);
+				lb.querySelector('.lightbox-close').addEventListener('click', lbClose);
+				lb.querySelector('.lightbox-prev').addEventListener('click', function () { lbShow(lbState.index - 1); });
+				lb.querySelector('.lightbox-next').addEventListener('click', function () { lbShow(lbState.index + 1); });
+				lb.addEventListener('click', function (e) {
+					if (e.target === lb) { lbClose(); }
+				});
+				document.addEventListener('keydown', lbKey);
+			}
+
+			function lbShow(index) {
+				if (!lb) { lbBuild(); }
+				var total = lbState.items.length;
+				lbState.index = (index + total) % total;
+				var link = lbState.items[lbState.index];
+				var img = link.querySelector('img');
+				lb.querySelector('img').src = link.getAttribute('href');
+				lb.querySelector('img').alt = img ? img.alt : '';
+				lb.querySelector('.lightbox-caption').textContent = img ? img.alt : '';
+				lb.querySelector('.lightbox-count').textContent = (lbState.index + 1) + ' / ' + total;
+				lb.classList.add('open');
+				document.body.style.overflow = 'hidden';
+				lb.querySelector('.lightbox-close').focus();
+			}
+
+			function lbClose() {
+				if (!lb) { return; }
+				lb.classList.remove('open');
+				document.body.style.overflow = '';
+				window.setTimeout(function () {
+					if (lb) { lb.remove(); lb = null; }
+				}, 300);
+			}
+
+			function lbKey(e) {
+				if (!lb || !lb.classList.contains('open')) { return; }
+				if (e.key === 'Escape') { lbClose(); }
+				else if (e.key === 'ArrowLeft') { lbShow(lbState.index - 1); }
+				else if (e.key === 'ArrowRight') { lbShow(lbState.index + 1); }
+			}
+
+			galleryLinks.forEach(function (link, index) {
+				link.addEventListener('click', function (e) {
+					e.preventDefault();
+					lbShow(index);
+				});
+			});
+		}
 	});
 })();

@@ -3,7 +3,7 @@ Theme Name: ANDONICK Group International
 Theme URI: https://andonickgroup.com
 Author: Webmaster ANDONICK
 Description: Thème one-page bilingue (FR/EN) pour ANDONICK Group International. Charte graphique officielle : violet #461491, violet foncé #2A0A63, blanc #FFFFFF, gris #333333. Aucune autre couleur n'est autorisée.
-Version: 3.5.7
+Version: 3.6.0
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -730,16 +730,50 @@ button {
    FILIALES
    ========================================================================== */
 
-.section-filiales {
+.section-bg-light {
+	background: var(--white);
+}
+
+.section-filiales.section-bg-tint {
 	background:
 		radial-gradient(ellipse 40% 50% at 90% 0%, rgba(70, 20, 145, 0.06), transparent 60%),
 		radial-gradient(ellipse 40% 50% at 10% 100%, rgba(42, 10, 99, 0.05), transparent 60%),
 		var(--violet-tint);
 }
 
+.section-bg-dark {
+	background: linear-gradient(180deg, var(--violet-dark) 0%, #1C0740 100%);
+	color: #fff;
+}
+
+.section-bg-dark .eyebrow,
+.section-bg-dark h2,
+.section-bg-dark h3,
+.section-bg-dark h4,
+.section-bg-dark p,
+.section-bg-dark .refs-table th,
+.section-bg-dark .refs-table td,
+.section-bg-dark .refs-table td a,
+.section-bg-dark .partners-list li {
+	color: #fff;
+}
+
+.section-bg-dark .filiale-card,
+.section-bg-dark .testi-card,
+.section-bg-dark .news-card,
+.section-bg-dark .refs-table-wrap {
+	background: rgba(255, 255, 255, 0.06);
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.section-bg-dark .refs-table th,
+.section-bg-dark .refs-table td {
+	border-color: rgba(255, 255, 255, 0.25);
+}
+
 .filiales-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+	grid-template-columns: repeat(var(--metiers-cols, 3), 1fr);
 	gap: 24px;
 }
 
@@ -1027,7 +1061,7 @@ button {
 
 .testi-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+	grid-template-columns: repeat(var(--testis-cols, 3), 1fr);
 	gap: 24px;
 	margin-bottom: 64px;
 }
@@ -1173,7 +1207,7 @@ button {
    CONTACT
    ========================================================================== */
 
-.section-contact {
+.section-contact.section-bg-tint {
 	background:
 		linear-gradient(180deg, var(--white) 0%, var(--violet-tint) 100%);
 }
@@ -2111,4 +2145,167 @@ button {
 
 .banner-cta {
 	margin: 0;
+}
+
+/* ==========================================================================
+   GALERIE — lien d'agrandissement (lightbox)
+   ========================================================================== */
+
+.gallery-link {
+	display: block;
+	cursor: zoom-in;
+}
+
+/* ==========================================================================
+   BANDEAU COOKIES (RGPD)
+   ========================================================================== */
+
+.cookie-banner {
+	position: fixed;
+	left: 16px;
+	right: 16px;
+	bottom: 16px;
+	z-index: 9999;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 14px 22px;
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 16px 18px;
+	background: var(--violet-dark);
+	color: #fff;
+	border-radius: var(--radius);
+	box-shadow: 0 12px 40px rgba(20, 5, 50, 0.45);
+	font-size: 0.92rem;
+	line-height: 1.55;
+	transform: translateY(140%);
+	transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.cookie-banner.open {
+	transform: translateY(0);
+}
+
+.cookie-banner p {
+	margin: 0;
+	flex: 1 1 360px;
+}
+
+.cookie-actions {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.cookie-actions .btn {
+	margin: 0;
+	padding: 10px 20px;
+	font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   LIGHTBOX — galerie plein écran
+   ========================================================================== */
+
+.lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 10000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(8, 2, 20, 0.94);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lightbox.open {
+	opacity: 1;
+	visibility: visible;
+}
+
+.lightbox img {
+	max-width: 92vw;
+	max-height: 86vh;
+	border-radius: 6px;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.lightbox-caption {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 18px;
+	text-align: center;
+	color: rgba(255, 255, 255, 0.85);
+	font-size: 0.92rem;
+	padding: 0 24px;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+	position: absolute;
+	background: rgba(255, 255, 255, 0.12);
+	border: 0;
+	color: #fff;
+	font-size: 1.5rem;
+	line-height: 1;
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s ease;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+	background: rgba(255, 255, 255, 0.28);
+}
+
+.lightbox-close {
+	top: 18px;
+	right: 18px;
+}
+
+.lightbox-prev {
+	left: 18px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.lightbox-next {
+	right: 18px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.lightbox-count {
+	position: absolute;
+	top: 28px;
+	left: 50%;
+	transform: translateX(-50%);
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+	.lightbox-prev {
+		left: 8px;
+	}
+
+	.lightbox-next {
+		right: 8px;
+	}
+
+	.lightbox-close {
+		top: 10px;
+		right: 10px;
+	}
 }

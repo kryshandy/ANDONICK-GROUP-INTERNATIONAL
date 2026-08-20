@@ -91,6 +91,7 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 
 ## Versions
 
+- **3.6.0** — **RGPD + personnalisation augmentée, tout sans code** : bandeau cookies (textes FR/EN éditables, choix mémorisé sur l&#8217;appareil, activable/masquable) ; interrupteurs individuels par section (8 cases à cocher dans « Structure & Ordre ») ; fonds de section Clair/Teinté/Violet foncé + nombre de colonnes des cartes métiers et témoignages (1 à 4) ; **lightbox galerie** (clic → plein écran, ‹ › et ← →, Échap) ; copie de la demande envoyée au visiteur par e-mail (réglable). Testé navigateur : bandeau disparaît après choix, compteur lightbox 2/6 après flèche, sections masquées puis restaurées
 - **3.5.7** — **Cartes de témoignages vides supprimées** : si un emplacement témoignage (ou impact) n&#8217;a pas de citation, la carte ne s&#8217;affiche plus ; l&#8217;en-tête « Témoignages » disparaît quand la liste est vide. Objectif : ne montrer que ce qui est rempli dans Personnaliser (site 100 % personnalisable sans code)
 - **3.5.6** — Retour aux **deux boutons WhatsApp initiaux** de la section Contact (RCA + France) : le bouton vert d&#8217;en-tête (ajouté en 3.5.5, puis retiré à la demande) est démonté. Preuve navigateur : clic → `defaultPrevented=false` (aucune interception), `target="_blank"` → nouvel onglet `api.whatsapp.com/send/?phone=…` qui fonctionne sur PC et mobile
 - **3.5.5** — (ajout puis retiré en 3.5.6) Bouton « 💬 WhatsApp » vert dans l&#8217;en-tête

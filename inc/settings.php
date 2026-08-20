@@ -112,6 +112,32 @@ function andonick_customize_register( $wp_customize ) {
 		'input_attrs' => array( 'rows' => 11 ),
 	) );
 
+	/* Interrupteurs individuels par section (coexistent avec l'ordre). */
+	$sec_labels = array(
+		'hero'        => 'Haut de page (hero)',
+		'groupe'      => 'Le Groupe',
+		'filiales'    => 'Les métiers (filiales)',
+		'impact'      => 'Impact sur les territoires',
+		'actualites'  => 'Actualités (blog)',
+		'realisations'=> 'Réalisations (galerie)',
+		'references'  => 'Références & témoignages',
+		'contact'     => 'Contact & devis',
+	);
+	foreach ( $sec_labels as $sec => $sec_label ) {
+		$wp_customize->add_setting( 'andonick_sec_' . $sec . '_enabled', array(
+			'default'           => '1',
+			'sanitize_callback' => function ( $v ) {
+				return ( '0' === $v ) ? '0' : '1';
+			},
+			'type'              => 'theme_mod',
+		) );
+		$wp_customize->add_control( 'andonick_sec_' . $sec . '_enabled', array(
+			'label'   => 'Afficher la section « ' . $sec_label . ' »',
+			'section' => 'andonick_structure',
+			'type'    => 'checkbox',
+		) );
+	}
+
 	/* ---- Section images (commune) ---- */
 	$wp_customize->add_section( 'andonick_images', array(
 		'title' => 'Images (photos du site)',
@@ -215,7 +241,7 @@ function andonick_customize_register( $wp_customize ) {
 			if ( is_array( $value ) || in_array( $key, array( 'filiales', 'services', 'impacts', 'testis', 'ref_headers', 'refs', 'partners', 'slots' ), true ) ) {
 				continue;
 			}
-			$is_long = in_array( $key, array( 's2_body', 'hero_lead', 'impact_body', 'contact_sub', 'f_disc_devis', 'f_disc_rappel', 'foot_tag', 'contact_addr', 'seo_desc', 'nav_links', 'topbar_links', 'foot_col2_links', 'foot_col3_links', 'foot_col4_links' ), true );
+			$is_long = in_array( $key, array( 's2_body', 'hero_lead', 'impact_body', 'contact_sub', 'f_disc_devis', 'f_disc_rappel', 'foot_tag', 'contact_addr', 'seo_desc', 'nav_links', 'topbar_links', 'foot_col2_links', 'foot_col3_links', 'foot_col4_links', 'form_copy_body', 'cookies_text' ), true );
 			if ( $is_long ) {
 				andonick_cz_textarea( $wp_customize, $lang, $key, $value, $sec_texts );
 			} else {
@@ -326,6 +352,26 @@ function andonick_customize_register( $wp_customize ) {
 		) );
 	}
 
+	/* ---- Bandeau cookies (RGPD) ---- */
+	$wp_customize->add_section( 'andonick_cookies', array(
+		'title'       => 'Bandeau cookies (RGPD)',
+		'description' => 'Bandeau d\'information en bas d\'écran. Le choix du visiteur est mémorisé sur son appareil ; ce site ne dépose aucun cookie de suivi. Textes et boutons se règlent dans « Textes principaux » de chaque langue (cookies_text, cookies_accept, cookies_decline).',
+		'panel'       => 'andonick_panel',
+	) );
+	$wp_customize->add_setting( 'andonick_cookies_enabled', array(
+		'default'           => '1',
+		'sanitize_callback' => function ( $v ) {
+			return ( '0' === $v ) ? '0' : '1';
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_cookies_enabled', array(
+		'label'   => 'Afficher le bandeau cookies',
+		'section' => 'andonick_cookies',
+		'type'    => 'select',
+		'choices' => array( '1' => 'Affiché', '0' => 'Masqué' ),
+	) );
+
 	/* ---- Réglages communs : formulaires & blog (communs, pas par langue) ---- */
 	$wp_customize->add_section( 'andonick_common', array(
 		'title'       => 'Formulaires & Blog (réglages communs)',
@@ -377,6 +423,20 @@ function andonick_customize_register( $wp_customize ) {
 		'type'        => 'select',
 		'choices'     => array( '1' => 'Activé', '0' => 'Désactivé' ),
 	) );
+	$wp_customize->add_setting( 'andonick_forms_copy', array(
+		'default'           => '0',
+		'sanitize_callback' => function ( $v ) {
+			return ( '1' === $v ) ? '1' : '0';
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_forms_copy', array(
+		'label'       => 'Envoyer au visiteur une copie de sa demande',
+		'description' => 'Une confirmation de la demande (devis ou rappel) est envoyée à l\'adresse e-mail qu\'il a renseignée. Texte réglable dans « Textes principaux » (form_copy_subject, form_copy_body).',
+		'section'     => 'andonick_common',
+		'type'        => 'select',
+		'choices'     => array( '1' => 'Activé', '0' => 'Désactivé' ),
+	) );
 
 	/* Libellés lisibles supplémentaires (après boucle, toutes langues). */
 	$nice_labels = array(
@@ -400,6 +460,11 @@ function andonick_customize_register( $wp_customize ) {
 		'foot_col3_links'  => 'Pied de page, colonne « Contact » — liens (1 ligne = Libellé|URL — vide = coordonnées officielles)',
 		'foot_col4_title'  => 'Pied de page, colonne 4 (facultative) — titre (vide = colonne masquée)',
 		'foot_col4_links'  => 'Pied de page, colonne 4 — liens (1 ligne = Libellé|URL)',
+		'cookies_accept'  => 'Bandeau cookies — libellé du bouton « J\'accepte »',
+		'cookies_decline' => 'Bandeau cookies — libellé du bouton « Je refuse »',
+		'cookies_text'    => 'Bandeau cookies — texte d\'information',
+		'form_copy_subject'=> 'E-mail de confirmation au visiteur — objet',
+		'form_copy_body'  => 'E-mail de confirmation au visiteur — contenu',
 		'texte1_eyebrow' => 'Section libre « Texte 1 » — petit titre (vide = masquée)',
 		'texte1_title'  => 'Section libre « Texte 1 » — grand titre',
 		'texte1_body'   => 'Section libre « Texte 1 » — contenu (paragraphes)',

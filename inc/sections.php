@@ -89,11 +89,19 @@ function andonick_section_hero() {
 }
 
 /**
- * Section LE GROUPE.
+ * Fond d'une section non-image : light (clair), tint (teinté), dark (violet).
+ */
+function andonick_sec_bg( $key, $default = 'light' ) {
+	$choice = andonick_ap( 'secbg_' . $key, $default );
+	return in_array( $choice, array( 'light', 'tint', 'dark' ), true ) ? esc_attr( $choice ) : esc_attr( $default );
+}
+
+/**
+ * Section GROUPE.
  */
 function andonick_section_groupe() {
 	?>
-	<section class="section section-group" id="groupe">
+	<section class="section section-group section-bg-<?php echo andonick_sec_bg( 'groupe', 'light' ); ?>" id="groupe">
 		<div class="container group-grid">
 			<div class="group-text reveal">
 				<span class="eyebrow"><?php echo esc_html( andonick_t( 's2_eyebrow' ) ); ?></span>
@@ -123,7 +131,7 @@ function andonick_section_filiales() {
 		return;
 	}
 	?>
-	<section class="section section-filiales" id="filiales">
+	<section class="section section-filiales section-bg-<?php echo andonick_sec_bg( 'filiales', 'tint' ); ?>" id="filiales">
 		<div class="container">
 			<div class="section-head reveal">
 				<span class="eyebrow"><?php echo esc_html( andonick_t( 's3_eyebrow' ) ); ?></span>
@@ -194,7 +202,7 @@ function andonick_section_realisations() {
 		return;
 	}
 	?>
-	<section class="section section-gallery" id="realisations">
+	<section class="section section-gallery section-bg-<?php echo andonick_sec_bg( 'realisations', 'light' ); ?>" id="realisations">
 		<div class="container">
 			<div class="section-head reveal">
 				<span class="eyebrow"><?php echo esc_html( andonick_t( 'gallery_eyebrow' ) ); ?></span>
@@ -203,8 +211,10 @@ function andonick_section_realisations() {
 			</div>
 			<div class="gallery-grid">
 				<?php foreach ( $gallery as $gi => $gimg ) : ?>
-					<figure class="gallery-item reveal reveal-delay-<?php echo esc_attr( ( $gi % 3 ) + 1 ); ?>">
-						<img src="<?php echo esc_url( $gimg ); ?>" alt="<?php echo esc_attr( andonick_t( 'gallery_title' ) ); ?>" loading="lazy">
+<figure class="gallery-item reveal reveal-delay-<?php echo esc_attr( ( $gi % 3 ) + 1 ); ?>">
+						<a class="gallery-link" href="<?php echo esc_url( $gimg ); ?>" aria-label="<?php echo esc_attr( andonick_t( 'gallery_zoom' ) ); ?>">
+							<img src="<?php echo esc_url( $gimg ); ?>" alt="<?php echo esc_attr( andonick_t( 'gallery_title' ) ); ?>" loading="lazy">
+						</a>
 					</figure>
 				<?php endforeach; ?>
 			</div>
@@ -235,7 +245,7 @@ function andonick_section_actualites() {
 		return;
 	}
 	?>
-	<section class="section section-news" id="actualites">
+	<section class="section section-news section-bg-<?php echo andonick_sec_bg( 'actualites', 'light' ); ?>" id="actualites">
 		<div class="container">
 			<div class="section-head reveal">
 				<span class="eyebrow"><?php echo esc_html( andonick_t( 'news_eyebrow' ) ); ?></span>
@@ -269,7 +279,7 @@ function andonick_section_references() {
 	$testis  = andonick_testis();
 	$partners = andonick_partners();
 	?>
-<section class="section section-refs" id="references">
+<section class="section section-refs section-bg-<?php echo andonick_sec_bg( 'references', 'light' ); ?>" id="references">
 		<div class="container">
 			<?php if ( ! empty( $testis ) ) : ?>
 				<div class="section-head reveal">
@@ -339,7 +349,7 @@ function andonick_section_contact() {
 	$services = andonick_services();
 	$slots    = andonick_slots();
 	?>
-	<section class="section section-contact" id="contact">
+	<section class="section section-contact section-bg-<?php echo andonick_sec_bg( 'contact', 'tint' ); ?>" id="contact">
 		<div class="container contact-grid">
 			<div class="contact-info reveal">
 				<span class="eyebrow"><?php echo esc_html( andonick_t( 'contact_eyebrow' ) ); ?></span>

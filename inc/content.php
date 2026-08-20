@@ -149,6 +149,7 @@ function andonick_content() {
 			'gallery_eyebrow' => 'Nos réalisations',
 			'gallery_title'   => 'Le Groupe sur le terrain',
 			'gallery_sub'     => 'Une partie des chantiers, installations et déploiements réalisés par nos équipes en République Centrafricaine.',
+			'gallery_zoom'    => 'Agrandir la photo',
 
 			// Contact.
 			'contact_eyebrow' => 'Contact',
@@ -185,6 +186,17 @@ function andonick_content() {
 			'objectPlaceholder'=> 'En quelques mots, l\'objet de votre appel',
 			'slots'           => array( 'Matin (8h–12h)', 'Après-midi (13h–17h)', 'Le plus rapidement possible' ),
 			'toast_msg'       => 'Merci — votre demande a bien été enregistrée.',
+			'form_copy_subject' => 'Confirmation de votre demande — ANDONICK Group International',
+			'form_copy_body'  => 'Bonjour,
+
+Votre demande a bien été transmise à l\'équipe ANDONICK Group International. Nous vous remercions de votre confiance et vous recontacterons dans les meilleurs délais.
+
+Cordialement,
+L\'équipe ANDONICK
+Group International',
+			'cookies_text'    => 'Ce site n\'utilise pas de cookies de suivi : vos données restent sur vos appareils. En poursuivant votre navigation, vous acceptez l\'usage des cookies strictement nécessaires au bon fonctionnement du site.',
+			'cookies_accept'  => 'J\'accepte',
+			'cookies_decline' => 'Je refuse',
 			'foot_tag'        => 'Votre réussite, notre engagement. Groupe multisectoriel présent en République Centrafricaine, au Sénégal et en France.',
 			'foot_cities'     => 'Bangui · Dakar · Bordeaux',
 			'foot_filiales'   => 'Filiales',
@@ -386,6 +398,7 @@ function andonick_content() {
 			'gallery_eyebrow' => 'Our Projects',
 			'gallery_title'   => 'The Group in the field',
 			'gallery_sub'     => 'A selection of projects, installations and deployments carried out by our teams in the Central African Republic.',
+			'gallery_zoom'    => 'Enlarge photo',
 
 			'contact_eyebrow' => 'Contact',
 			'contact_title'   => 'Let\'s Discuss Your Project',
@@ -421,6 +434,17 @@ function andonick_content() {
 			'objectPlaceholder'=> 'Briefly describe the subject of your call',
 			'slots'           => array( 'Morning (8am–12pm)', 'Afternoon (1pm–5pm)', 'As soon as possible' ),
 'toast_msg'       => 'Thank you — your request has been submitted.',
+			'form_copy_subject' => 'Confirmation of your request — ANDONICK Group International',
+			'form_copy_body'  => 'Hello,
+
+Your request has been forwarded to the ANDONICK Group International team. Thank you for your trust — we will get back to you as soon as possible.
+
+Kind regards,
+The ANDONICK Group
+International team',
+			'cookies_text'    => 'This site does not use tracking cookies: your data stays on your devices. By continuing to browse, you accept the use of cookies strictly necessary for the site to work properly.',
+			'cookies_accept'  => 'I accept',
+			'cookies_decline' => 'I decline',
 			'foot_tag'        => 'Your success is our commitment. A multi-sector group present in the Central African Republic, Senegal and France.',
 			'foot_cities'     => 'Bangui · Dakar · Bordeaux',
 			'foot_filiales'   => 'Subsidiaries',

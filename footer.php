@@ -96,6 +96,16 @@
 
 <button class="back-top" id="backTop" aria-label="<?php echo esc_attr( andonick_t( 'aria_top' ) ); ?>">↑</button>
 
+<?php if ( '1' === get_theme_mod( 'andonick_cookies_enabled', '1' ) ) : ?>
+	<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookies">
+		<p><?php echo wp_kses_post( andonick_t( 'cookies_text' ) ); ?></p>
+		<div class="cookie-actions">
+			<button type="button" class="btn cookie-accept" data-cookie="accept"><?php echo esc_html( andonick_t( 'cookies_accept' ) ); ?></button>
+			<button type="button" class="btn btn-outline cookie-decline" data-cookie="decline"><?php echo esc_html( andonick_t( 'cookies_decline' ) ); ?></button>
+		</div>
+	</div>
+<?php endif; ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
