@@ -867,6 +867,14 @@ function andonick_news_enabled() {
 }
 
 /**
+ * Catégorie des articles de la langue active (0 = toutes les catégories).
+ * Éditable sans code : « Pages légales & Actualités » dans le Customizer.
+ */
+function andonick_news_cat( $lang ) {
+	return absint( get_theme_mod( 'andonick_news_cat_' . $lang, 0 ) );
+}
+
+/**
  * Les champs d'un formulaire — éditable sans code.
  * 1 ligne = « Libellé|type|obligatoire(0/1)|source(optionnelle) »
  * Types : text, tel, email, textarea, select.

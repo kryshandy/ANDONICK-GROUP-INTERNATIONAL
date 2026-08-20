@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.6.0' );
+define( 'ANDONICK_VERSION', '3.7.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
@@ -17,6 +17,55 @@ require_once ANDONICK_DIR . '/inc/content.php';
 require_once ANDONICK_DIR . '/inc/settings.php';
 require_once ANDONICK_DIR . '/inc/sections.php';
 require_once ANDONICK_DIR . '/inc/appearance.php';
+
+/**
+ * Purge du contenu de démonstration WordPress (article d'exemple et page
+ * d'exemple) : la section Actualités ne doit jamais s'afficher à cause
+ * d'articles « Bonjour tout le monde ! » non rédigés par le propriétaire.
+ * Ne touche à rien d'autre (détection par titre officiel de WordPress).
+ */
+function andonick_cleanup_welcome_content() {
+	$sample_titles = array(
+		'Hello world!', 'Bonjour tout le monde !', 'Salut tout le monde !',
+		'¡Hola mundo!', 'Hallo Welt!', 'Olá mundo!', 'Ciao mondo!',
+		'Sample Page', 'Page exemple', 'Page d\'exemple', 'Exemple de page',
+	);
+	$all = get_posts( array(
+		'post_type'      => array( 'post', 'page' ),
+		'post_status'    => array( 'publish', 'draft', 'pending', 'future' ),
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+	) );
+	foreach ( $all as $post_id ) {
+		if ( in_array( andonick_normalize_title( get_the_title( $post_id ) ), $sample_titles, true ) ) {
+			wp_delete_post( $post_id, true );
+		}
+	}
+}
+
+/**
+ * Normalise un titre pour comparer proprement (espaces et apostrophes
+ * typographiques françaises : insécable, apostrophe courbe).
+ */
+function andonick_normalize_title( $title ) {
+	return str_replace(
+		array( "\u{00A0}", "\u{2019}", "\u{2018}", "\u{201C}", "\u{201D}" ),
+		array( ' ', "'", "'", '"', '"' ),
+		(string) $title
+	);
+}
+
+/**
+ * Déclenché au changement de version du thème (mise à jour) et à l'activation.
+ */
+function andonick_on_version_change() {
+	if ( get_option( 'andonick_version' ) !== ANDONICK_VERSION ) {
+		andonick_cleanup_welcome_content();
+		update_option( 'andonick_version', ANDONICK_VERSION );
+	}
+}
+add_action( 'init', 'andonick_on_version_change' );
+add_action( 'after_switch_theme', 'andonick_cleanup_welcome_content' );
 
 /**
  * Configuration de base du thème.

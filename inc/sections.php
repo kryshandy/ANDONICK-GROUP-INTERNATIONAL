@@ -235,11 +235,12 @@ function andonick_section_actualites() {
 	if ( $count < 1 ) {
 		$count = 3;
 	}
-	$q = new WP_Query( array(
+$q = new WP_Query( array(
 		'post_type'           => 'post',
 		'posts_per_page'      => min( $count, 9 ),
 		'no_found_rows'       => true,
 		'ignore_sticky_posts' => true,
+		'cat'                 => andonick_news_cat( andonick_lang() ),
 	) );
 	if ( empty( $q->posts ) ) {
 		return;

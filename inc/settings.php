@@ -338,6 +338,28 @@ function andonick_customize_register( $wp_customize ) {
 		'type'        => 'select',
 		'choices'     => array( '1' => 'Activée', '0' => 'Désactivée' ),
 	) ) ;
+	/* Catégories d'articles par langue (0 = toutes les catégories). */
+	$news_cats_choices = array( 0 => 'Toutes les catégories' );
+	$news_cats = get_categories( array( 'hide_empty' => false ) );
+	foreach ( $news_cats as $news_cat ) {
+		$news_cats_choices[ $news_cat->term_id ] = $news_cat->name;
+	}
+	foreach ( array( 'fr' => 'Articles français', 'en' => 'Articles anglais' ) as $news_lang => $news_label ) {
+		$wp_customize->add_setting( 'andonick_news_cat_' . $news_lang, array(
+			'default'           => 0,
+			'sanitize_callback' => function ( $v ) {
+				return term_exists( $v, 'category' ) ? absint( $v ) : 0;
+			},
+			'type'              => 'theme_mod',
+		) );
+		$wp_customize->add_control( 'andonick_news_cat_' . $news_lang, array(
+			'label'       => 'Actualités — catégorie : ' . $news_label,
+			'description' => 'Choisissez la catégorie qui contient vos articles pour cette langue (Toutes = tous les articles). La section ne s\'affiche que si des articles existent dans cette catégorie.',
+			'section'     => 'andonick_legal',
+			'type'        => 'select',
+			'choices'     => $news_cats_choices,
+		) );
+	}
 	for ( $n = 1; $n <= 3; $n++ ) {
 		$wp_customize->add_setting( 'andonick_legal_page_' . $n, array(
 			'default'           => 0,
