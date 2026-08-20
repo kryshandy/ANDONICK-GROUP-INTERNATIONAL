@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.5.3' );
+define( 'ANDONICK_VERSION', '3.5.4' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
@@ -51,6 +51,8 @@ function andonick_assets() {
 		'ajaxUrl'         => admin_url( 'admin-post.php' ),
 		'toast'           => andonick_t( 'toast_msg' ),
 		'counterDuration' => min( 5000, max( 500, absint( andonick_ap( 'counter_duration', '1600' ) ) ) ),
+		'lang'            => andonick_lang(),
+		'frontUrl'        => home_url( '/' ),
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'andonick_assets' );

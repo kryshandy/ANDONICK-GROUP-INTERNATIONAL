@@ -91,6 +91,7 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 
 ## Versions
 
+- **3.5.4** — Ancres internes corrigées : sur une page d&#8217;article de blog (où les sections n&#8217;existent pas), cliquer « Demander un devis » / menu « Filiales »… **redirige vers l&#8217;accueil avec l&#8217;ancre** (la langue est conservée), comme le site officiel — vérifié dans un vrai navigateur (accueil : défiler sur place ; article : redirection)
 - **3.5.3** — Durcissement : **tout champ texte vidé revient automatiquement à la valeur officielle** (ex. si vous videz un numéro de téléphone, le site réaffiche celui d'origine au lieu de casser les liens WhatsApp/tel:) — ceinture + bretelles, site vérifié en base
 - **3.5.2** — Bandeau supérieur : les liens WhatsApp par défaut pointent maintenant vers **leurs bon numéros** (RCA 75 00 06 49 / France +33 6 05 56 43 73, comme le site officiel) — tout reste modifiable via « Bandeau du haut — liens »
 - **3.5.1** — Section « Les métiers » : **photo par métier** (photos officielles pré-remplies, remplaçables une par une dans Images — elles suivent la position des lignes « Les métiers »), pastille numéro sur la photo, zoom au survol ; cartes sans photo = comme avant (aucune autre section touchée) — 15/15 preuves

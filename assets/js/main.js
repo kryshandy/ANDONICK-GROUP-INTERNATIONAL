@@ -82,6 +82,19 @@
 			}, 5000);
 		}
 
+		/* ============ Ancres internes : si la section n'existe pas sur cette page (ex. article de blog), on va sur l'accueil avec l'ancre — comme la référence ============ */
+		document.addEventListener('click', function (e) {
+			var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+			if (!a) { return; }
+			var id = a.getAttribute('href').slice(1);
+			if (!id) { return; }
+			if (document.getElementById(id)) { return; }
+			e.preventDefault();
+			var base = (typeof window.AndonickData !== 'undefined' && window.AndonickData.frontUrl) ? window.AndonickData.frontUrl : '/';
+			var lang = (typeof window.AndonickData !== 'undefined') ? window.AndonickData.lang : '';
+			window.location.href = base + (lang ? '?lang=' + encodeURIComponent(lang) : '') + '#' + id;
+		});
+
 		/* ============ Sélecteur de langue : on reste sur la section en cours ============ */
 		document.querySelectorAll('.lang-switch a').forEach(function (link) {
 			link.addEventListener('click', function (e) {
