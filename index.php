@@ -34,6 +34,9 @@ get_header();
 						wp_link_pages();
 						?>
 					</div>
+					<?php if ( is_single() && 'post' === get_post_type() && andonick_blog_comments() ) : ?>
+						<?php comments_template(); ?>
+					<?php endif; ?>
 				</article>
 			<?php endwhile; ?>
 			<?php if ( is_single() && 'post' === get_post_type() ) : ?>
@@ -49,11 +52,8 @@ get_header();
 				</header>
 				<div class="page-body">
 					<p><?php echo esc_html( andonick_t( 'page_404_body' ) ); ?></p>
-					<a class="btn" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( andonick_t( 'page_404_back' ) ); ?></a>
+					<a class="btn" href="<?php echo esc_url( andonick_url_in_language( home_url( '/' ), andonick_lang() ) ); ?>"><?php echo esc_html( andonick_t( 'page_404_back' ) ); ?></a>
 				</div>
-				<?php if ( is_single() && 'post' === get_post_type() && andonick_blog_comments() ) : ?>
-					<?php comments_template(); ?>
-				<?php endif; ?>
 			</article>
 		<?php endif; ?>
 	</div>

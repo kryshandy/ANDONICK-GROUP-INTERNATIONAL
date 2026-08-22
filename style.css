@@ -3,7 +3,7 @@ Theme Name: ANDONICK Group International
 Theme URI: https://andonickgroup.com
 Author: Webmaster ANDONICK
 Description: Thème one-page bilingue (FR/EN) pour ANDONICK Group International. Charte graphique officielle : violet #461491, violet foncé #2A0A63, blanc #FFFFFF, gris #333333. Aucune autre couleur n'est autorisée.
-Version: 3.8.0
+Version: 3.9.0
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -21,10 +21,10 @@ Text Domain: andonick
 	--violet-dark: #2A0A63;
 	--white: #FFFFFF;
 	--grey: #333333;
-	--violet-tint: #F5F1FB;
+	--violet-tint: rgba(70, 20, 145, 0.07);
 	--violet-soft: rgba(70, 20, 145, 0.08);
-	--radius: 12px;
-	--radius-sm: 8px;
+	--radius: 6px;
+	--radius-sm: 4px;
 	--shadow-sm: 0 4px 14px rgba(42, 10, 99, 0.10);
 	--shadow: 0 12px 32px rgba(42, 10, 99, 0.14);
 	--shadow-lg: 0 24px 60px rgba(42, 10, 99, 0.22);
@@ -267,7 +267,7 @@ button {
 	background: var(--white);
 	color: var(--violet-dark) !important;
 	border-color: var(--white);
-	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 10px 24px rgba(42, 10, 99, 0.20);
 }
 
 .btn-sm {
@@ -354,6 +354,27 @@ button {
 	transition: opacity 0.2s ease;
 }
 
+.skip-link {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	z-index: 1000;
+	padding: 10px 14px;
+	background: var(--white);
+	color: var(--violet-dark);
+	border: 2px solid var(--violet);
+	border-radius: 4px;
+	transform: translateY(-160%);
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
+.nav-close {
+	display: none;
+}
+
 .brand:hover {
 	opacity: 0.85;
 }
@@ -367,6 +388,15 @@ button {
 	display: flex;
 	align-items: center;
 	gap: 26px;
+}
+
+.main-nav-list {
+	display: flex;
+	align-items: center;
+	gap: 26px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 .main-nav a:not(.btn) {
@@ -489,7 +519,7 @@ button {
 .hero {
 	position: relative;
 	color: var(--white);
-	background: linear-gradient(160deg, var(--violet-dark) 0%, var(--violet) 60%, var(--violet-dark) 100%);
+	background: var(--violet-dark);
 	overflow: hidden;
 }
 
@@ -497,8 +527,8 @@ button {
 	position: absolute;
 	inset: 0;
 	background-size: cover;
-	background-position: center;
-	opacity: 0.24;
+	background-position: right center;
+	opacity: 0.20;
 	z-index: 0;
 }
 
@@ -506,9 +536,7 @@ button {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background:
-		radial-gradient(ellipse 60% 50% at 20% 10%, rgba(255, 255, 255, 0.10), transparent 60%),
-		radial-gradient(ellipse 50% 40% at 85% 90%, rgba(255, 255, 255, 0.08), transparent 55%);
+	background: linear-gradient(90deg, rgba(42, 10, 99, 0.97) 0%, rgba(42, 10, 99, 0.90) 52%, rgba(42, 10, 99, 0.48) 100%);
 	z-index: 1;
 	pointer-events: none;
 }
@@ -518,8 +546,8 @@ button {
 	z-index: 2;
 	padding-top: 92px;
 	padding-bottom: 96px;
-	text-align: center;
-	max-width: 920px;
+	text-align: left;
+	max-width: 980px;
 }
 
 .hero-tag {
@@ -529,13 +557,12 @@ button {
 	background: rgba(255, 255, 255, 0.12);
 	border: 1px solid rgba(255, 255, 255, 0.35);
 	padding: 8px 20px;
-	border-radius: 999px;
+	border-radius: 4px;
 	font-size: 0.8rem;
 	font-weight: 600;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	margin-bottom: 26px;
-	backdrop-filter: blur(4px);
 }
 
 .hero-tag .dot {
@@ -557,17 +584,14 @@ button {
 	line-height: 1.12;
 	letter-spacing: 0.01em;
 	margin-bottom: 22px;
-	text-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+	max-width: 760px;
 }
 
 .hero-title em {
 	font-style: normal;
 	display: block;
-	background: linear-gradient(90deg, #ffffff, #d9c8ff);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	letter-spacing: 0.08em;
+	color: rgba(255, 255, 255, 0.82);
+	letter-spacing: 0.01em;
 }
 
 .hero-lead {
@@ -575,12 +599,12 @@ button {
 	font-weight: 400;
 	opacity: 0.94;
 	max-width: 740px;
-	margin: 0 auto 34px;
+	margin: 0 0 34px;
 }
 
 .hero-cta {
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	gap: 14px;
 	flex-wrap: wrap;
 	margin-bottom: 56px;
@@ -588,13 +612,13 @@ button {
 
 .hero-stats {
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	gap: clamp(24px, 6vw, 72px);
 	flex-wrap: wrap;
 }
 
 .stat {
-	text-align: center;
+	text-align: left;
 	padding: 0 10px;
 }
 
@@ -618,6 +642,60 @@ button {
 	border-left: 1px solid rgba(255, 255, 255, 0.25);
 }
 
+.hero-trust {
+	margin-top: 42px;
+	padding-top: 18px;
+	border-top: 1px solid rgba(255, 255, 255, 0.28);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.hero-trust ul,
+.engagement-rail {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px 20px;
+	margin: 12px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hero-trust li {
+	font-size: 0.78rem;
+	letter-spacing: 0;
+	text-transform: none;
+	color: rgba(255, 255, 255, 0.88);
+}
+
+.engagement-rail {
+	margin-top: 28px;
+	counter-reset: engagement;
+	gap: 0;
+}
+
+.engagement-rail li {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.engagement-rail li::before {
+	counter-increment: engagement;
+	content: "0" counter(engagement);
+	font-size: 0.7rem;
+	opacity: 0.72;
+}
+
+.engagement-rail li + li::before {
+	margin-left: 18px;
+}
+
 .hero-strip {
 	position: relative;
 	z-index: 2;
@@ -625,7 +703,7 @@ button {
 	color: var(--white);
 	font-size: 0.87rem;
 	font-weight: 600;
-	box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 -8px 30px rgba(42, 10, 99, 0.15);
 }
 
 .strip-inner {
@@ -742,8 +820,8 @@ button {
 }
 
 .section-bg-dark {
-	background: linear-gradient(180deg, var(--violet-dark) 0%, #1C0740 100%);
-	color: #fff;
+	background: var(--violet-dark);
+	color: var(--white);
 }
 
 .section-bg-dark .eyebrow,
@@ -755,7 +833,7 @@ button {
 .section-bg-dark .refs-table td,
 .section-bg-dark .refs-table td a,
 .section-bg-dark .partners-list li {
-	color: #fff;
+	color: var(--white);
 }
 
 .section-bg-dark .filiale-card,
@@ -976,7 +1054,7 @@ button {
 	color: var(--grey);
 	border-radius: var(--radius);
 	padding: 26px 22px;
-	box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
+	box-shadow: 0 14px 34px rgba(42, 10, 99, 0.25);
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	position: relative;
 	overflow: hidden;
@@ -994,7 +1072,7 @@ button {
 
 .impact-item:hover {
 	transform: translateY(-6px);
-	box-shadow: 0 20px 44px rgba(0, 0, 0, 0.33);
+	box-shadow: 0 20px 44px rgba(42, 10, 99, 0.33);
 }
 
 .impact-item b {
@@ -1450,7 +1528,7 @@ button {
 }
 
 .footer-bottom {
-	background: rgba(0, 0, 0, 0.25);
+	background: rgba(42, 10, 99, 0.25);
 	padding: 18px 0;
 	text-align: center;
 	font-size: 0.8rem;
@@ -1653,10 +1731,12 @@ button {
 		transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 		z-index: 90;
 		overflow-y: auto;
+		visibility: hidden;
 	}
 
 	.main-nav.open {
 		transform: translateX(0);
+		visibility: visible;
 	}
 
 	.main-nav::before {
@@ -1686,6 +1766,36 @@ button {
 
 	.main-nav .btn {
 		margin-top: 18px;
+	}
+
+	.nav-close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: 18px;
+		right: 18px;
+		width: 42px;
+		height: 42px;
+		padding: 0;
+		border: 1px solid rgba(70, 20, 145, 0.24);
+		border-radius: 4px;
+		background: var(--white);
+		color: var(--violet-dark);
+		font-size: 2rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.main-nav-list {
+		width: 100%;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+	}
+
+	.main-nav-list .menu-item {
+		margin: 0;
 	}
 
 	.nav-toggle {
@@ -2269,9 +2379,9 @@ div[id] {
 	margin: 0 auto;
 	padding: 16px 18px;
 	background: var(--violet-dark);
-	color: #fff;
+	color: var(--white);
 	border-radius: var(--radius);
-	box-shadow: 0 12px 40px rgba(20, 5, 50, 0.45);
+	box-shadow: 0 12px 40px rgba(42, 10, 99, 0.45);
 	font-size: 0.92rem;
 	line-height: 1.55;
 	transform: translateY(140%);
@@ -2325,7 +2435,7 @@ div[id] {
 	max-width: 92vw;
 	max-height: 86vh;
 	border-radius: 6px;
-	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 20px 60px rgba(42, 10, 99, 0.60);
 }
 
 .lightbox-caption {
@@ -2345,7 +2455,7 @@ div[id] {
 	position: absolute;
 	background: rgba(255, 255, 255, 0.12);
 	border: 0;
-	color: #fff;
+	color: var(--white);
 	font-size: 1.5rem;
 	line-height: 1;
 	width: 46px;
@@ -2403,4 +2513,15 @@ div[id] {
 		top: 10px;
 		right: 10px;
 	}
+}
+
+.cookie-decline {
+	border-color: var(--white);
+	color: var(--white);
+}
+
+.cookie-decline:hover,
+.cookie-decline:focus {
+	background: var(--white);
+	color: var(--violet-dark);
 }

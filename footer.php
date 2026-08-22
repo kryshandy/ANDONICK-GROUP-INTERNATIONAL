@@ -77,7 +77,7 @@
 				<nav class="footer-legal" aria-label="Pages légales">
 					<ul>
 						<?php foreach ( $legal_ids as $legal_id ) : ?>
-							<li><a href="<?php echo esc_url( get_permalink( $legal_id ) ); ?>"><?php echo esc_html( get_the_title( $legal_id ) ); ?></a></li>
+							<li><a href="<?php echo esc_url( andonick_url_in_language( get_permalink( $legal_id ), andonick_lang() ) ); ?>"><?php echo esc_html( get_the_title( $legal_id ) ); ?></a></li>
 						<?php endforeach; ?>
 					</ul>
 				</nav>

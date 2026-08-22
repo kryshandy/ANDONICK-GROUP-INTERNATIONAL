@@ -9,8 +9,8 @@ Site vitrine one-page bilingue (FR/EN) de **ANDONICK Group International** (Bang
 ## Aperçu
 
 - **Environnement local** : XAMPP (Apache + MySQL + PHP 8.x) — WordPress 7.0
-- **Thème** : `andonick` (classique, sans builder, zéro plugin additionnel)
-- **Multilingue** : FR (défaut) / EN via `?lang=en` — service de langue complet (locale WP, `<html lang>`, titre d'onglet, hreflang, canonical)
+- **Thème** : `andonick` (classique, sans builder obligatoire)
+- **Multilingue** : FR (défaut) / EN via `?lang=en` — accueil bilingue, avec locale et balises `hreflang` uniquement là où les deux versions existent réellement
 - **Contenu** : 8 métiers (extensible à 12 dès le Customizer), témoignages (6 places), références (illimité), partenaires (illimité), statistiques du haut de page (illimitées), actualités (articles WordPress), réseaux sociaux (illimités), carte Google Maps, formulaires devis/rappel aux champs modifiables, **6 sections libres (3 « texte » + 3 « bannière »)** ajoutables/masquables dans la page, galerie réalisations (12 places)
 - **Référencement** : description + Open Graph/Twitter réglés sans code (par langue), image de partage dédiée, textes du blog et de la page 404 modifiables
 
@@ -19,8 +19,8 @@ Site vitrine one-page bilingue (FR/EN) de **ANDONICK Group International** (Bang
 ```
 wp-content/themes/andonick/
 ├── style.css              → déclaration du thème + CSS complet (charte)
-├── functions.php          → setup, assets, service de langues, envoi des formulaires
-├── header.php             → topbar, navigation, bouton FR/EN
+├── functions.php          → setup, assets, service de langues, demandes de contact
+├── header.php             → topbar, menus WordPress FR/EN, bouton FR/EN
 ├── footer.php             → footer, WhatsApp flottant, retour en haut
 ├── front-page.php         → orchestre les sections dans l'ordre du Customizer
 ├── index.php              → pages & articles (mentions légales, blog) + 404
@@ -49,33 +49,42 @@ wp-content/themes/andonick/
 
 Tout le site est éditable depuis l'admin WordPress, sans toucher au code :
 
+- **Menus** : créez un menu français et un menu anglais dans **Apparence → Menus**, puis assignez-les aux emplacements « Navigation principale — français » et « — anglais ». Le menu de compatibilité et les liens du Customizer restent disponibles pour les anciennes installations.
 - **Panneau « ANDONICK — Contenu du site »** :
   - **Structure & Ordre** : l'ordre d'affichage des 14 sections (une ligne = une section, retirez la ligne pour masquer)
   - **Textes principaux — FR / EN** : tous les textes de la page dans chaque langue (dont carte : lien d'intégration + bouton « Voir sur la carte » ; actualités : titres, sous-titre, nombre d'articles ; **menu et bandeau du haut** : 1 ligne = `Libellé|URL`, vide = affichage officiel automatique)
   - **Les métiers — FR / EN** : **illimités** (1 ligne = `Numéro|Titre|Description|Étiquette1;Étiquette2`)
-  - **Témoignages & Références — FR / EN** : **témoignages illimités** (1 ligne = `Citation|Nom|Rôle`), références illimitées (1 ligne = `Catégorie | Nom | Fonction | Téléphone`), en-têtes du tableau
+  - **Témoignages & Références — FR / EN** : **témoignages illimités** (1 ligne = `Citation|Nom|Rôle`), références illimitées (1 ligne = `Catégorie | Organisation | Mission`), en-têtes du tableau
   - **Formulaires & listes — FR / EN** : impacts **illimités** (1 ligne = `Chiffre|Description`), partenaires, liste déroulante des services, créneaux de rappel, **statistiques illimitées** (1 ligne = `Nombre|Libellé`, ex. `15+|ans d'expertise`), **réseaux sociaux illimités** (1 ligne = `Nom|URL`), champs des formulaires Devis/Rappel
   - **Pages légales & Actualités** : 3 liens de pied de page choisis parmi vos pages WordPress (Mentions légales, Politique de confidentialité…), interrupteur d'affichage de la section Actualités (articles du blog)
   - **Formulaires & Blog (réglages communs)** : afficher/masquer chacun des deux formulaires, longueur des extraits d'articles, commentaires sous les articles
   - **Images** : photo du hero, photos des sections, **galerie à 40 emplacements réglables** (place vide = photo non affichée), **photo optionnelle des sections libres « Texte » (position gauche/droite réglable)**, image de partage Open Graph
 - **Identité du site** (Réglages de base) : logo, titre, icône, description.
 - **Liens des menus & boutons**, grand titre, bandes du haut de page, valeurs, e-mail de contact : rien n'est figé, tout texte et tout lien peut être changé (2 langues).
-- **Apparence & Styles** (Personnaliser > ANDONICK — Apparence & Styles) : couleurs, polices, alignements, espacements, positions (hero, galerie, menu fixe), **hauteur du menu, taille des boutons**, **animations au défilement et compteurs (oui/non) + durée du comptage**, **police personnalisée (fichier .woff2 + nom, ils se chargent automatiquement)**, **bouton « Réinitialiser »** — sans code, valeurs par défaut = design officiel.
-- **Règle d'or** : un champ laissé vide ne s'affiche jamais (carte, réseaux sociaux, statistiques, liens légaux, sections libres) — le site garde alors son apparence d'origine.
+- **Apparence & Styles** (Personnaliser > ANDONICK — Apparence & Styles) : polices, alignements, espacements, positions (hero, galerie, menu fixe), **hauteur du menu, taille des boutons**, **animations au défilement et compteurs (oui/non) + durée du comptage**, **police personnalisée (fichier .woff2 + nom, ils se chargent automatiquement)**, **bouton « Réinitialiser »** — sans code. La palette est verrouillée pour protéger la charte officielle.
+- **Règle d'or** : une valeur enregistrée vide est un choix éditorial ; elle ne sera pas réinsérée automatiquement. Les listes, cartes, réseaux sociaux, statistiques, liens légaux et sections libres vides sont masqués.
 - Chaque modification est **prévisualisée en direct** ; « Publier » applique au site.
 - Les fichiers ne sont jamais à modifier : tout part de `inc/content.php` (valeurs par défaut, source officielle) et du Customizer (ce que le client voit et change).
 
 **Règles** : ne jamais modifier les couleurs, ni le logo (fichier officiel, à conserver intact), ni ajouter de couleur hors charte.
 
-## Service de langues (complet, sans plugin)
+## Service de langues (sans plugin)
 
 L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro requête DB, pas de plugin lourd). Pour être complet et SEO-correct :
-- `switch_to_locale('en_US')` → tout WordPress parle anglais (admin bar, dates, plugins)
+- `switch_to_locale('en_US')` → les éléments WordPress affichés côté visiteur suivent l’anglais
 - `<html lang="en-US">` (fr-FR par défaut)
-- Titre de l'onglet traduit (« ANDONICK Group International — Pan-African multi-sector group »)
-- `hreflang` réciproques fr/en + `x-default`, `canonical` auto-référent par langue
+- Titre de l'onglet et métadonnées adaptés au contenu réellement consulté
+- `hreflang` réciproques fr/en + `x-default` pour l’accueil ; les pages et articles ne déclarent pas une fausse traduction
 - `body class="lang-en"` / `lang-fr`
-- Tout texte visible est traduit (162 chaînes auditées à chaque build — 0 texte non traduit)
+- Les textes du thème sont traduits. Les articles et pages WordPress doivent être rédigés dans les deux langues avant d’être reliés par une solution multilingue dédiée.
+
+## Demandes et e-mails
+
+Chaque formulaire validé est enregistré dans **Demandes** dans l’administration WordPress avant l’envoi de l’e-mail. Ainsi, une panne SMTP ne fait pas perdre le prospect : le statut « enregistrée » est affiché au visiteur. Configurez tout de même un SMTP transactionnel avant la mise en ligne.
+
+## Workflow Git recommandé
+
+Le dépôt Git se trouve à la racine de ce thème. Travaillez sur une branche par évolution, vérifiez PHP/JavaScript, créez un commit lisible puis ouvrez une pull request vers `main`. Les réglages, pages, médias et menus WordPress vivent dans la base de données : exportez-les avec une sauvegarde de production, ils ne doivent pas être committés comme du code. Pour transmettre le thème, lancez `scripts/build-release.ps1` : son ZIP exclut volontairement Git, les documents internes, les sources et les scripts de développement. Apache bloque aussi `.git` et `docs` lorsque le thème est servi localement.
 
 ## Mise en production — checklist
 
@@ -91,6 +100,7 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 
 ## Versions
 
+- **3.9.0** — **Livraison opérationnelle** : positionnement recentré sur un partenaire unique de l’étude à la maintenance ; hero sobre avec preuves partenaires et parcours de prise en charge éditables ; palette officielle verrouillée ; menus WordPress distincts FR/EN ; demandes de formulaire validées et conservées dans l’administration avant e-mail ; SEO par page corrigé (titre, canonical unique, Open Graph), navigation/accessibilité mobile, onglets et lightbox durcis. Les mises à jour du thème ne suppriment plus jamais de contenu WordPress.
 - **3.8.0** — **Harmonie et équilibre responsive sur tous les écrans** : grilles de cartes (métiers, témoignages, impacts) qui passent proprement de 3 → 2 → 1 colonnes (tablette et mobile), ancres qui ne sont plus cachées sous le menu fixe (`scroll-margin-top`), boutons WhatsApp du contact empilés pleine largeur sur mobile, échelles typographiques fluides, rythme d&#8217;espacement homogène. Vérifié à 1400/1024/768/480/380 px : aucune colonne écrasée, aucun débordement horizontal, boutons 448 px pleine largeur au mobile
 - **3.7.0** — **Actualités proprement bilingues et « vraies »** : le contenu de démonstration WordPress (article « Bonjour tout le monde ! », page d&#8217;exemple et son commentaire) est automatiquement supprimé à l&#8217;installation/à la mise à jour du thème — la section n&#8217;apparaît donc plus à cause d&#8217;un article vide ; nouvelle : **« Actualités — catégorie des articles français / anglais »** (Pages légales &amp; Actualités) : la section ne montre que les articles de la langue visitée et se masque quand la catégorie est vide. Vérifié : EN vide → section masquée, FR intacte
 - **3.6.0** — **RGPD + personnalisation augmentée, tout sans code** : bandeau cookies (textes FR/EN éditables, choix mémorisé sur l&#8217;appareil, activable/masquable) ; interrupteurs individuels par section (8 cases à cocher dans « Structure & Ordre ») ; fonds de section Clair/Teinté/Violet foncé + nombre de colonnes des cartes métiers et témoignages (1 à 4) ; **lightbox galerie** (clic → plein écran, ‹ › et ← →, Échap) ; copie de la demande envoyée au visiteur par e-mail (réglable). Testé navigateur : bandeau disparaît après choix, compteur lightbox 2/6 après flèche, sections masquées puis restaurées

@@ -14,6 +14,8 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<a class="skip-link" href="#accueil">Aller au contenu principal</a>
+
 <div class="topbar">
 	<div class="container topbar-inner">
 		<div class="topbar-links">
@@ -37,9 +39,17 @@
 		</a>
 
 		<nav class="main-nav" id="mainNav" aria-label="<?php echo esc_attr( andonick_t( 'aria_nav' ) ); ?>">
-			<?php foreach ( andonick_nav_links() as $nav_link ) : ?>
-				<a href="<?php echo esc_url( $nav_link[1] ); ?>"><?php echo esc_html( $nav_link[0] ); ?></a>
-			<?php endforeach; ?>
+			<button type="button" class="nav-close" id="navClose" aria-label="<?php echo esc_attr( andonick_t( 'aria_menu' ) ); ?>">×</button>
+			<?php $menu_location = ( 'en' === andonick_lang() ) ? 'primary_en' : 'primary_fr'; ?>
+			<?php if ( has_nav_menu( $menu_location ) ) : ?>
+				<?php wp_nav_menu( array( 'theme_location' => $menu_location, 'container' => false, 'menu_class' => 'main-nav-list', 'depth' => 1 ) ); ?>
+			<?php elseif ( has_nav_menu( 'primary' ) ) : ?>
+				<?php wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_class' => 'main-nav-list', 'depth' => 1 ) ); ?>
+			<?php else : ?>
+				<?php foreach ( andonick_nav_links() as $nav_link ) : ?>
+					<a href="<?php echo esc_url( $nav_link[1] ); ?>"><?php echo esc_html( $nav_link[0] ); ?></a>
+				<?php endforeach; ?>
+			<?php endif; ?>
 			<a href="<?php echo esc_url( andonick_t( 'nav_devis_href' ) ); ?>" class="btn btn-sm btn-white"><?php echo esc_html( andonick_t( 'nav_devis' ) ); ?></a>
 		</nav>
 

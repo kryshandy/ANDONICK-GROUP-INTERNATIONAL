@@ -100,7 +100,7 @@ function andonick_customize_register( $wp_customize ) {
 		'panel'       => 'andonick_panel',
 	) );
 	$wp_customize->add_setting( 'andonick_section_order', array(
-		'default'           => "hero\ngroupe\nfiliales\nimpact\nactualites\nrealisations\nreferences\ncontact",
+		'default'           => "hero\ngroupe\nfiliales\nreferences\nrealisations\nimpact\nactualites\ncontact\ntexte1\ntexte2\ntexte3\nbanniere1\nbanniere2\nbanniere3",
 		'sanitize_callback' => 'andonick_sanitize_section_order',
 		'type'              => 'theme_mod',
 	) );
@@ -122,6 +122,12 @@ function andonick_customize_register( $wp_customize ) {
 		'realisations'=> 'Réalisations (galerie)',
 		'references'  => 'Références & témoignages',
 		'contact'     => 'Contact & devis',
+		'texte1'      => 'Section libre — texte 1',
+		'texte2'      => 'Section libre — texte 2',
+		'texte3'      => 'Section libre — texte 3',
+		'banniere1'   => 'Section libre — bannière 1',
+		'banniere2'   => 'Section libre — bannière 2',
+		'banniere3'   => 'Section libre — bannière 3',
 	);
 	foreach ( $sec_labels as $sec => $sec_label ) {
 		$wp_customize->add_setting( 'andonick_sec_' . $sec . '_enabled', array(
@@ -175,6 +181,9 @@ function andonick_customize_register( $wp_customize ) {
 	foreach ( $filiale_imgs as $fi => $file ) {
 		andonick_cz_image( $wp_customize, 'filiale_' . ( $fi + 1 ), ANDONICK_URI . '/assets/img/metiers/' . $file, 'Les métiers — photo du métier ' . ( $fi + 1 ) . ' (photo officielle pré-remplie ; remplacez-la par la vôtre — les photos suivent la position des lignes « Les métiers »)', 'andonick_images' );
 	}
+	for ( $fi = 9; $fi <= 12; $fi++ ) {
+		andonick_cz_image( $wp_customize, 'filiale_' . $fi, '', 'Les métiers — photo du métier ' . $fi . ' (facultative, vide = carte sans photo)', 'andonick_images' );
+	}
 	$wp_customize->add_setting( 'andonick_gallery_slots', array(
 		'default'           => '12',
 		'sanitize_callback' => function ( $v ) {
@@ -215,6 +224,7 @@ function andonick_customize_register( $wp_customize ) {
 		) );
 
 		/* Textes simples (scalaires) */
+		$legacy_unused = array( 'hero_title', 'f_name', 'f_company', 'f_phone', 'f_email', 'f_service', 'f_desc', 'f_slot', 'f_city', 'f_object', 'descPlaceholder', 'cityPlaceholder', 'objectPlaceholder' );
 		$nice_labels = array(
 			'hero_title_main'   => 'Héros — grand titre (partie principale)',
 			'hero_title_tail'   => 'Héros — fin du grand titre (en violet)',
@@ -238,10 +248,10 @@ function andonick_customize_register( $wp_customize ) {
 			'lbl_fr'            => 'Étiquette « (France) » après un numéro',
 		);
 		foreach ( $content[ $lang ] as $key => $value ) {
-			if ( is_array( $value ) || in_array( $key, array( 'filiales', 'services', 'impacts', 'testis', 'ref_headers', 'refs', 'partners', 'slots' ), true ) ) {
+			if ( is_array( $value ) || in_array( $key, array( 'filiales', 'services', 'impacts', 'testis', 'ref_headers', 'refs', 'partners', 'slots' ), true ) || in_array( $key, $legacy_unused, true ) ) {
 				continue;
 			}
-			$is_long = in_array( $key, array( 's2_body', 'hero_lead', 'impact_body', 'contact_sub', 'f_disc_devis', 'f_disc_rappel', 'foot_tag', 'contact_addr', 'seo_desc', 'nav_links', 'topbar_links', 'foot_col2_links', 'foot_col3_links', 'foot_col4_links', 'form_copy_body', 'cookies_text' ), true );
+			$is_long = in_array( $key, array( 's2_body', 'hero_lead', 'impact_body', 'contact_sub', 'f_disc_devis', 'f_disc_rappel', 'foot_tag', 'contact_addr', 'seo_desc', 'nav_links', 'topbar_links', 'foot_col2_links', 'foot_col3_links', 'foot_col4_links', 'form_copy_body', 'cookies_text', 'texte1_body', 'texte2_body', 'texte3_body', 'banniere1_body', 'banniere2_body', 'banniere3_body' ), true );
 			if ( $is_long ) {
 				andonick_cz_textarea( $wp_customize, $lang, $key, $value, $sec_texts );
 			} else {
@@ -258,6 +268,7 @@ function andonick_customize_register( $wp_customize ) {
 		}
 		/* Listes : valeurs du Groupe et bandes du haut de page (1 ligne = 1 élément). */
 		andonick_cz_textarea( $wp_customize, $lang, 'values', implode( "\n", $content[ $lang ]['values'] ), $sec_texts, 'Le Groupe — valeurs (1 par ligne)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'engagement_steps', implode( "\n", $content[ $lang ]['engagement_steps'] ), $sec_texts, 'Parcours de prise en charge (1 étape par ligne)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'strip', implode( "\n", $content[ $lang ]['strip'] ), $sec_texts, 'Bandes du haut de page (1 par ligne)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'stats', implode( "\n", $content[ $lang ]['stats'] ), $sec_texts, 'Statistiques du haut de page (1 par ligne : Nombre|Libellé — vide = non affichée)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'socials', implode( "\n", $content[ $lang ]['socials'] ), $sec_texts, 'Réseaux sociaux (1 par ligne : Nom|URL — vide = aucun lien affiché)' );

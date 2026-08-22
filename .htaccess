@@ -1,0 +1,13 @@
+# Le thème est un répertoire publiquement servi par Apache. Ces éléments sont
+# nécessaires au développement ou à la transmission interne, jamais au web.
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule ^\.git(?:/|$) - [F,L,NC]
+	RewriteRule ^docs(?:/|$) - [F,L,NC]
+</IfModule>
+
+<IfModule mod_authz_core.c>
+	<FilesMatch "^(?:\.git|\.gitignore)$">
+		Require all denied
+	</FilesMatch>
+</IfModule>

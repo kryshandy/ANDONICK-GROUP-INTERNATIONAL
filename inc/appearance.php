@@ -26,13 +26,6 @@ function andonick_ap( $key, $default = '' ) {
 }
 
 /**
- * Assainit une couleur hexadécimale (vide si invalide).
- */
-function andonick_ap_sanitize_hex( $value ) {
-	return sanitize_hex_color( $value );
-}
-
-/**
  * Assainit une opacité (0.00 – 1.00).
  */
 function andonick_ap_sanitize_opacity( $value ) {
@@ -114,20 +107,22 @@ function andonick_appearance_css() {
 	}
 	$heading = ( '' !== $font_heading ) ? $font_heading : $font;
 	$size          = andonick_ap_sanitize_int( andonick_ap( 'font_size', '16' ), 14, 18, 16 );
-	$primary       = andonick_ap_sanitize_hex( andonick_ap( 'color_primary', '#461491' ) );
-	$primary_dark  = andonick_ap_sanitize_hex( andonick_ap( 'color_primary_dark', '#2A0A63' ) );
-	$text          = andonick_ap_sanitize_hex( andonick_ap( 'color_text', '#333333' ) );
-	$page_bg       = andonick_ap_sanitize_hex( andonick_ap( 'color_page_bg', '#FFFFFF' ) );
-	$tint          = andonick_ap_sanitize_hex( andonick_ap( 'color_tint', '#F5F1FB' ) );
-	$topbar_bg     = andonick_ap_sanitize_hex( andonick_ap( 'color_topbar_bg', '#2A0A63' ) );
-	$footer_bg     = andonick_ap_sanitize_hex( andonick_ap( 'color_footer_bg', '#2A0A63' ) );
-	$titles        = andonick_ap_sanitize_hex( andonick_ap( 'color_titles', '#461491' ) );
+	/* Charte ANDONICK verrouillée : seuls les quatre tons officiels sont
+	 * utilisés. Les transparences servent uniquement aux bordures et fonds. */
+	$primary       = '#461491';
+	$primary_dark  = '#2A0A63';
+	$text          = '#333333';
+	$page_bg       = '#FFFFFF';
+	$tint          = 'rgba(70,20,145,0.07)';
+	$topbar_bg     = '#2A0A63';
+	$footer_bg     = '#2A0A63';
+	$titles        = '#461491';
 	$width         = andonick_ap_sanitize_int( andonick_ap( 'container_width', '1200' ), 1100, 1280, 1200 );
 	$pad           = andonick_ap_sanitize_int( andonick_ap( 'section_pad', '96' ), 60, 120, 96 );
 	$gal           = andonick_ap_sanitize_int( andonick_ap( 'gallery_cols', '3' ), 2, 4, 3 );
 	$metiers_cols  = andonick_ap_sanitize_int( andonick_ap( 'metiers_cols', '3' ), 1, 4, 3 );
 	$testis_cols   = andonick_ap_sanitize_int( andonick_ap( 'testis_cols', '3' ), 1, 4, 3 );
-	$radius        = andonick_ap_sanitize_int( andonick_ap( 'radius', '12' ), 0, 16, 12 );
+	$radius        = andonick_ap_sanitize_int( andonick_ap( 'radius', '6' ), 4, 8, 6 );
 	$hero_h        = andonick_ap_sanitize_int( andonick_ap( 'hero_height', '90' ), 80, 100, 90 );
 	$hero_align    = andonick_ap_sanitize_choice( andonick_ap( 'hero_align', 'center' ), array( 'center', 'left', 'right' ), 'center' );
 	$header_fixed  = andonick_ap_sanitize_choice( andonick_ap( 'header_fixed', '1' ), array( '1', '0' ), '1' );
@@ -211,33 +206,12 @@ function andonick_customize_appearance( $wp_customize ) {
 		'priority'    => 21,
 	) );
 
-	/* ---------------- Couleurs ---------------- */
+	/* ---------------- Charte ---------------- */
 	$wp_customize->add_section( 'andonick_ap_colors', array(
-		'title' => 'Couleurs (charte)',
+		'title'       => 'Charte graphique',
+		'description' => 'Les couleurs officielles sont volontairement verrouillées : violet #461491, violet foncé #2A0A63, blanc #FFFFFF et gris #333333.',
 		'panel' => 'andonick_appearance',
 	) );
-	$colors = array(
-		'color_primary'     => array( '#461491', 'Couleur principale (boutons, liens, titres)' ),
-		'color_primary_dark'=> array( '#2A0A63', 'Couleur principale foncée (fond topbar, pied de page, survols)' ),
-		'color_text'        => array( '#333333', 'Couleur du texte courant' ),
-		'color_titles'      => array( '#461491', 'Couleur des titres de sections' ),
-		'color_page_bg'     => array( '#FFFFFF', 'Fond de la page' ),
-		'color_tint'        => array( '#F5F1FB', 'Fond des encadrés (puces, cartes claires)' ),
-		'color_topbar_bg'   => array( '#2A0A63', 'Fond de la barre du haut' ),
-		'color_footer_bg'   => array( '#2A0A63', 'Fond du pied de page' ),
-	);
-	foreach ( $colors as $key => $data ) {
-		$wp_customize->add_setting( 'andonick_ap_' . $key, array(
-			'default'           => $data[0],
-			'sanitize_callback' => 'andonick_ap_sanitize_hex',
-			'type'              => 'theme_mod',
-		) );
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'andonick_ap_' . $key, array(
-			'label'   => $data[1],
-			'section' => 'andonick_ap_colors',
-			'settings'=> 'andonick_ap_' . $key,
-		) ) );
-	}
 
 	/* ---------------- Typographie & alignements ---------------- */
 	$wp_customize->add_section( 'andonick_ap_typo', array(
@@ -380,9 +354,9 @@ function andonick_customize_appearance( $wp_customize ) {
 		'choices' => array( '2' => '2 colonnes', '3' => '3 colonnes (par défaut)', '4' => '4 colonnes' ),
 	) );
 	$wp_customize->add_setting( 'andonick_ap_radius', array(
-		'default'           => '12',
+		'default'           => '6',
 		'sanitize_callback' => function ( $v ) {
-			return (string) andonick_ap_sanitize_int( $v, 0, 16, 12 );
+			return (string) andonick_ap_sanitize_int( $v, 4, 8, 6 );
 		},
 		'type'              => 'theme_mod',
 	) );
@@ -390,7 +364,7 @@ function andonick_customize_appearance( $wp_customize ) {
 		'label'   => 'Coins arrondis des cartes',
 		'section' => 'andonick_ap_layout',
 		'type'    => 'select',
-		'choices' => array( '0' => 'Angles droits', '8' => '8 px', '12' => '12 px (par défaut)', '16' => '16 px (très arrondi)' ),
+		'choices' => array( '4' => '4 px', '6' => '6 px (par défaut)', '8' => '8 px' ),
 	) );
 	$wp_customize->add_setting( 'andonick_ap_header_fixed', array(
 		'default'           => '1',

@@ -16,3 +16,4 @@ wp-config-sample.php
 # Divers
 node_modules/
 tmp/
+release/

@@ -20,5 +20,6 @@ Documentation et fichiers sources fournis par le client (Google Drive) et extrai
 ## Notes de production
 
 - L'envoi des formulaires (devis/rappel) passe par `wp_mail()` — nécessite un plugin SMTP (ex. WP Mail SMTP) en production.
-- Le formulaire inclut : nonce WordPress, honeypot anti-spam, validation serveur, redirection sécurisée.
+- Le formulaire inclut : nonce WordPress, honeypot anti-spam, validation serveur, enregistrement privé dans **Demandes**, puis redirection sécurisée. Une panne SMTP ne doit donc pas faire perdre une demande.
 - Pour tout changement visuel : respecter impérativement la charte (4 couleurs, logo intact).
+- Les menus, pages, articles, médias et réglages restent des données WordPress. Le dépôt Git versionne le thème ; la sauvegarde WordPress versionne les données de production.

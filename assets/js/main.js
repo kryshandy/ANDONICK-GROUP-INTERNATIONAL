@@ -11,6 +11,7 @@
 		/* ============ Menu mobile + overlay ============ */
 		var toggle = document.getElementById('navToggle');
 		var nav = document.getElementById('mainNav');
+		var navClose = document.getElementById('navClose');
 		var overlay = document.getElementById('navOverlay');
 
 		function closeNav() {
@@ -34,6 +35,7 @@
 				nav.classList.contains('open') ? closeNav() : openNav();
 			});
 			overlay.addEventListener('click', closeNav);
+			if (navClose) { navClose.addEventListener('click', closeNav); }
 			nav.querySelectorAll('a').forEach(function (link) {
 				link.addEventListener('click', closeNav);
 			});
@@ -45,6 +47,7 @@
 		/* ============ Header scrolled state ============ */
 		var header = document.getElementById('siteHeader');
 		function onScrollHeader() {
+			if (!header) { return; }
 			if (window.scrollY > 10) {
 				header.classList.add('scrolled');
 			} else {
@@ -61,8 +64,12 @@
 		};
 		tabs.forEach(function (tab) {
 			tab.addEventListener('click', function () {
-				tabs.forEach(function (t) { t.classList.remove('active'); });
+				tabs.forEach(function (t) {
+					t.classList.remove('active');
+					t.setAttribute('aria-selected', 'false');
+				});
 				tab.classList.add('active');
+				tab.setAttribute('aria-selected', 'true');
 				Object.keys(panels).forEach(function (key) {
 					if (panels[key]) {
 						panels[key].hidden = (key !== tab.dataset.tab);
@@ -82,6 +89,17 @@
 			}, 5000);
 		}
 
+		/* Retour après soumission classique : le serveur a validé, enregistré
+		 * la demande puis redirigé vers le formulaire. */
+		if (typeof window.AndonickData !== 'undefined' && window.AndonickData.formFeedback) {
+			showToast(window.AndonickData.formFeedback);
+			if (window.history && window.history.replaceState) {
+				var cleanUrl = new URL(window.location.href);
+				cleanUrl.searchParams.delete('andonick_form');
+				window.history.replaceState({}, document.title, cleanUrl.toString());
+			}
+		}
+
 		/* ============ Ancres internes : si la section n'existe pas sur cette page (ex. article de blog), on va sur l'accueil avec l'ancre — comme la référence ============ */
 		document.addEventListener('click', function (e) {
 			var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
@@ -92,7 +110,7 @@
 			e.preventDefault();
 			var base = (typeof window.AndonickData !== 'undefined' && window.AndonickData.frontUrl) ? window.AndonickData.frontUrl : '/';
 			var lang = (typeof window.AndonickData !== 'undefined') ? window.AndonickData.lang : '';
-			window.location.href = base + (lang ? '?lang=' + encodeURIComponent(lang) : '') + '#' + id;
+			window.location.href = base + (lang === 'en' ? '?lang=en' : '') + '#' + id;
 		});
 
 		/* ============ Sélecteur de langue : on reste sur la section en cours ============ */
@@ -107,27 +125,16 @@
 			});
 		});
 
-		/* ============ Soumission AJAX des formulaires ============ */
+		/* ============ Soumission des formulaires ============
+		 * Le navigateur effectue une soumission WordPress classique. Cela évite
+		 * d'annoncer un succès lorsque le serveur ou le SMTP a échoué. */
 		document.querySelectorAll('.andonick-form').forEach(function (form) {
-			form.addEventListener('submit', function (e) {
-				if (typeof window.AndonickData === 'undefined') { return; }
-				e.preventDefault();
+			form.addEventListener('submit', function () {
 				var submitBtn = form.querySelector('button[type="submit"]');
-				var original = submitBtn ? submitBtn.textContent : '';
-				if (submitBtn) { submitBtn.textContent = '…'; submitBtn.disabled = true; }
-				var data = new FormData(form);
-				fetch(window.AndonickData.ajaxUrl, {
-					method: 'POST',
-					credentials: 'same-origin',
-					body: data,
-				}).then(function () {
-					form.reset();
-					showToast(window.AndonickData.toast);
-				}).catch(function () {
-					showToast(window.AndonickData.toast);
-				}).finally(function () {
-					if (submitBtn) { submitBtn.textContent = original; submitBtn.disabled = false; }
-				});
+				if (submitBtn) {
+					submitBtn.disabled = true;
+					submitBtn.setAttribute('aria-busy', 'true');
+				}
 			});
 		});
 
@@ -164,7 +171,16 @@
 
 		/* ============ Scrollspy : lien actif dans la nav ============ */
 		var sections = document.querySelectorAll('main section[id]');
-		var navLinks = document.querySelectorAll('.main-nav a[href^="#"]:not(.btn)');
+		var navLinks = document.querySelectorAll('.main-nav a:not(.btn)');
+
+		function navHash(link) {
+			try {
+				var url = new URL(link.href, window.location.href);
+				return (url.origin === window.location.origin && url.pathname === window.location.pathname) ? url.hash.slice(1) : '';
+			} catch (err) {
+				return '';
+			}
+		}
 
 		function spy() {
 			var pos = window.scrollY + 140;
@@ -175,7 +191,7 @@
 				}
 			});
 			navLinks.forEach(function (link) {
-				var target = link.getAttribute('href').slice(1);
+				var target = navHash(link);
 				link.classList.toggle('active', target === current);
 			});
 		}
@@ -270,6 +286,8 @@
 		if (galleryLinks.length) {
 			var lb = null;
 			var lbState = { items: galleryLinks, index: 0 };
+			var lbTrigger = null;
+			var isEnglish = typeof window.AndonickData !== 'undefined' && window.AndonickData.lang === 'en';
 
 			function lbBuild() {
 				lb = document.createElement('div');
@@ -277,9 +295,9 @@
 				lb.setAttribute('role', 'dialog');
 				lb.setAttribute('aria-modal', 'true');
 				lb.innerHTML =
-					'<button type="button" class="lightbox-close" aria-label="Fermer">&times;</button>' +
-					'<button type="button" class="lightbox-prev" aria-label="Précédente">&lsaquo;</button>' +
-					'<button type="button" class="lightbox-next" aria-label="Suivante">&rsaquo;</button>' +
+					'<button type="button" class="lightbox-close" aria-label="' + (isEnglish ? 'Close' : 'Fermer') + '">&times;</button>' +
+					'<button type="button" class="lightbox-prev" aria-label="' + (isEnglish ? 'Previous' : 'Précédente') + '">&lsaquo;</button>' +
+					'<button type="button" class="lightbox-next" aria-label="' + (isEnglish ? 'Next' : 'Suivante') + '">&rsaquo;</button>' +
 					'<div class="lightbox-count"></div>' +
 					'<img alt="">' +
 					'<div class="lightbox-caption"></div>';
@@ -312,6 +330,8 @@
 				if (!lb) { return; }
 				lb.classList.remove('open');
 				document.body.style.overflow = '';
+				document.removeEventListener('keydown', lbKey);
+				if (lbTrigger) { lbTrigger.focus(); }
 				window.setTimeout(function () {
 					if (lb) { lb.remove(); lb = null; }
 				}, 300);
@@ -322,11 +342,19 @@
 				if (e.key === 'Escape') { lbClose(); }
 				else if (e.key === 'ArrowLeft') { lbShow(lbState.index - 1); }
 				else if (e.key === 'ArrowRight') { lbShow(lbState.index + 1); }
+				else if (e.key === 'Tab') {
+					var controls = Array.prototype.slice.call(lb.querySelectorAll('button'));
+					var first = controls[0];
+					var last = controls[controls.length - 1];
+					if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+					else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+				}
 			}
 
 			galleryLinks.forEach(function (link, index) {
 				link.addEventListener('click', function (e) {
 					e.preventDefault();
+					lbTrigger = link;
 					lbShow(index);
 				});
 			});

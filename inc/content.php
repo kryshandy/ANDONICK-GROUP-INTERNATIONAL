@@ -21,11 +21,11 @@ function andonick_content() {
 		'fr' => array(
 			// Navigation.
 			'nav_group'       => 'Le Groupe',
-			'nav_filiales'    => 'Filiales & Activités',
-			'nav_impact'      => 'Impact',
+			'nav_filiales'    => 'Expertises',
+			'nav_impact'      => 'Implantations & impact',
 			'nav_refs'        => 'Références',
 			'nav_contact'     => 'Contact',
-			'nav_devis'       => 'Demander un devis',
+			'nav_devis'       => 'Décrire mon projet',
 			'nav_group_href'  => '#groupe',
 			'nav_filiales_href' => '#filiales',
 			'nav_impact_href' => '#impact',
@@ -34,15 +34,15 @@ function andonick_content() {
 			'nav_devis_href'  => '#devis',
 
 			// Hero.
-			'hero_tag'        => 'Groupe multisectoriel panafricain',
-			'hero_title_main' => 'ANDONICK GROUP',
-			'hero_title_tail' => 'INTERNATIONAL',
-			'hero_title'      => 'ANDONICK GROUP INTERNATIONAL',
-			'hero_lead'       => 'Télécommunications, énergie solaire, sécurité, BTP, transport & logistique, commerce général, facility management et conseil : un partenaire technique unique, présent à Bangui, Dakar et Bordeaux.',
-			'hero_cta1'       => 'Demander un devis en ligne',
-			'hero_cta2'       => 'Découvrir nos filiales',
+			'hero_tag'        => 'Infrastructures & services intégrés',
+			'hero_title_main' => 'Déployez vos projets essentiels',
+			'hero_title_tail' => 'avec un partenaire unique',
+			'hero_title'      => 'Déployez vos projets essentiels avec un partenaire unique',
+			'hero_lead'       => 'Télécommunications, énergie, BTP, sécurité et logistique pour les institutions, ONG et entreprises — de l’étude à la maintenance.',
+			'hero_cta1'       => 'Échanger sur votre projet',
+			'hero_cta2'       => 'Voir nos réalisations',
 			'hero_cta1_href'  => '#devis',
-			'hero_cta2_href'  => '#filiales',
+			'hero_cta2_href'  => '#realisations',
 			'hero_cap'        => 'Nos équipes techniques et logistiques, mobilisées à travers l\'Afrique',
 			'contact_mail'    => 'contact@andonickgroup.com',
 			'stats'           => array(
@@ -50,6 +50,7 @@ function andonick_content() {
 				'8|filiales complémentaires',
 				'3|pays — RCA · Sénégal · France',
 			),
+			'engagement_steps' => array( 'Étude', 'Déploiement', 'Exploitation', 'Maintenance' ),
 			'map_embed'       => '',
 			'map_url'         => '',
 			'map_lien'        => 'Voir sur la carte',
@@ -94,14 +95,12 @@ function andonick_content() {
 			'banniere3_btn'   => '',
 			'banniere3_btn_href' => '',
 			'devis_fields'   => array(
-				'Nom complet|text|1',
-				'Entreprise|text|0',
+				'Organisation|text|1',
+				'Nom du contact|text|1',
 				'Téléphone|tel|1',
 				'E-mail|email|0',
-				'Filiale / service concerné|select|0|services',
-				'Votre message|textarea|1',
-				'Créneau de rappel souhaité|select|0|slots',
-				'Ville|text|0',
+				'Service concerné|select|0|services',
+				'Besoin, délai ou contexte du projet|textarea|1',
 			),
 			'rappel_fields'  => array(
 				'Nom complet|text|1',
@@ -131,9 +130,9 @@ function andonick_content() {
 			'img_team_name' => 'Équipe ANDONICK Group sur site logistique',
 
 			// Filiales.
-			's3_eyebrow'    => 'Nos filiales & domaines d\'activité',
-			's3_title'      => 'Huit métiers, une même exigence de qualité',
-			's3_sub'        => 'Chaque filiale du Groupe mobilise une expertise technique dédiée, tout en s\'appuyant sur la force logistique, financière et humaine de l\'ensemble ANDONICK Group International.',
+			's3_eyebrow'    => 'Nos expertises',
+			's3_title'      => 'Les capacités essentielles à la réussite de vos projets',
+			's3_sub'        => 'Des expertises spécialisées, coordonnées par une même équipe pour intervenir du diagnostic à la maintenance.',
 
 			// Impact.
 			'impact_eyebrow' => 'Notre engagement',
@@ -185,7 +184,9 @@ function andonick_content() {
 			'cityPlaceholder' => 'Bangui, Dakar, Bordeaux…',
 			'objectPlaceholder'=> 'En quelques mots, l\'objet de votre appel',
 			'slots'           => array( 'Matin (8h–12h)', 'Après-midi (13h–17h)', 'Le plus rapidement possible' ),
-			'toast_msg'       => 'Merci — votre demande a bien été enregistrée.',
+			'toast_msg'       => 'Votre demande est bien reçue. Notre équipe vous répond sous 24 à 48 h ouvrées.',
+			'form_saved_msg'  => 'Votre demande est bien enregistrée. Notre équipe vous répond sous 24 à 48 h ouvrées.',
+			'form_error_msg'  => 'Vérifiez les champs obligatoires, puis envoyez à nouveau votre demande.',
 			'form_copy_subject' => 'Confirmation de votre demande — ANDONICK Group International',
 			'form_copy_body'  => 'Bonjour,
 
@@ -261,7 +262,7 @@ Group International',
 			),
 
 			// Tableau des références.
-			'ref_headers'    => array( 'Catégorie', 'Nom', 'Fonction / Organisation', 'Téléphone' ),
+			'ref_headers'    => array( 'Catégorie', 'Organisation / référence', 'Mission' ),
 			'refs'           => array(
 				array( 'ONG Humanitaire', 'M. Guylain Kongawi Solombe', 'Directeur Pays, Première Urgence Internationale', '+236 72 68 33 37' ),
 				array( 'Particulier', 'M. Mack P.', 'Installation Internet haut débit', '+236 72 52 27 26' ),
@@ -275,11 +276,11 @@ Group International',
 
 		'en' => array(
 			'nav_group'     => 'The Group',
-			'nav_filiales'  => 'Subsidiaries & Activities',
-			'nav_impact'    => 'Impact',
+			'nav_filiales'  => 'Expertise',
+			'nav_impact'    => 'Locations & Impact',
 			'nav_refs'      => 'References',
 			'nav_contact'   => 'Contact',
-			'nav_devis'     => 'Request a Quote',
+			'nav_devis'     => 'Describe Your Project',
 			'nav_group_href'  => '#groupe',
 			'nav_filiales_href' => '#filiales',
 			'nav_impact_href' => '#impact',
@@ -287,15 +288,15 @@ Group International',
 			'nav_contact_href'=> '#contact',
 			'nav_devis_href'  => '#devis',
 
-			'hero_tag'      => 'Pan-African multi-sector group',
-			'hero_title_main' => 'ANDONICK GROUP',
-			'hero_title_tail' => 'INTERNATIONAL',
-			'hero_title'    => 'ANDONICK GROUP INTERNATIONAL',
-			'hero_lead'     => 'Telecommunications, solar energy, security, construction, transport & logistics, general trade, facility management and consulting: a single technical partner, present in Bangui, Dakar and Bordeaux.',
-			'hero_cta1'     => 'Request a Quote Online',
-			'hero_cta2'     => 'Discover Our Subsidiaries',
+			'hero_tag'      => 'Integrated infrastructure & services',
+			'hero_title_main' => 'Deliver essential projects',
+			'hero_title_tail' => 'with one accountable partner',
+			'hero_title'    => 'Deliver essential projects with one accountable partner',
+			'hero_lead'     => 'Telecommunications, energy, construction, security and logistics for institutions, NGOs and businesses — from study through maintenance.',
+			'hero_cta1'     => 'Discuss your project',
+			'hero_cta2'     => 'View Our Projects',
 			'hero_cta1_href'  => '#devis',
-			'hero_cta2_href'  => '#filiales',
+			'hero_cta2_href'  => '#realisations',
 			'hero_cap'      => 'Our technical and logistics teams, mobilised across Africa',
 			'contact_mail'  => 'contact@andonickgroup.com',
 			'stats'         => array(
@@ -303,6 +304,7 @@ Group International',
 				'8|complementary subsidiaries',
 				'3|countries — CAR · Senegal · France',
 			),
+			'engagement_steps' => array( 'Study', 'Deployment', 'Operations', 'Maintenance' ),
 			'map_embed'     => '',
 			'map_url'       => '',
 			'map_lien'      => 'View on the map',
@@ -347,14 +349,12 @@ Group International',
 			'banniere3_btn'   => '',
 			'banniere3_btn_href' => '',
 			'devis_fields'   => array(
-				'Full name|text|1',
-				'Company|text|0',
+				'Organisation|text|1',
+				'Contact name|text|1',
 				'Phone|tel|1',
 				'E-mail|email|0',
-				'Subsidiary / service concerned|select|0|services',
-				'Your message|textarea|1',
-				'Preferred callback slot|select|0|slots',
-				'City|text|0',
+				'Relevant service|select|0|services',
+				'Need, timeline or project context|textarea|1',
 			),
 			'rappel_fields'  => array(
 				'Full name|text|1',
@@ -382,9 +382,9 @@ Group International',
 			),
 			'img_team_name' => 'ANDONICK Group team on a logistics site',
 
-			's3_eyebrow'    => 'Our Subsidiaries & Business Lines',
-			's3_title'      => 'Eight businesses, one standard of excellence',
-			's3_sub'        => 'Each subsidiary of the Group brings dedicated technical expertise, backed by the logistical, financial and human strength of ANDONICK Group International as a whole.',
+			's3_eyebrow'    => 'Our Expertise',
+			's3_title'      => 'Essential capabilities for successful projects',
+			's3_sub'        => 'Specialist expertise, coordinated by one team from assessment through to maintenance.',
 
 			'impact_eyebrow' => 'Our Commitment',
 			'impact_title'   => 'A tangible digital impact for the people of Central Africa',
@@ -433,7 +433,9 @@ Group International',
 			'cityPlaceholder' => 'Bangui, Dakar, Bordeaux…',
 			'objectPlaceholder'=> 'Briefly describe the subject of your call',
 			'slots'           => array( 'Morning (8am–12pm)', 'Afternoon (1pm–5pm)', 'As soon as possible' ),
-'toast_msg'       => 'Thank you — your request has been submitted.',
+			'toast_msg'       => 'Your request has been received. Our team will respond within 24 to 48 business hours.',
+			'form_saved_msg'  => 'Your request has been recorded. Our team will respond within 24 to 48 business hours.',
+			'form_error_msg'  => 'Please check the required fields and send your request again.',
 			'form_copy_subject' => 'Confirmation of your request — ANDONICK Group International',
 			'form_copy_body'  => 'Hello,
 
@@ -500,7 +502,7 @@ International team',
 				array( 'ANDONICK Group International deployed a robust, secure network solution for us. The professionalism and expertise of their teams are remarkable.', 'ICASEES', 'Public Institution — IT & Network Solutions' ),
 			),
 
-			'ref_headers'    => array( 'Category', 'Name', 'Role / Organisation', 'Phone' ),
+			'ref_headers'    => array( 'Category', 'Organisation / reference', 'Mission' ),
 			'refs'           => array(
 				array( 'Humanitarian NGO', 'Mr. Guylain Kongawi Solombe', 'Country Director, Première Urgence Internationale', '+236 72 68 33 37' ),
 				array( 'Private Individual', 'Mr. Mack P.', 'High-speed Internet Installation', '+236 72 52 27 26' ),
@@ -525,12 +527,29 @@ function andonick_lang() {
  * Récupère une chaîne traduite. Ex. andonick_t( 'nav_contact' ).
  * Lit d'abord le Customizer (Apparence → Personnaliser), sinon la valeur par défaut.
  */
-function andonick_t( $key ) {
+function andonick_theme_mod_is_saved( $key ) {
+	$mods = get_theme_mods();
+	return is_array( $mods ) && array_key_exists( $key, $mods );
+}
+
+function andonick_t_lang( $key, $lang ) {
 	$content = andonick_content();
-	$lang    = andonick_lang();
+	$lang    = ( 'en' === $lang ) ? 'en' : 'fr';
 	$default = isset( $content[ $lang ][ $key ] ) ? $content[ $lang ][ $key ] : '';
-	$value   = get_theme_mod( "andonick_{$lang}_{$key}", $default );
-	return ( '' === $value ) ? $default : $value;
+	$mod_key = "andonick_{$lang}_{$key}";
+
+	/* Une valeur réellement enregistrée, même vide, est un choix éditorial :
+	 * le client peut donc retirer un texte sans que le modèle le réinsère. */
+	if ( andonick_theme_mod_is_saved( $mod_key ) ) {
+		$mods = get_theme_mods();
+		return $mods[ $mod_key ];
+	}
+
+	return $default;
+}
+
+function andonick_t( $key ) {
+	return andonick_t_lang( $key, andonick_lang() );
 }
 
 /**
@@ -587,7 +606,7 @@ function andonick_img( $key ) {
 		'filiale_8'  => ANDONICK_URI . '/assets/img/metiers/ltd.jpg',
 	);
 	$mod      = get_theme_mod( "andonick_img_{$key}", '' );
-	return ( '' !== $mod ) ? $mod : $defaults[ $key ];
+	return ( '' !== $mod ) ? $mod : ( $defaults[ $key ] ?? '' );
 }
 
 /**
@@ -609,12 +628,10 @@ function andonick_logo() {
  */
 function andonick_lines( $key, $default_lines ) {
 	$lang = andonick_lang();
-	$raw  = get_theme_mod( "andonick_{$lang}_{$key}", '' );
-	if ( '' !== $raw ) {
-		$lines = array_filter( array_map( 'trim', explode( "\n", $raw ) ) );
-		if ( ! empty( $lines ) ) {
-			return array_values( $lines );
-		}
+	$mod_key = "andonick_{$lang}_{$key}";
+	if ( andonick_theme_mod_is_saved( $mod_key ) ) {
+		$lines = array_filter( array_map( 'trim', explode( "\n", (string) get_theme_mod( $mod_key, '' ) ) ) );
+		return array_values( $lines );
 	}
 	return $default_lines;
 }
@@ -667,8 +684,9 @@ function andonick_format_filiales_rows( $lang ) {
 
 function andonick_filiales() {
 	$lang = andonick_lang();
-	$raw  = (string) get_theme_mod( "andonick_{$lang}_filiales_rows", '' );
-	if ( '' !== $raw ) {
+	$mod_key = "andonick_{$lang}_filiales_rows";
+	if ( andonick_theme_mod_is_saved( $mod_key ) ) {
+		$raw = (string) get_theme_mod( $mod_key, '' );
 		$out = array();
 		foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
 			$parts = array_pad( array_map( 'trim', explode( '|', $line, 4 ) ), 4, '' );
@@ -682,9 +700,7 @@ function andonick_filiales() {
 				'tags'  => array_values( array_filter( array_map( 'trim', explode( ';', $parts[3] ) ) ) ),
 			);
 		}
-		if ( ! empty( $out ) ) {
-			return $out;
-		}
+		return $out;
 	}
 	return andonick_filiales_legacy( $lang );
 }
@@ -710,7 +726,8 @@ function andonick_values() {
  */
 function andonick_stats() {
 	$default = implode( "\n", andonick_content()[ andonick_lang() ]['stats'] );
-	$raw     = (string) get_theme_mod( 'andonick_' . andonick_lang() . '_stats', $default );
+	$mod_key = 'andonick_' . andonick_lang() . '_stats';
+	$raw     = (string) get_theme_mod( $mod_key, $default );
 	$out     = array();
 	foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
 		$parts  = array_map( 'trim', explode( '|', $line, 2 ) );
@@ -764,10 +781,11 @@ function andonick_legal_pages() {
  */
 function andonick_links_from( $lang_key, $fallback ) {
 	$lang = andonick_lang();
-	$raw  = (string) get_theme_mod( 'andonick_' . $lang . '_' . $lang_key, '' );
-	if ( '' === $raw ) {
+	$mod_key = 'andonick_' . $lang . '_' . $lang_key;
+	if ( ! andonick_theme_mod_is_saved( $mod_key ) ) {
 		return $fallback;
 	}
+	$raw = (string) get_theme_mod( $mod_key, '' );
 	$out = array();
 	foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
 		$parts = array_pad( array_map( 'trim', explode( '|', $line, 2 ) ), 2, '' );
@@ -948,8 +966,9 @@ function andonick_format_testi_rows( $lang ) {
 
 function andonick_testis() {
 	$lang = andonick_lang();
-	$raw  = (string) get_theme_mod( "andonick_{$lang}_testi_rows", '' );
-	if ( '' !== $raw ) {
+	$mod_key = "andonick_{$lang}_testi_rows";
+	if ( andonick_theme_mod_is_saved( $mod_key ) ) {
+		$raw = (string) get_theme_mod( $mod_key, '' );
 		$out = array();
 		foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
 			$parts = array_pad( array_map( 'trim', explode( '|', $line, 3 ) ), 3, '' );
@@ -957,9 +976,7 @@ function andonick_testis() {
 				$out[] = $parts;
 			}
 		}
-		if ( ! empty( $out ) ) {
-			return $out;
-		}
+		return $out;
 	}
 	return andonick_testis_raw( $lang );
 }
@@ -995,8 +1012,9 @@ function andonick_format_impact_rows( $lang ) {
 
 function andonick_impacts() {
 	$lang = andonick_lang();
-	$raw  = (string) get_theme_mod( "andonick_{$lang}_impact_rows", '' );
-	if ( '' !== $raw ) {
+	$mod_key = "andonick_{$lang}_impact_rows";
+	if ( andonick_theme_mod_is_saved( $mod_key ) ) {
+		$raw = (string) get_theme_mod( $mod_key, '' );
 		$out = array();
 		foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
 			$parts = array_pad( array_map( 'trim', explode( '|', $line, 2 ) ), 2, '' );
@@ -1004,30 +1022,27 @@ function andonick_impacts() {
 				$out[] = $parts;
 			}
 		}
-		if ( ! empty( $out ) ) {
-			return $out;
-		}
+		return $out;
 	}
 	return andonick_impacts_raw( $lang );
 }
 
 /**
- * Tableau des références (éditable : 1 ligne = Catégorie | Nom | Fonction | Téléphone).
+ * Tableau des références (éditable : 1 ligne = Catégorie | Organisation | Mission).
  */
 function andonick_refs() {
 	$lang = andonick_lang();
-	$raw  = get_theme_mod( "andonick_{$lang}_refs_rows", '' );
-	if ( '' !== $raw ) {
+	$mod_key = "andonick_{$lang}_refs_rows";
+	if ( andonick_theme_mod_is_saved( $mod_key ) ) {
+		$raw = get_theme_mod( $mod_key, '' );
 		$rows = array();
 		foreach ( explode( "\n", $raw ) as $line ) {
 			$parts = array_map( 'trim', explode( '|', $line ) );
-			if ( count( $parts ) >= 4 ) {
-				$rows[] = array_slice( $parts, 0, 4 );
+			if ( count( $parts ) >= 3 ) {
+				$rows[] = array_slice( $parts, 0, 3 );
 			}
 		}
-		if ( ! empty( $rows ) ) {
-			return $rows;
-		}
+		return $rows;
 	}
 	return andonick_content()[ $lang ]['refs'];
 }
@@ -1044,6 +1059,11 @@ function andonick_ref_headers() {
  */
 function andonick_partners() {
 	return andonick_lines( 'partners', andonick_content()[ andonick_lang() ]['partners'] );
+}
+
+/** Étapes de prise en charge affichées dans le parcours du haut de page. */
+function andonick_engagement_steps() {
+	return andonick_lines( 'engagement_steps', andonick_content()[ andonick_lang() ]['engagement_steps'] );
 }
 
 /**
@@ -1101,5 +1121,5 @@ function andonick_lang_url( $target = 'en' ) {
 	if ( '' === $path ) {
 		$path = '/';
 	}
-	return home_url( $path ) . '?lang=' . $target . $hash;
+	return andonick_url_in_language( home_url( $path ), $target ) . $hash;
 }

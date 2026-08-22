@@ -17,7 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Ordre des sections (éditable) : liste blanche, un nom par ligne.
  */
 function andonick_section_order() {
-	$default = array( 'hero', 'groupe', 'filiales', 'impact', 'actualites', 'realisations', 'references', 'contact' );
+	$default = array_merge(
+		array( 'hero', 'groupe', 'filiales', 'references', 'realisations', 'impact', 'actualites', 'contact' ),
+		andonick_free_sections()
+	);
 	$raw     = get_theme_mod( 'andonick_section_order', '' );
 	if ( '' !== $raw ) {
 		$order = array();
@@ -74,6 +77,27 @@ function andonick_section_hero() {
 						<?php $si++; ?>
 					<?php endforeach; ?>
 				</div>
+			<?php endif; ?>
+
+			<?php $hero_partners = andonick_partners(); ?>
+			<?php if ( ! empty( $hero_partners ) ) : ?>
+				<div class="hero-trust" aria-label="<?php echo esc_attr( andonick_t( 'partners_title' ) ); ?>">
+					<span><?php echo esc_html( andonick_t( 'partners_title' ) ); ?></span>
+					<ul>
+						<?php foreach ( $hero_partners as $partner ) : ?>
+							<li><?php echo esc_html( $partner ); ?></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
+
+			<?php $engagement_steps = andonick_engagement_steps(); ?>
+			<?php if ( ! empty( $engagement_steps ) ) : ?>
+				<ol class="engagement-rail" aria-label="<?php echo esc_attr( andonick_t( 's2_title' ) ); ?>">
+					<?php foreach ( $engagement_steps as $step ) : ?>
+						<li><?php echo esc_html( $step ); ?></li>
+					<?php endforeach; ?>
+				</ol>
 			<?php endif; ?>
 		</div>
 
@@ -259,12 +283,12 @@ $q = new WP_Query( array(
 				<?php foreach ( $q->posts as $news ) : ?>
 					<article class="news-card reveal">
 						<?php if ( has_post_thumbnail( $news ) ) : ?>
-							<a class="news-thumb" href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo get_the_post_thumbnail( $news, 'medium_large' ); ?></a>
+							<a class="news-thumb" href="<?php echo esc_url( andonick_url_in_language( get_permalink( $news ), andonick_lang() ) ); ?>"><?php echo get_the_post_thumbnail( $news, 'medium_large' ); ?></a>
 						<?php endif; ?>
 						<time datetime="<?php echo esc_attr( get_the_date( 'c', $news ) ); ?>"><?php echo esc_html( get_the_date( '', $news ) ); ?></time>
-						<h3><a href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo esc_html( get_the_title( $news ) ); ?></a></h3>
+						<h3><a href="<?php echo esc_url( andonick_url_in_language( get_permalink( $news ), andonick_lang() ) ); ?>"><?php echo esc_html( get_the_title( $news ) ); ?></a></h3>
 						<p><?php echo esc_html( wp_trim_words( get_the_excerpt( $news ), andonick_excerpt_words(), '…' ) ); ?></p>
-						<a class="news-more" href="<?php echo esc_url( get_permalink( $news ) ); ?>"><?php echo esc_html( andonick_t( 'news_more' ) ); ?></a>
+						<a class="news-more" href="<?php echo esc_url( andonick_url_in_language( get_permalink( $news ), andonick_lang() ) ); ?>"><?php echo esc_html( andonick_t( 'news_more' ) ); ?></a>
 					</article>
 				<?php endforeach; ?>
 			</div>
@@ -278,7 +302,6 @@ $q = new WP_Query( array(
  */
 function andonick_section_references() {
 	$testis  = andonick_testis();
-	$partners = andonick_partners();
 	?>
 <section class="section section-refs section-bg-<?php echo andonick_sec_bg( 'references', 'light' ); ?>" id="references">
 		<div class="container">
@@ -309,7 +332,7 @@ function andonick_section_references() {
 					<table class="refs-table">
 						<thead>
 							<tr>
-								<?php foreach ( andonick_ref_headers() as $header ) : ?>
+								<?php foreach ( array_slice( andonick_ref_headers(), 0, 3 ) as $header ) : ?>
 									<th><?php echo esc_html( $header ); ?></th>
 								<?php endforeach; ?>
 							</tr>
@@ -317,26 +340,15 @@ function andonick_section_references() {
 						<tbody>
 							<?php foreach ( andonick_refs() as $ref ) : ?>
 								<tr>
-									<td><?php echo esc_html( $ref[0] ); ?></td>
-									<td><b><?php echo esc_html( $ref[1] ); ?></b></td>
-									<td><?php echo esc_html( $ref[2] ); ?></td>
-									<td class="ref-phone"><a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $ref[3] ) ); ?>"><?php echo esc_html( $ref[3] ); ?></a></td>
+									<td><?php echo esc_html( isset( $ref[0] ) ? $ref[0] : '' ); ?></td>
+									<td><b><?php echo esc_html( isset( $ref[1] ) ? $ref[1] : '' ); ?></b></td>
+									<td><?php echo esc_html( isset( $ref[2] ) ? $ref[2] : '' ); ?></td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
 
-				<?php if ( ! empty( $partners ) ) : ?>
-					<div class="partners-strip">
-						<span class="eyebrow"><?php echo esc_html( andonick_t( 'partners_title' ) ); ?></span>
-						<ul>
-							<?php foreach ( $partners as $partner ) : ?>
-								<li><?php echo esc_html( $partner ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				<?php endif; ?>
 			</div>
 		</div>
 	</section>
@@ -398,18 +410,18 @@ function andonick_section_contact() {
 				<?php $tab_devis  = andonick_form_enabled( 'devis' ); ?>
 				<?php $tab_rappel = andonick_form_enabled( 'rappel' ); ?>
 				<?php if ( $tab_devis || $tab_rappel ) : ?>
-				<div class="form-tabs">
+				<div class="form-tabs" role="tablist" aria-label="<?php echo esc_attr( andonick_t( 'contact_title' ) ); ?>">
 					<?php if ( $tab_devis ) : ?>
-						<button type="button" class="form-tab<?php echo $tab_devis ? ' active' : ''; ?>" data-tab="devis"><?php echo esc_html( andonick_t( 'tab_devis' ) ); ?></button>
+						<button type="button" class="form-tab active" id="tab-devis" data-tab="devis" role="tab" aria-selected="true" aria-controls="panel-devis"><?php echo esc_html( andonick_t( 'tab_devis' ) ); ?></button>
 					<?php endif; ?>
 					<?php if ( $tab_rappel ) : ?>
-						<button type="button" class="form-tab<?php echo ( ! $tab_devis ) ? ' active' : ''; ?>" data-tab="rappel"><?php echo esc_html( andonick_t( 'tab_rappel' ) ); ?></button>
+						<button type="button" class="form-tab<?php echo ( ! $tab_devis ) ? ' active' : ''; ?>" id="tab-rappel" data-tab="rappel" role="tab" aria-selected="<?php echo $tab_devis ? 'false' : 'true'; ?>" aria-controls="panel-rappel"><?php echo esc_html( andonick_t( 'tab_rappel' ) ); ?></button>
 					<?php endif; ?>
 				</div>
 				<?php endif; ?>
 
 				<?php if ( $tab_devis ) : ?>
-				<div class="form-panel" id="panel-devis">
+				<div class="form-panel" id="panel-devis" role="tabpanel" aria-labelledby="tab-devis">
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
 						<input type="hidden" name="andonick_form_type" value="devis">
@@ -443,7 +455,7 @@ function andonick_section_contact() {
 				<?php endif; ?>
 
 				<?php if ( $tab_rappel ) : ?>
-				<div class="form-panel" id="panel-rappel" hidden>
+				<div class="form-panel" id="panel-rappel" role="tabpanel" aria-labelledby="tab-rappel"<?php echo $tab_devis ? ' hidden' : ''; ?>>
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
 						<input type="hidden" name="andonick_form_type" value="rappel">
@@ -502,7 +514,7 @@ function andonick_free_texte( $n ) {
 	$btn     = trim( (string) andonick_t( $p . '_btn' ) );
 	$href    = trim( (string) andonick_t( $p . '_btn_href' ) );
 	$media   = andonick_free_texte_img( $n );
-	if ( '' === $title && '' === $body && '' === $btn && ! $media ) {
+	if ( '' === $eyebrow && '' === $title && '' === $body && '' === $btn && ! $media ) {
 		return;
 	}
 	?>
@@ -524,7 +536,7 @@ function andonick_free_texte( $n ) {
 					<?php if ( '' !== $body ) : ?>
 						<div class="free-body reveal"><?php echo nl2br( esc_html( $body ) ); ?></div>
 					<?php endif; ?>
-					<?php if ( '' !== $btn ) : ?>
+					<?php if ( '' !== $btn && '' !== $href ) : ?>
 						<p class="free-cta reveal"><a class="btn" href="<?php echo esc_url( $href ); ?>"><?php echo esc_html( $btn ); ?></a></p>
 					<?php endif; ?>
 				</div>
@@ -555,7 +567,7 @@ function andonick_free_banniere( $n ) {
 		<div class="container banner-inner">
 			<?php if ( '' !== $title ) : ?><h2 class="banner-title reveal"><?php echo esc_html( $title ); ?></h2><?php endif; ?>
 			<?php if ( '' !== $body ) : ?><p class="banner-body reveal"><?php echo nl2br( esc_html( $body ) ); ?></p><?php endif; ?>
-			<?php if ( '' !== $btn ) : ?><p class="banner-cta reveal"><a class="btn btn-outline-light" href="<?php echo esc_url( $href ); ?>"><?php echo esc_html( $btn ); ?></a></p><?php endif; ?>
+			<?php if ( '' !== $btn && '' !== $href ) : ?><p class="banner-cta reveal"><a class="btn btn-outline-light" href="<?php echo esc_url( $href ); ?>"><?php echo esc_html( $btn ); ?></a></p><?php endif; ?>
 		</div>
 	</section>
 	<?php
