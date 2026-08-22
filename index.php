@@ -17,7 +17,7 @@ if ( is_front_page() ) {
 get_header();
 ?>
 
-<main class="page-main">
+<main id="main-content" class="page-main" tabindex="-1">
 	<div class="container">
 		<?php if ( have_posts() ) : ?>
 			<?php while ( have_posts() ) : the_post(); ?>

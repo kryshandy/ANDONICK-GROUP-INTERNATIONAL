@@ -17,9 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Enregistre un champ texte simple dans le Customizer.
  */
 function andonick_cz_text( $wp_customize, $lang, $key, $default, $section ) {
+	$sanitize = 'sanitize_text_field';
+	if ( 'contact_mail' === $key ) {
+		$sanitize = 'sanitize_email';
+	} elseif ( false !== strpos( $key, '_href' ) || in_array( $key, array( 'map_embed', 'map_url' ), true ) ) {
+		$sanitize = 'esc_url_raw';
+	}
 	$wp_customize->add_setting( "andonick_{$lang}_{$key}", array(
 		'default'           => $default,
-		'sanitize_callback' => 'wp_kses_post',
+		'sanitize_callback' => $sanitize,
 		'type'              => 'theme_mod',
 	) );
 	$wp_customize->add_control( "andonick_{$lang}_{$key}", array(
@@ -68,7 +74,7 @@ function andonick_cz_image( $wp_customize, $key, $default, $label, $section ) {
  * uniques, sans doublon.
  */
 function andonick_sanitize_section_order( $input ) {
-	$allowed = array( 'hero', 'groupe', 'filiales', 'impact', 'actualites', 'realisations', 'references', 'contact' );
+	$allowed = array( 'hero', 'groupe', 'filiales', 'projets', 'impact', 'actualites', 'realisations', 'references', 'contact' );
 	$allowed = array_merge( $allowed, andonick_free_sections() );
 	$order   = array();
 	foreach ( explode( "\n", $input ) as $line ) {
@@ -100,13 +106,13 @@ function andonick_customize_register( $wp_customize ) {
 		'panel'       => 'andonick_panel',
 	) );
 	$wp_customize->add_setting( 'andonick_section_order', array(
-		'default'           => "hero\ngroupe\nfiliales\nreferences\nrealisations\nimpact\nactualites\ncontact\ntexte1\ntexte2\ntexte3\nbanniere1\nbanniere2\nbanniere3",
+		'default'           => "hero\ngroupe\nfiliales\nprojets\nreferences\nrealisations\nimpact\nactualites\ncontact\ntexte1\ntexte2\ntexte3\nbanniere1\nbanniere2\nbanniere3",
 		'sanitize_callback' => 'andonick_sanitize_section_order',
 		'type'              => 'theme_mod',
 	) );
 	$wp_customize->add_control( 'andonick_section_order', array(
 		'label'       => 'Ordre des sections',
-		'description' => 'Noms possibles : hero, groupe, filiales, impact, actualites, realisations, references, contact, texte1, texte2, texte3, banniere1, banniere2, banniere3 (sections libres : elles ne s\'affichent que si un contenu y est rempli — la section actualites uniquement si des articles existent)',
+		'description' => 'Noms possibles : hero, groupe, filiales, projets, impact, actualites, realisations, references, contact, texte1, texte2, texte3, banniere1, banniere2, banniere3 (les sections vides ne sont pas affichées)',
 		'section'     => 'andonick_structure',
 		'type'        => 'textarea',
 		'input_attrs' => array( 'rows' => 11 ),
@@ -117,6 +123,7 @@ function andonick_customize_register( $wp_customize ) {
 		'hero'        => 'Haut de page (hero)',
 		'groupe'      => 'Le Groupe',
 		'filiales'    => 'Les métiers (filiales)',
+		'projets'     => 'Projets & preuves terrain',
 		'impact'      => 'Impact sur les territoires',
 		'actualites'  => 'Actualités (blog)',
 		'realisations'=> 'Réalisations (galerie)',
@@ -154,7 +161,7 @@ function andonick_customize_register( $wp_customize ) {
 	andonick_cz_image( $wp_customize, 'impact', ANDONICK_URI . '/assets/img/impact.jpg', 'Photo fond section « Impact »', 'andonick_images' );
 	$gallery_defaults = array( 'hero.jpg', 'photo-10.jpg', 'impact.jpg', 'photo-07.jpg', 'photo-08.jpg', 'photo-11.jpg' );
 	foreach ( $gallery_defaults as $gi => $file ) {
-		andonick_cz_image( $wp_customize, 'gallery_' . ( $gi + 1 ), ANDONICK_URI . '/assets/img/' . $file, 'Galerie — photo ' . ( $gi + 1 ), 'andonick_images' );
+		andonick_cz_image( $wp_customize, 'gallery_' . ( $gi + 1 ), ANDONICK_URI . '/assets/img/' . $file, 'Galerie — photo ' . ( $gi + 1 ) . ' (retirez-la pour masquer cet emplacement)', 'andonick_images' );
 	}
 	for ( $gi = 7; $gi <= 40; $gi++ ) {
 		andonick_cz_image( $wp_customize, 'gallery_' . $gi, '', 'Galerie — photo ' . $gi . ' (vide = non affichée)', 'andonick_images' );
@@ -272,19 +279,20 @@ function andonick_customize_register( $wp_customize ) {
 		andonick_cz_textarea( $wp_customize, $lang, 'strip', implode( "\n", $content[ $lang ]['strip'] ), $sec_texts, 'Bandes du haut de page (1 par ligne)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'stats', implode( "\n", $content[ $lang ]['stats'] ), $sec_texts, 'Statistiques du haut de page (1 par ligne : Nombre|Libellé — vide = non affichée)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'socials', implode( "\n", $content[ $lang ]['socials'] ), $sec_texts, 'Réseaux sociaux (1 par ligne : Nom|URL — vide = aucun lien affiché)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'gallery_meta', implode( "\n", $content[ $lang ]['gallery_meta'] ), $sec_struct, 'Galerie — textes alternatifs et légendes (1 ligne par emplacement : Texte alternatif|Légende optionnelle)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'map_dir', $content[ $lang ]['map_dir'], $sec_texts, 'Adresse affichée sur la carte (bloc Contact)' );
-		andonick_cz_textarea( $wp_customize, $lang, 'devis_fields', implode( "\n", $content[ $lang ]['devis_fields'] ), $sec_struct, 'Formulaire devis — champs (1 ligne = Libellé|type|obligatoire|source — types : text, tel, email, textarea, select ; sources : services, slots)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'devis_fields', implode( "\n", $content[ $lang ]['devis_fields'] ), $sec_struct, 'Formulaire devis — champs (1 ligne = Libellé|type|obligatoire|source — types : text, tel, email, textarea, select, checkbox ; sources : services, slots)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'rappel_fields', implode( "\n", $content[ $lang ]['rappel_fields'] ), $sec_struct, 'Formulaire rappel — champs (même format ; gardez le même ordre en anglais)' );
 
-		/* Les métiers — illimités : 1 ligne = Numéro|Titre|Description|Étiquette1;Étiquette2 */
+		/* Domaines — illimités : 1 ligne = Numéro|Titre|Description|Étiquettes|Alt image */
 		$wp_customize->add_setting( "andonick_{$lang}_filiales_rows", array(
 			'default'           => andonick_format_filiales_rows( $lang ),
 			'sanitize_callback' => 'sanitize_textarea_field',
 			'type'              => 'theme_mod',
 		) );
 		$wp_customize->add_control( "andonick_{$lang}_filiales_rows", array(
-			'label'       => 'Les métiers (illimités)',
-			'description' => '1 ligne = 1 métier, au format : Numéro|Titre|Description|Étiquette1;Étiquette2. Exemple : <code>09|Agro-industrie|Notre nouvelle filiale|Transformation;Export</code>. Une ligne sans titre n\'est pas affichée. Ce champ remplace les anciens « Métier 1 à 12 » (vos valeurs actuelles y sont déjà pré-remplies).',
+			'label'       => 'Les 8 domaines d’activité (extensibles)',
+			'description' => '1 ligne = 1 domaine, au format : Numéro|Titre|Description|Étiquette1;Étiquette2|Texte alternatif de la photo. Une ligne sans titre n\'est pas affichée. Le mot « filiales » reste seulement dans certains identifiants techniques historiques.',
 			'section'     => $sec_filiales,
 			'type'        => 'textarea',
 			'input_attrs' => array( 'rows' => 12 ),
@@ -318,13 +326,13 @@ function andonick_customize_register( $wp_customize ) {
 			'input_attrs' => array( 'rows' => 8 ),
 		) );
 
-		/* Références : 1 ligne = Catégorie|Nom|Fonction|Téléphone */
+		/* Références : 3 ou 4 colonnes selon les en-têtes réellement renseignés. */
 		$refs_default = array();
 		foreach ( $content[ $lang ]['refs'] as $r ) {
 			$refs_default[] = implode( ' | ', $r );
 		}
-		andonick_cz_textarea( $wp_customize, $lang, 'refs_rows', implode( "\n", $refs_default ), $sec_testis, 'Références (1 par ligne : Catégorie | Nom | Fonction | Téléphone)' );
-		andonick_cz_textarea( $wp_customize, $lang, 'ref_headers', implode( "\n", $content[ $lang ]['ref_headers'] ), $sec_testis, 'En-têtes du tableau références' );
+		andonick_cz_textarea( $wp_customize, $lang, 'refs_rows', implode( "\n", $refs_default ), $sec_testis, 'Références (1 par ligne : 3 colonnes obligatoires | 4e colonne facultative ; n’ajoutez aucune donnée personnelle sans base légale)' );
+		andonick_cz_textarea( $wp_customize, $lang, 'ref_headers', implode( "\n", $content[ $lang ]['ref_headers'] ), $sec_testis, 'En-têtes du tableau références (3 ou 4 lignes)' );
 		andonick_cz_textarea( $wp_customize, $lang, 'partners', implode( "\n", $content[ $lang ]['partners'] ), $sec_struct, 'Partenaires institutionnels' );
 		andonick_cz_textarea( $wp_customize, $lang, 'services', implode( "\n", $content[ $lang ]['services'] ), $sec_struct, 'Liste déroulante « Filiale / service concerné »' );
 		andonick_cz_textarea( $wp_customize, $lang, 'slots', implode( "\n", $content[ $lang ]['slots'] ), $sec_struct, 'Créneaux de rappel' );
@@ -378,8 +386,19 @@ function andonick_customize_register( $wp_customize ) {
 			'type'              => 'theme_mod',
 		) );
 		$wp_customize->add_control( 'andonick_legal_page_' . $n, array(
-			'label'       => 'Lien de pied de page n°' . $n . ' (page WordPress)',
+			'label'       => 'Lien de pied de page FR n°' . $n,
 			'description' => 'Choisissez « Aucune » pour ne pas afficher ce lien. Créez vos pages dans « Pages → Ajouter » (ex. Mentions légales, Politique de confidentialité).',
+			'section'     => 'andonick_legal',
+			'type'        => 'dropdown-pages',
+		) );
+		$wp_customize->add_setting( 'andonick_legal_page_' . $n . '_en', array(
+			'default'           => 0,
+			'sanitize_callback' => 'absint',
+			'type'              => 'theme_mod',
+		) );
+		$wp_customize->add_control( 'andonick_legal_page_' . $n . '_en', array(
+			'label'       => 'Footer legal link EN #' . $n,
+			'description' => 'Choose the published English page matching the French link above.',
 			'section'     => 'andonick_legal',
 			'type'        => 'dropdown-pages',
 		) );
@@ -388,11 +407,11 @@ function andonick_customize_register( $wp_customize ) {
 	/* ---- Bandeau cookies (RGPD) ---- */
 	$wp_customize->add_section( 'andonick_cookies', array(
 		'title'       => 'Bandeau cookies (RGPD)',
-		'description' => 'Bandeau d\'information en bas d\'écran. Le choix du visiteur est mémorisé sur son appareil ; ce site ne dépose aucun cookie de suivi. Textes et boutons se règlent dans « Textes principaux » de chaque langue (cookies_text, cookies_accept, cookies_decline).',
+		'description' => 'À laisser désactivé tant qu’aucun outil de mesure, publicité ou autre traceur facultatif n’est installé. Si de tels services sont ajoutés, utilisez une vraie plateforme de consentement qui bloque les scripts avant accord.',
 		'panel'       => 'andonick_panel',
 	) );
 	$wp_customize->add_setting( 'andonick_cookies_enabled', array(
-		'default'           => '1',
+		'default'           => '0',
 		'sanitize_callback' => function ( $v ) {
 			return ( '0' === $v ) ? '0' : '1';
 		},
@@ -470,12 +489,61 @@ function andonick_customize_register( $wp_customize ) {
 		'type'        => 'select',
 		'choices'     => array( '1' => 'Activé', '0' => 'Désactivé' ),
 	) );
+	$wp_customize->add_setting( 'andonick_form_consent_enabled', array(
+		'default'           => '1',
+		'sanitize_callback' => function ( $v ) {
+			return ( '0' === $v ) ? '0' : '1';
+		},
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_form_consent_enabled', array(
+		'label'       => 'Exiger le consentement avant l’envoi',
+		'description' => 'Le libellé est bilingue et éditable. Recommandé dès qu’une demande contient des coordonnées personnelles.',
+		'section'     => 'andonick_common',
+		'type'        => 'select',
+		'choices'     => array( '1' => 'Obligatoire', '0' => 'Désactivé' ),
+	) );
+	$wp_customize->add_setting( 'andonick_privacy_page', array(
+		'default'           => 0,
+		'sanitize_callback' => 'absint',
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_privacy_page', array(
+		'label'       => 'Page de confidentialité FR liée au consentement',
+		'description' => 'Publiez d’abord la page ; le lien est masqué si aucune page publiée n’est choisie.',
+		'section'     => 'andonick_common',
+		'type'        => 'dropdown-pages',
+		'allow_addition' => true,
+	) );
+	$wp_customize->add_setting( 'andonick_privacy_page_en', array(
+		'default'           => 0,
+		'sanitize_callback' => 'absint',
+		'type'              => 'theme_mod',
+	) );
+	$wp_customize->add_control( 'andonick_privacy_page_en', array(
+		'label'       => 'Privacy page EN linked to consent',
+		'description' => 'Choose the published English privacy page.',
+		'section'     => 'andonick_common',
+		'type'        => 'dropdown-pages',
+		'allow_addition' => true,
+	) );
 
 	/* Libellés lisibles supplémentaires (après boucle, toutes langues). */
 	$nice_labels = array(
 		'map_embed'     => 'Carte (lien d\'intégration Google Maps) — laisser vide pour masquer la carte',
 		'map_url'       => 'Lien externe de la carte (optionnel)',
 		'map_lien'      => 'Texte du bouton « Voir sur la carte »',
+		'map_title'     => 'Titre accessible de la carte intégrée',
+		'map_consent'   => 'Carte — information avant chargement du service tiers',
+		'map_consent_btn' => 'Carte — bouton de consentement au chargement',
+		'form_select_placeholder' => 'Formulaires — option vide des listes déroulantes',
+		'form_consent'  => 'Formulaires — texte du consentement',
+		'form_consent_link' => 'Formulaires — texte du lien confidentialité',
+		'projects_eyebrow' => 'Projets — petit titre',
+		'projects_title' => 'Projets — grand titre',
+		'projects_sub'   => 'Projets — introduction',
+		'projects_link'  => 'Projets — texte du lien de preuve',
+		'refs_caption'   => 'Références — légende accessible du tableau',
 		'news_eyebrow'  => 'Actualités — petit titre',
 		'news_title'    => 'Actualités — grand titre',
 		'news_sub'      => 'Actualités — sous-titre (facultatif)',

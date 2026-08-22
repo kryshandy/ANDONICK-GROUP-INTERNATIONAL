@@ -4,10 +4,12 @@
 	RewriteEngine On
 	RewriteRule ^\.git(?:/|$) - [F,L,NC]
 	RewriteRule ^docs(?:/|$) - [F,L,NC]
+	RewriteRule ^release(?:/|$) - [F,L,NC]
+	RewriteRule ^scripts(?:/|$) - [F,L,NC]
 </IfModule>
 
 <IfModule mod_authz_core.c>
-	<FilesMatch "^(?:\.git|\.gitignore)$">
+	<FilesMatch "^(?:\.git|\.gitignore|README\.md)$">
 		Require all denied
 	</FilesMatch>
 </IfModule>

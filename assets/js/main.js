@@ -6,42 +6,126 @@
 (function () {
 	'use strict';
 
+	/* Le contenu reste visible sans JavaScript. Cette classe n'est ajoutée que
+	 * lorsque le script a effectivement démarré, avant le premier rendu utile. */
+	document.documentElement.classList.add('reveal-ready');
+
 	document.addEventListener('DOMContentLoaded', function () {
+		var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		/* Cible fiable du lien d'évitement sur les gabarits intérieurs. */
+		var primaryMain = document.querySelector('main');
+		if (primaryMain && !primaryMain.id) {
+			primaryMain.id = 'main-content';
+		}
+		var skipLink = document.querySelector('.skip-link');
+		if (skipLink) {
+			skipLink.addEventListener('click', function () {
+				var target = document.querySelector(skipLink.getAttribute('href'));
+				if (target) {
+					target.setAttribute('tabindex', '-1');
+					target.focus({ preventScroll: true });
+				}
+			});
+		}
+
+		/* Les tableaux larges deviennent une région atteignable au clavier. */
+		document.querySelectorAll('.refs-table-wrap').forEach(function (wrap) {
+			wrap.setAttribute('tabindex', '0');
+			wrap.setAttribute('role', 'region');
+			wrap.setAttribute('aria-label', (typeof window.AndonickData !== 'undefined' && window.AndonickData.lang === 'en') ? 'Scrollable references table' : 'Tableau des références défilant');
+		});
 
 		/* ============ Menu mobile + overlay ============ */
 		var toggle = document.getElementById('navToggle');
 		var nav = document.getElementById('mainNav');
 		var navClose = document.getElementById('navClose');
 		var overlay = document.getElementById('navOverlay');
+		var drawerQuery = window.matchMedia('(max-width: 1040px)');
+		var navReturnFocus = null;
 
-		function closeNav() {
+		function navFocusable() {
+			if (!nav) { return []; }
+			return Array.prototype.slice.call(nav.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+		}
+
+		function closeNav(restoreFocus) {
+			if (!nav || !toggle || !overlay) { return; }
 			nav.classList.remove('open');
 			toggle.classList.remove('open');
 			toggle.setAttribute('aria-expanded', 'false');
+			toggle.setAttribute('aria-label', toggle.dataset.openLabel || 'Menu');
 			overlay.classList.remove('open');
-			document.body.style.overflow = '';
+			overlay.setAttribute('aria-hidden', 'true');
+			document.body.classList.remove('nav-open');
+			if (drawerQuery.matches) {
+				nav.setAttribute('aria-hidden', 'true');
+			} else {
+				nav.removeAttribute('aria-hidden');
+			}
+			if (restoreFocus && navReturnFocus && typeof navReturnFocus.focus === 'function') {
+				navReturnFocus.focus();
+			}
 		}
 
 		function openNav() {
+			if (!nav || !toggle || !overlay) { return; }
+			navReturnFocus = document.activeElement;
 			nav.classList.add('open');
 			toggle.classList.add('open');
 			toggle.setAttribute('aria-expanded', 'true');
+			toggle.setAttribute('aria-label', toggle.dataset.closeLabel || 'Menu');
+			nav.setAttribute('aria-hidden', 'false');
 			overlay.classList.add('open');
-			document.body.style.overflow = 'hidden';
+			overlay.setAttribute('aria-hidden', 'false');
+			document.body.classList.add('nav-open');
+			window.setTimeout(function () {
+				var focusable = navFocusable();
+				if (focusable.length) { focusable[0].focus(); }
+			}, 30);
+		}
+
+		function syncNavMode() {
+			if (!nav || !toggle) { return; }
+			if (drawerQuery.matches) {
+				if (!nav.classList.contains('open')) { nav.setAttribute('aria-hidden', 'true'); }
+			} else {
+				closeNav(false);
+				nav.removeAttribute('aria-hidden');
+			}
 		}
 
 		if (toggle && nav && overlay) {
+			syncNavMode();
 			toggle.addEventListener('click', function () {
-				nav.classList.contains('open') ? closeNav() : openNav();
+				nav.classList.contains('open') ? closeNav(true) : openNav();
 			});
-			overlay.addEventListener('click', closeNav);
-			if (navClose) { navClose.addEventListener('click', closeNav); }
+			overlay.addEventListener('click', function () { closeNav(true); });
+			if (navClose) { navClose.addEventListener('click', function () { closeNav(true); }); }
 			nav.querySelectorAll('a').forEach(function (link) {
-				link.addEventListener('click', closeNav);
+				link.addEventListener('click', function () { closeNav(true); });
 			});
 			document.addEventListener('keydown', function (e) {
-				if (e.key === 'Escape') { closeNav(); }
+				if (!nav.classList.contains('open')) { return; }
+				if (e.key === 'Escape') {
+					e.preventDefault();
+					closeNav(true);
+				} else if (e.key === 'Tab') {
+					var focusable = navFocusable();
+					if (!focusable.length) { return; }
+					var first = focusable[0];
+					var last = focusable[focusable.length - 1];
+					if (e.shiftKey && document.activeElement === first) {
+						e.preventDefault();
+						last.focus();
+					} else if (!e.shiftKey && document.activeElement === last) {
+						e.preventDefault();
+						first.focus();
+					}
+				}
 			});
+			if (drawerQuery.addEventListener) { drawerQuery.addEventListener('change', syncNavMode); }
+			else { drawerQuery.addListener(syncNavMode); }
 		}
 
 		/* ============ Header scrolled state ============ */
@@ -57,24 +141,44 @@
 		onScrollHeader();
 
 		/* ============ Onglets formulaire ============ */
-		var tabs = document.querySelectorAll('.form-tab');
+		var tabs = Array.prototype.slice.call(document.querySelectorAll('.form-tab'));
 		var panels = {
 			devis: document.getElementById('panel-devis'),
 			rappel: document.getElementById('panel-rappel'),
 		};
-		tabs.forEach(function (tab) {
-			tab.addEventListener('click', function () {
+		function activateTab(tab, moveFocus) {
+			if (!tab) { return; }
 				tabs.forEach(function (t) {
 					t.classList.remove('active');
 					t.setAttribute('aria-selected', 'false');
+					t.setAttribute('tabindex', '-1');
 				});
 				tab.classList.add('active');
 				tab.setAttribute('aria-selected', 'true');
+				tab.setAttribute('tabindex', '0');
 				Object.keys(panels).forEach(function (key) {
 					if (panels[key]) {
 						panels[key].hidden = (key !== tab.dataset.tab);
 					}
 				});
+				if (moveFocus) { tab.focus(); }
+		}
+		tabs.forEach(function (tab) {
+			tab.setAttribute('tabindex', tab.getAttribute('aria-selected') === 'true' ? '0' : '-1');
+			tab.addEventListener('click', function () {
+				activateTab(tab, false);
+			});
+			tab.addEventListener('keydown', function (e) {
+				var index = tabs.indexOf(tab);
+				var next = null;
+				if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { next = tabs[(index + 1) % tabs.length]; }
+				else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { next = tabs[(index - 1 + tabs.length) % tabs.length]; }
+				else if (e.key === 'Home') { next = tabs[0]; }
+				else if (e.key === 'End') { next = tabs[tabs.length - 1]; }
+				if (next) {
+					e.preventDefault();
+					activateTab(next, true);
+				}
 			});
 		});
 
@@ -165,7 +269,7 @@
 
 		if (backTop) {
 			backTop.addEventListener('click', function () {
-				window.scrollTo({ top: 0, behavior: 'smooth' });
+				window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
 			});
 		}
 
@@ -217,7 +321,6 @@
 
 		/* ============ Compteurs animés ============ */
 		var counters = document.querySelectorAll('[data-count]');
-		var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 		function animateCount(el) {
 			var target = parseInt(el.dataset.count, 10);
@@ -294,14 +397,19 @@
 				lb.className = 'lightbox';
 				lb.setAttribute('role', 'dialog');
 				lb.setAttribute('aria-modal', 'true');
+				lb.setAttribute('aria-label', isEnglish ? 'Project image viewer' : 'Visionneuse des réalisations');
 				lb.innerHTML =
 					'<button type="button" class="lightbox-close" aria-label="' + (isEnglish ? 'Close' : 'Fermer') + '">&times;</button>' +
 					'<button type="button" class="lightbox-prev" aria-label="' + (isEnglish ? 'Previous' : 'Précédente') + '">&lsaquo;</button>' +
 					'<button type="button" class="lightbox-next" aria-label="' + (isEnglish ? 'Next' : 'Suivante') + '">&rsaquo;</button>' +
 					'<div class="lightbox-count"></div>' +
-					'<img alt="">' +
+					'<img alt="" decoding="async">' +
 					'<div class="lightbox-caption"></div>';
 				document.body.appendChild(lb);
+				if (lbState.items.length < 2) {
+					lb.querySelector('.lightbox-prev').hidden = true;
+					lb.querySelector('.lightbox-next').hidden = true;
+				}
 				lb.querySelector('.lightbox-close').addEventListener('click', lbClose);
 				lb.querySelector('.lightbox-prev').addEventListener('click', function () { lbShow(lbState.index - 1); });
 				lb.querySelector('.lightbox-next').addEventListener('click', function () { lbShow(lbState.index + 1); });
@@ -322,14 +430,14 @@
 				lb.querySelector('.lightbox-caption').textContent = img ? img.alt : '';
 				lb.querySelector('.lightbox-count').textContent = (lbState.index + 1) + ' / ' + total;
 				lb.classList.add('open');
-				document.body.style.overflow = 'hidden';
+				document.body.classList.add('lightbox-open');
 				lb.querySelector('.lightbox-close').focus();
 			}
 
 			function lbClose() {
 				if (!lb) { return; }
 				lb.classList.remove('open');
-				document.body.style.overflow = '';
+				document.body.classList.remove('lightbox-open');
 				document.removeEventListener('keydown', lbKey);
 				if (lbTrigger) { lbTrigger.focus(); }
 				window.setTimeout(function () {
@@ -343,7 +451,7 @@
 				else if (e.key === 'ArrowLeft') { lbShow(lbState.index - 1); }
 				else if (e.key === 'ArrowRight') { lbShow(lbState.index + 1); }
 				else if (e.key === 'Tab') {
-					var controls = Array.prototype.slice.call(lb.querySelectorAll('button'));
+					var controls = Array.prototype.slice.call(lb.querySelectorAll('button:not([hidden])'));
 					var first = controls[0];
 					var last = controls[controls.length - 1];
 					if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -352,6 +460,8 @@
 			}
 
 			galleryLinks.forEach(function (link, index) {
+				var baseLabel = link.getAttribute('aria-label') || (isEnglish ? 'Enlarge image' : 'Agrandir l’image');
+				link.setAttribute('aria-label', baseLabel + ' ' + (index + 1) + ' / ' + galleryLinks.length);
 				link.addEventListener('click', function (e) {
 					e.preventDefault();
 					lbTrigger = link;

@@ -50,7 +50,7 @@
 		<div class="logo">ANDONICK GROUP<br>INTERNATIONAL</div>
 		<h1>Guide d&#8217;administration du site internet</h1>
 		<p>Personnaliser et gérer votre site 100&nbsp;% sans code, depuis WordPress &#8212; du haut de page au pied de page</p>
-		<p class="small" style="color:#d9cbf0; margin-top:14px;">Thème ANDONICK v3.8.0 &#183; WordPress 7.0.x &#183; Bilingue français / anglais</p>
+		<p class="small" style="color:#d9cbf0; margin-top:14px;">Thème ANDONICK v4.0.0 &#183; ANDONICK Core v1.0.0 &#183; WordPress 7.1 &#183; Français / English</p>
 	</div>
 
 	<!-- ============ SOMMAIRE ============ -->
@@ -67,6 +67,8 @@
 			<li>Ce qu&#8217;il ne faut JAMAIS faire</li>
 			<li>Sécurité, sauvegardes et mises à jour</li>
 			<li>Que faire si quelque chose ne va pas (FAQ)</li>
+			<li>Apprendre à concevoir un site WordPress no-code propre</li>
+			<li>Recette et passage en production</li>
 			<li>Annexe : identifiants et informations techniques</li>
 		</ol>
 	</div>
@@ -77,7 +79,8 @@
 	<table>
 		<tr><th>Brique</th><th>Rôle</th><th>Pour vous</th></tr>
 		<tr><td><strong>WordPress</strong> (le moteur)</td><td>Gère les comptes, les médias, les réglages généraux, le panneau de personnalisation</td><td>Vous l&#8217;utilisez sans jamais voir de code</td></tr>
-		<tr><td><strong>Thème ANDONICK Group</strong> (v3.8.0)</td><td>Le design violet {% 461491 %}, la mise en page, la version anglaise</td><td>Il est déjà réglé : vous n&#8217;avez qu&#8217;à y mettre votre contenu</td></tr>
+		<tr><td><strong>Thème ANDONICK Group</strong> (v4.0.0)</td><td>Le design, la charte, les gabarits, le responsive et le bilingue</td><td>Il est déjà réglé : vous travaillez depuis les écrans WordPress</td></tr>
+		<tr><td><strong>Extension ANDONICK Core</strong> (v1.0.0)</td><td>Les demandes, la conservation des données et les projets/preuves terrain</td><td>Elle doit rester activée ; elle protège les données même si le thème change</td></tr>
 		<tr><td><strong>Base de données</strong></td><td>Stocke tous vos textes, numéros, images personnalisés</td><td>Chaque modification est enregistrée sans toucher aux fichiers</td></tr>
 	</table>
 	<div class="bien"><strong>&#9733; Le principe majeur :</strong> tout ce que vous changez dans WordPress est <strong>immédiatement appliqué à votre site</strong> (après clic sur « Publier ») et <strong>jamais perdu</strong> : le site affiche toujours vos valeurs personnalisées, les valeurs d&#8217;origine ne servant que de secours.</div>
@@ -104,11 +107,14 @@
 		<tr><td>3. Textes principaux &#8212; Français</td><td>Chaque texte du site en français : menu, grand titre, accroche, statistiques, bandes, valeurs, téléphones, e-mail, adresse, carte (lien d&#8217;intégration, bouton « Voir sur la carte »), actualités, boutons, formulaires, pied de page&#8230; Plus : <strong>le menu et le bandeau du haut en liste libre</strong> (1 ligne = <code>Libellé|URL</code> — laisser vide pour l&#8217;affichage officiel automatique), les <strong>colonnes du pied de page en liste libre</strong> (Filiales, Contact + une 4&#232;me colonne facultative), <strong>6 sections libres</strong> (texte1&#8211;texte3 : petit titre, grand titre, contenu, bouton, lien ; banniere1&#8211;banniere3 : grand titre, texte, bouton, lien — chaque section libre est invisible tant qu&#8217;elle est vide), la <strong>description de référencement</strong> (meta description + textes des partages sur les réseaux), les textes de la page « introuvable » (404) et les liens « Article précédent / suivant » du blog.</td></tr>
 		<tr><td>4. Textes principaux &#8212; English</td><td>Les mêmes textes, en anglais (obligatoire : voir chapitre 5).</td></tr>
 		<tr><td>5. Les métiers &#8212; Français / English</td><td><strong>Illimités.</strong> 1 ligne = 1 métier au format <code>Numéro|Titre|Description|Étiquette1;Étiquette2</code>. Une ligne dont le titre est vide n&#8217;est pas affichée. Vos 8 métiers actuels y sont déjà pré-remplis.</td></tr>
-		<tr><td>6. Témoignages &amp; Références &#8212; Français / English</td><td><strong>Témoignages illimités</strong> (1 ligne = <code>Citation|Nom|Rôle</code>). Plus le <strong>tableau des références</strong> : 1 ligne = 1 référence au format <code>Catégorie | Nom | Fonction | Téléphone</code>. Et les en-têtes du tableau.</td></tr>
+		<tr><td>6. Témoignages &amp; Références &#8212; Français / English</td><td><strong>Témoignages illimités</strong> (1 ligne = <code>Citation|Nom|Rôle</code>, uniquement avec autorisation). Le tableau des références utilise par défaut <code>Catégorie | Organisation | Mission</code>. Une 4e colonne n&#8217;apparaît que si un 4e en-tête est explicitement créé ; n&#8217;y publiez jamais de téléphone personnel.</td></tr>
 		<tr><td>7. Formulaires &amp; listes &#8212; Français / English</td><td>Les <strong>impacts illimités</strong> (1 ligne = <code>Chiffre|Description</code>, ex. <code>10|pays couverts</code>), les <strong>partenaires</strong> (1 par ligne), la liste déroulante des services du formulaire, les créneaux de rappel, les bandes du haut de page, les valeurs du Groupe, <strong>les statistiques du haut de page</strong> (1 ligne = <code>Nombre|Libellé</code>, exemple <code>15+|ans d&#8217;expertise</code> — vide = non affichée), <strong>les réseaux sociaux</strong> (1 ligne = <code>Nom|URL</code> — vide = aucun lien), l&#8217;e-mail de contact (destinataire des formulaires) et <strong>les champs des deux formulaires Devis / Rappel</strong> (1 ligne = <code>Libellé|type|obligatoire|source</code> — types : texte, téléphone, e-mail, zone de texte, liste ; sources : vos services ou vos créneaux).</td></tr>
-		<tr><td>8. Pages légales &amp; Actualités</td><td>Le réglage « Afficher la section Actualités » (articles de votre blog) et <strong>3 liens de pied de page</strong> choisis parmi vos pages WordPress (Mentions légales, Politique de confidentialité&#8230;). La section Actualités n&#8217;apparaît que si des articles existent.</td></tr>
+		<tr><td>8. Pages légales &amp; Actualités</td><td>Le réglage « Afficher la section Actualités » et <strong>3 liens de pied de page par langue</strong>. Choisissez une page FR et sa page EN correspondante ; la livraison contient déjà Confidentialité, Cookies et Accessibilité dans les deux langues. La section Actualités n&#8217;apparaît que si des articles existent.</td></tr>
 		<tr><td>9. Formulaires &amp; Blog (réglages communs)</td><td>L&#8217;affichage de chacun des deux formulaires (Devis, Rappel), la <strong>longueur des extraits</strong> des articles (5 à 60 mots) et l&#8217;activation de la <strong>zone de commentaires</strong> sous les articles.</td></tr>
 		<tr><td>Identité du site (WordPress)</td><td>Le logo officiel (Apparence &#8594; Personnaliser &#8594; Identité du site), le nom du site, le slogan, l&#8217;icône du site (favicon, Réglages &#8594; Général).</td></tr>
+		<tr><td><strong>Projets &amp; preuves</strong> (menu WordPress)</td><td>Les réalisations documentées : titre, description et localisation FR/EN, domaine d&#8217;activité, organisme source, logo facultatif, ordre et visibilité.</td></tr>
+		<tr><td><strong>Demandes</strong> (menu WordPress)</td><td>Les devis et rappels enregistrés en privé. Réservé aux administrateurs ; ne copiez pas ces données dans des articles publics.</td></tr>
+		<tr><td>Réglages &#8594; <strong>ANDONICK Core</strong></td><td>Durée de conservation, limitation du nombre de soumissions, fenêtre de temps et contrôle anti-robot.</td></tr>
 	</table>
 
 	<h3>Comment se lit un champ ?</h3>
@@ -160,13 +166,13 @@
 
 	<h3>Métier : 5. Ajouter un témoignage</h3>
 	<div class="etape"><strong>1.</strong> Témoignages &amp; Références — Français &#8594; « Les témoignages (illimités) » &#8594; nouvelle ligne au format <code>Citation|Nom|Rôle</code>.<br>
-	<strong>2.</strong> Traduisez en « — English ».<br>
+	<strong>2.</strong> Conservez la preuve écrite que la personne ou l&#8217;organisation autorise cette publication, puis traduisez en « — English ».<br>
 	<strong>3.</strong> Publier.</div>
 
 	<h3>Métier : 6. Ajouter une référence au tableau</h3>
-	<div class="etape"><strong>1.</strong> Témoignages &amp; Références — Français &#8594; champ « Références » : nouvelle ligne au format <code>Catégorie | Nom | Fonction | Téléphone</code>.<br>
+	<div class="etape"><strong>1.</strong> Témoignages &amp; Références — Français &#8594; champ « Références » : nouvelle ligne au format <code>Catégorie | Organisation | Mission</code>.<br>
 	<strong>2.</strong> Même chose en anglais.<br>
-	<strong>3.</strong> Publier. Le téléphone se transforme en lien « appeler » automatiquement.</div>
+	<strong>3.</strong> Publier. N&#8217;ajoutez jamais de téléphone personnel. Une 4e colonne ne s&#8217;affiche que si vous créez aussi un 4e en-tête.</div>
 
 	<h3>Métier : 7. Ajouter une photo à la galerie</h3>
 	<div class="etape"><strong>1.</strong> Images &#8594; « Galerie — photo 7 » ; puis Téléverser.<br>
@@ -266,10 +272,10 @@
 	<div class="etape"><strong>1.</strong> Personnaliser &#8594; Images &#8594; « Les métiers — photo du métier… » (les photos suivent la position des lignes « Les métiers ») &#8594; cliquez &#8594; « Sélectionner » et choisissez votre image.<br>
 	<strong>2.</strong> Publier : la carte affiche votre photo (photo officielle pré-remplie par défaut : remplacez-la pour personnaliser).</div>
 
-	<h3>Métier : 36. Activer le bandeau cookies (RGPD) et changer ses textes</h3>
-	<div class="etape"><strong>1.</strong> Personnaliser &#8594; ANDONICK &#8594; « Bandeau cookies (RGPD) » &#8594; « Afficher le bandeau cookies » : Affiché (par défaut) ou Masqué.<br>
-	<strong>2.</strong> Le texte et les boutons se règlent dans « Textes principaux » de chaque langue : « Bandeau cookies — texte d&#8217;information », « … bouton J&#8217;accepte », « … bouton Je refuse ».<br>
-	<strong>3.</strong> Publier. Le visiteur choisit une fois ; son choix est mémorisé sur son appareil (bandeau invisible ensuite). Ce site ne dépose aucun cookie de suivi.</div>
+	<h3>Métier : 36. Gérer les cookies et services tiers</h3>
+	<div class="etape"><strong>1.</strong> Dans la livraison actuelle, le bandeau est <strong>masqué</strong> : aucun outil publicitaire ni mesure d&#8217;audience n&#8217;est installé, et la carte externe demande son propre accord avant chargement.<br>
+	<strong>2.</strong> N&#8217;activez pas le bandeau générique pour « faire RGPD » : il ne bloque pas un futur script statistique. Si vous ajoutez Analytics, Meta Pixel, YouTube ou un widget social, installez d&#8217;abord une plateforme de consentement réelle et mettez à jour la page « Politique de cookies ».<br>
+	<strong>3.</strong> Testez ensuite Refuser et Accepter dans une fenêtre privée, avant toute publication.</div>
 
 	<h3>Métier : 37. Changer le fond d&#8217;une section ou le nombre de colonnes</h3>
 	<div class="etape"><strong>1.</strong> Personnaliser &#8594; Apparence &#8594; « Fonds des sections &amp; grilles ».<br>
@@ -344,11 +350,12 @@
 	<h2 class="pagebreak">7. Les formulaires de demande (devis &amp; rappel)</h2>
 	<p>La section Contact contient deux formulaires : « Demander un devis » et « Être rappelé(e) ». Ce qu&#8217;il faut savoir :</p>
 	<ul>
-		<li>Chaque envoi part par e-mail à l&#8217;adresse définie dans « Formulaires &amp; listes &#8594; E-mail de contact », puis la page se recharge.</li>
+		<li>Chaque envoi est d&#8217;abord enregistré en privé dans <strong>Demandes</strong>, puis envoyé par e-mail à l&#8217;adresse définie dans « Formulaires &amp; listes &#8594; E-mail de contact ».</li>
 		<li>Les champs (libellés, types, caractère obligatoire) se modifient sans code : « Formulaires &amp; listes &#8594; Formulaire devis / rappel — champs » (voir scénario 27).</li>
-		<li>Un message de confirmation (« Merci — votre demande a bien été enregistrée. ») s&#8217;affiche en bas de l&#8217;écran.</li>
-		<li>Tout est protégé : un code anti-spam invisible (« honeypot ») et une validation automatique des champs obligatoires (celle de votre grille de champs).</li>
-		<li><strong>Important pour la mise en ligne :</strong> l&#8217;envoi d&#8217;e-mails nécessite la configuration d&#8217;un serveur SMTP (plugin « WP Mail SMTP » + compte Gmail/Office 365…) faite par votre développeur lors du déploiement. Sans cela, les demandes risquent de ne pas partir.</li>
+		<li>Un message distingue l&#8217;e-mail envoyé de la demande seulement enregistrée : aucune demande valide n&#8217;est perdue si le SMTP est momentanément indisponible.</li>
+		<li>Protection active : nonces séparés, honeypot, durée minimale de saisie, listes autorisées, validation serveur, limitation de débit et consentement obligatoire.</li>
+		<li>Réglages &#8594; ANDONICK Core : conservation par défaut 365 jours, 5 soumissions par fenêtre de 15 minutes. Ne changez ces valeurs qu&#8217;avec une raison documentée.</li>
+		<li><strong>Important en production :</strong> configurez un SMTP authentifié avec le domaine officiel, puis réalisez un test de réception et de délivrabilité. Un plugin SMTP n&#8217;est qu&#8217;une interface : il faut aussi un vrai fournisseur et les enregistrements DNS SPF/DKIM/DMARC.</li>
 	</ul>
 
 	<!-- ============ 8 ============ -->
@@ -364,8 +371,9 @@
 	<h3>Sécurité</h3>
 	<ul>
 		<li>Mot de passe <strong>unique et fort</strong>, changé régulièrement.</li>
+		<li>Activez l&#8217;authentification à deux facteurs pour les administrateurs et supprimez immédiatement les comptes inutilisés.</li>
 		<li>Limitez le nombre de comptes administrateurs ; un compte « éditeur » suffit pour modifier les textes (le contenu), l&#8217;admin reste pour la structure.</li>
-		<li>En production : certificat SSL obligatoire (https).</li>
+		<li>En production : certificat SSL obligatoire (https), <code>WP_DEBUG</code> désactivé et édition des fichiers depuis l&#8217;administration interdite.</li>
 	</ul>
 	<h3>Sauvegardes</h3>
 	<ul>
@@ -373,8 +381,8 @@
 	</ul>
 	<h3>Mises à jour</h3>
 	<ul>
-		<li>WordPress se met à jour automatiquement en arrière-plan &#8212; c&#8217;est sain, il n&#8217;y a rien à faire.</li>
-		<li>Si un jour le thème ANDONICK propose une mise à jour : <strong>pas de mise à jour destructive</strong> par conception, mais vérifiez le site après (vidage du cache navigateur avec Ctrl+F5).</li>
+		<li>Les mises à jour mineures de sécurité peuvent être automatiques. Pour WordPress majeur, le thème ou une extension : sauvegarde, mise à jour sur une copie de préproduction, recette, puis production.</li>
+		<li>Mettez toujours à jour ensemble le thème ANDONICK et ANDONICK Core lorsqu&#8217;une livraison contient les deux archives.</li>
 	</ul>
 
 	<!-- ============ 10 ============ -->
@@ -385,29 +393,105 @@
 		<tr><td>J&#8217;ai publié une erreur (texte, numéro)</td><td>Rien n&#8217;est irréversible : retournez dans le Customizer, corrigez, republiez.</td></tr>
 		<tr><td>Le site reste en français quand je clique « EN »</td><td>Vérifiez l&#8217;URL : elle doit contenir <code>?lang=en</code>. Sinon, rechargez (Ctrl+F5).</td></tr>
 		<tr><td>Je veux réafficher une section masquée</td><td>Structure &amp; Ordre : ajoutez la ligne correspondante (hero, groupe, filiales, impact, actualites, realisations, references, contact).</td></tr>
-		<tr><td>Un formulaire ne part pas</td><td>Vérifiez le plugin SMTP (voir chapitre 6) et l&#8217;e-mail de contact.</td></tr>
-		<tr><td>Le site affiche une erreur (page blanche, texte d&#8217;erreur)</td><td>Ne paniquez pas : c&#8217;est généralement WordPress qui gère. Contactez le développeur avec le lien exact et le message affiché (ou le fichier <code>debug.log</code>).</td></tr>
+		<tr><td>Un formulaire ne part pas</td><td>Vérifiez le SMTP (voir chapitre 7), l&#8217;e-mail de contact et le statut de la demande dans « Demandes ».</td></tr>
+		<tr><td>Le site affiche une erreur (page blanche, texte d&#8217;erreur)</td><td>Notez l&#8217;URL, l&#8217;heure, l&#8217;action réalisée et joignez une capture au mainteneur. N&#8217;activez pas l&#8217;affichage public des erreurs et ne transmettez pas un journal contenant des données personnelles.</td></tr>
 		<tr><td>J&#8217;ai oublié mon mot de passe WordPress</td><td>Écran de connexion &#8594; « Mot de passe oublié ? ». Sinon, votre développeur peut le réinitialiser en 2 minutes.</td></tr>
 	</table>
 
 	<!-- ============ 11 ============ -->
-	<h2 class="pagebreak">11. Annexe : informations techniques</h2>
+	<h2 class="pagebreak">11. Apprendre à concevoir un site WordPress no-code propre</h2>
+	<p>Un bon site no-code n&#8217;est pas un empilement de blocs. C&#8217;est un <strong>système éditorial encadré</strong> : le propriétaire peut changer le contenu sans pouvoir casser la marque, la sécurité ou la structure.</p>
+
+	<h3>Étape 1 — Transformer le brief en objectif de page</h3>
+	<div class="etape"><strong>Écrivez une phrase :</strong> « Cette page doit convaincre [public] de [action] grâce à [preuves]. » Pour ANDONICK : convaincre institutions, ONG, entreprises et particuliers de décrire un projet, grâce aux 8 domaines, aux implantations et aux preuves terrain documentées.</div>
+	<ul>
+		<li>Un objectif principal et un CTA principal ; les autres boutons sont secondaires.</li>
+		<li>Chaque affirmation sensible doit avoir une source client. Évitez « leader », « officiel », chiffres, certifications ou logos sans preuve.</li>
+		<li>Séparez les <strong>8 domaines d&#8217;activité</strong> des sociétés juridiquement immatriculées : une carte marketing n&#8217;est pas une preuve de filiale légale.</li>
+	</ul>
+
+	<h3>Étape 2 — Dessiner l&#8217;architecture avant l&#8217;écran</h3>
+	<table>
+		<tr><th>Ordre utile</th><th>Question du visiteur</th><th>Réponse ANDONICK</th></tr>
+		<tr><td>1. Promesse</td><td>Suis-je au bon endroit ?</td><td>Hero, publics servis, CTA</td></tr>
+		<tr><td>2. Crédibilité</td><td>Qui êtes-vous ?</td><td>15+ ans, 8 domaines, 3 pays, méthode en 4 étapes</td></tr>
+		<tr><td>3. Capacités</td><td>Pouvez-vous traiter mon besoin ?</td><td>Cartes des domaines d&#8217;activité</td></tr>
+		<tr><td>4. Preuves</td><td>Qu&#8217;avez-vous réellement livré ?</td><td>CLAC, Bamingui/WCS, PUI, ICASEES</td></tr>
+		<tr><td>5. Conversion</td><td>Comment vous contacter ?</td><td>Coordonnées, devis, rappel</td></tr>
+	</table>
+
+	<h3>Étape 3 — Créer un petit design system</h3>
+	<ul>
+		<li><strong>Couleurs :</strong> 1 principale, 1 foncée, blanc dominant, gris de texte. Testez les contrastes ; ne choisissez pas les couleurs carte par carte.</li>
+		<li><strong>Typographie :</strong> une famille lisible, une échelle cohérente H1/H2/H3/texte, lignes de 55 à 75 caractères environ.</li>
+		<li><strong>Espacement :</strong> une échelle répétable (8, 16, 24, 32, 48, 64 px), pas des marges improvisées.</li>
+		<li><strong>Composants :</strong> boutons, cartes, formulaires et encadrés réutilisent les mêmes états normal, survol, focus et erreur.</li>
+		<li><strong>Logo :</strong> fichier officiel intact, fond blanc ou très clair et largeur numérique d&#8217;au moins 120 px selon la charte fournie.</li>
+	</ul>
+
+	<h3>Étape 4 — Choisir la bonne brique WordPress</h3>
+	<table>
+		<tr><th>Contenu</th><th>Emplacement</th><th>Pourquoi</th></tr>
+		<tr><td>Pages, actualités, médias</td><td>Fonctions natives WordPress</td><td>Portables et éditables avec l&#8217;éditeur visuel</td></tr>
+		<tr><td>Design, gabarits, responsive</td><td>Thème ANDONICK</td><td>La marque reste cohérente</td></tr>
+		<tr><td>Demandes et projets/preuves</td><td>ANDONICK Core</td><td>Les données métier ne dépendent pas du thème</td></tr>
+		<tr><td>Textes courts et options globales</td><td>Customizer structuré</td><td>Prévisualisation, champs limités, pas de code</td></tr>
+	</table>
+	<div class="bien"><strong>Règle :</strong> le thème présente ; l&#8217;extension gère les données métier ; WordPress gère les contenus. Un constructeur visuel supplémentaire n&#8217;est utile que si le projet exige des pages libres que le système actuel ne couvre pas.</div>
+
+	<h3>Étape 5 — Produire et contrôler le contenu</h3>
+	<ol>
+		<li>Préparez FR et EN dans un document validé avant saisie.</li>
+		<li>Optimisez chaque image avant téléversement : recadrage cohérent, taille adaptée, nom descriptif et texte alternatif utile.</li>
+		<li>Utilisez un seul H1 par page, puis des H2/H3 dans l&#8217;ordre.</li>
+		<li>Rédigez des liens explicites (« Voir les projets solaires »), jamais une série de « Cliquez ici ».</li>
+		<li>Ajoutez les preuves dans « Projets & preuves », pas dans une image ou un bloc impossible à maintenir.</li>
+	</ol>
+
+	<h3>Étape 6 — Recetter comme un professionnel</h3>
+	<ul>
+		<li>Largeurs : 320, 360, 768, 1040 et 1440 px ; aucun défilement horizontal.</li>
+		<li>Clavier : Tab, Maj+Tab, Entrée, Espace, Échap, focus toujours visible, menu et galerie refermables.</li>
+		<li>Contenu : FR/EN, coordonnées, orthographe, preuves, liens, 404, pages légales.</li>
+		<li>Formulaires : erreurs, consentement, succès, copie éventuelle, enregistrement privé, réception SMTP.</li>
+		<li>Technique : HTTPS, sauvegarde/restauration, cache, robots.txt, sitemap, métadonnées sociales et absence de journal public.</li>
+	</ul>
+
+	<!-- ============ 12 ============ -->
+	<h2 class="pagebreak">12. Recette et passage en production</h2>
+	<table>
+		<tr><th>Contrôle</th><th>État de la livraison locale</th><th>Action avant ouverture publique</th></tr>
+		<tr><td>Design, responsive, clavier</td><td>Implémenté et testé localement</td><td>Dernière recette sur le domaine et les appareils réels</td></tr>
+		<tr><td>Thème + ANDONICK Core</td><td>Actifs ; projets migrés</td><td>Installer les deux archives et ne jamais désactiver Core</td></tr>
+		<tr><td>Confidentialité, cookies, accessibilité</td><td>Pages publiées et éditables</td><td>Faire valider par le responsable de la structure et adapter aux prestataires choisis</td></tr>
+		<tr><td>Mentions légales</td><td><strong>Brouillon volontaire</strong></td><td>Fournir forme juridique, capital, RCCM, NIF, direction de publication et hébergeur, puis publier et lier au pied de page</td></tr>
+		<tr><td>Domaine et HTTPS</td><td>Non applicable sur localhost</td><td>Certificat, redirections HTTPS, URL WordPress, HSTS après validation</td></tr>
+		<tr><td>E-mail</td><td>Enregistrement local opérationnel</td><td>Configurer SMTP + SPF/DKIM/DMARC, tester réception et dossier spam</td></tr>
+		<tr><td>Sauvegardes</td><td>Point de restauration de développement créé</td><td>Sauvegarde automatique externe quotidienne + test de restauration</td></tr>
+		<tr><td>Sécurité</td><td>Debug et éditeur de fichiers désactivés</td><td>2FA, comptes nominatifs, mises à jour, protection hébergeur/WAF selon risque</td></tr>
+		<tr><td>Mesure d&#8217;audience</td><td>Aucun traceur</td><td>Si ajout : minimisation, politique mise à jour et CMP qui bloque avant consentement</td></tr>
+	</table>
+	<div class="warn"><strong>Décision de lancement :</strong> le site ne doit pas être considéré juridiquement prêt tant que le brouillon « Mentions légales » contient « À FOURNIR ». Ne remplacez jamais ces champs par des informations supposées.</div>
+
+	<!-- ============ 13 ============ -->
+	<h2 class="pagebreak">13. Annexe : informations techniques</h2>
 	<table>
 		<tr><th>Élément</th><th>Valeur</th></tr>
-		<tr><td>Plateforme</td><td>WordPress 7.0.x &#183; PHP 8+ &#183; MySQL/MariaDB</td></tr>
-		<tr><td>Thème</td><td>ANDONICK Group International &#8212; v3.8.0 (thème classique, Customizer)</td></tr>
+		<tr><td>Plateforme</td><td>WordPress 7.1 &#183; PHP 8+ &#183; MySQL/MariaDB</td></tr>
+		<tr><td>Thème</td><td>ANDONICK Group International &#8212; v4.0.0 (thème classique, Customizer)</td></tr>
+		<tr><td>Extension métier</td><td>ANDONICK Core &#8212; v1.0.0 (demandes, projets/preuves, rétention, droits RGPD)</td></tr>
 		<tr><td>Langues</td><td>fr (par défaut) &#183; en (<code>?lang=en</code>)</td></tr>
 		<tr><td>Sections</td><td>hero &#183; groupe &#183; filiales &#183; impact &#183; actualites &#183; realisations &#183; references &#183; contact &#183; texte1&#8211;texte3 &#183; banniere1&#8211;banniere3 (sections libres, invisibles si vides)</td></tr>
 		<tr><td>Charte</td><td>Violet <code>#461491</code> &#183; Violet foncé <code>#2A0A63</code> &#183; Blanc &#183; Gris <code>#333333</code> (modifiable dans « Apparence &amp; Styles »)</td></tr>
 		<tr><td>Personnalisation visuelle</td><td>Personnaliser &#8594; ANDONICK — Apparence &amp; Styles : couleurs, polices (dont police personnalisée .woff2), alignements, hauteurs, espacements, colonnes, animations, images de fond, réinitialisation</td></tr>
-		<tr><td>Formulaires</td><td>Devis + Rappel &#8594; e-mail (nécessite SMTP en production)</td></tr>
+		<tr><td>Formulaires</td><td>Devis + Rappel &#8594; Demandes privées + e-mail authentifié (SMTP requis en production)</td></tr>
 		<tr><td>Le contenu vit</td><td>Dans le Customizer (base de données) ; les valeurs par défaut dans <code>inc/content.php</code> (à ne pas toucher)</td></tr>
 		<tr><td>Dépôt du code</td><td>GitHub &#8212; branche main (historique complet des versions)</td></tr>
 	</table>
 	<div class="etape"><strong>Développeur du site :</strong> <em>&#8212; à compléter : nom, e-mail, téléphone &#8212;</em><br>
 	<em>En cas d&#8217;incident, joindre le message d&#8217;erreur exact, le lien de la page concernée et la date/heure.</em></div>
 
-	<p class="small" style="margin-top:28px; text-align:center;">ANDONICK Group International &#183; Guide d&#8217;administration &#183; Mis à jour le 19 août 2026 &#183; Document destiné au propriétaire du site.</p>
+	<p class="small" style="margin-top:28px; text-align:center;">ANDONICK Group International &#183; Guide d&#8217;administration et formation no-code &#183; Mis à jour le 22 août 2026 &#183; Document destiné au propriétaire du site.</p>
 </div>
 </body>
 </html>

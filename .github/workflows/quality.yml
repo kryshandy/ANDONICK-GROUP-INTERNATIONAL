@@ -1,0 +1,39 @@
+name: Qualite et livrables
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v6
+
+      - name: Verifier PHP
+        shell: bash
+        run: find . -type f -name '*.php' -not -path './docs/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Verifier JavaScript
+        run: node --check assets/js/main.js
+
+      - name: Verifier les affirmations interdites
+        shell: bash
+        run: |
+          ! grep -RniE 'distributeur officiel starlink|official starlink distributor' inc companion-plugin
+
+      - name: Construire les archives
+        shell: pwsh
+        run: ./scripts/build-release.ps1 -OutputDirectory "${{ runner.temp }}/release"
+
+      - name: Publier les artefacts de recette
+        uses: actions/upload-artifact@v7
+        with:
+          name: andonick-4.0.0
+          path: ${{ runner.temp }}/release/*.zip
+          if-no-files-found: error

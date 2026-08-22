@@ -54,6 +54,9 @@ function andonick_content() {
 			'map_embed'       => '',
 			'map_url'         => '',
 			'map_lien'        => 'Voir sur la carte',
+			'map_title'       => 'Localisation d’ANDONICK Group à Bangui',
+			'map_consent'     => 'La carte est fournie par un service tiers. Elle ne sera chargée qu’après votre accord.',
+			'map_consent_btn' => 'Charger la carte',
 			'map_dir'         => 'ANDONICK Group — Quartier Sica 1, Rue du Languedoc, Bangui, République Centrafricaine',
 			'socials'         => array(),
 			'news_eyebrow'    => 'Actualités',
@@ -61,7 +64,7 @@ function andonick_content() {
 			'news_sub'      => '',
 			'news_more'     => 'Lire la suite',
 			'news_count'    => '3',
-			'seo_desc'      => 'ANDONICK Group International — groupe multisectoriel panafricain présent à Bangui (Centrafrique), Dakar (Sénégal) et Bordeaux (France) : bâtiment, énergie, TIC, transport, mines, agriculture, commerce et services financiers.',
+			'seo_desc'      => 'ANDONICK Group International intervient en télécommunications et ICT, énergie solaire, sécurité électronique, BTP et génie civil, transport et logistique, commerce général, facility management, conseil et formation.',
 			'page_404_title' => 'Introuvable',
 			'page_404_body'  => 'Le contenu demandé n\'existe plus ou n\'est plus disponible.',
 			'page_404_back'  => 'Retour à l\'accueil',
@@ -72,16 +75,19 @@ function andonick_content() {
 			'texte1_body'    => '',
 			'texte1_btn'     => '',
 			'texte1_btn_href' => '',
+			'texte1_img_alt' => '',
 			'texte2_eyebrow' => '',
 			'texte2_title'   => '',
 			'texte2_body'    => '',
 			'texte2_btn'     => '',
 			'texte2_btn_href' => '',
+			'texte2_img_alt' => '',
 			'texte3_eyebrow' => '',
 			'texte3_title'   => '',
 			'texte3_body'    => '',
 			'texte3_btn'     => '',
 			'texte3_btn_href' => '',
+			'texte3_img_alt' => '',
 			'banniere1_title' => '',
 			'banniere1_body'  => '',
 			'banniere1_btn'   => '',
@@ -110,7 +116,7 @@ function andonick_content() {
 				'Ville|text|0',
 			),
 			'strip'           => array(
-				'Distributeur officiel Starlink RCA',
+				'Déploiement de solutions Starlink en RCA',
 				'Fibre optique & Cybersécurité',
 				'Énergie solaire clé en main',
 				'Vidéosurveillance intelligente',
@@ -128,6 +134,14 @@ function andonick_content() {
 				'Partenariat durable',
 			),
 			'img_team_name' => 'Équipe ANDONICK Group sur site logistique',
+			'gallery_meta'  => array(
+				'Installation et intervention terrain ANDONICK|',
+				'Réalisation technique ANDONICK|',
+				'Équipement déployé sur le terrain|',
+				'Équipe technique en intervention|',
+				'Infrastructure réalisée par ANDONICK|',
+				'Projet accompagné par ANDONICK|',
+			),
 
 			// Filiales.
 			's3_eyebrow'    => 'Nos expertises',
@@ -144,6 +158,12 @@ function andonick_content() {
 			'testi_title'   => 'Témoignages professionnels',
 			'refs_eyebrow'  => 'Nos références',
 			'refs_title'    => 'Clients & partenaires',
+			'refs_caption'  => 'Références et missions réalisées',
+			'refs_col4'     => 'Contact / lien',
+			'projects_eyebrow' => 'Projets & preuves terrain',
+			'projects_title' => 'Des réalisations documentées',
+			'projects_sub'   => 'Quelques interventions représentatives, présentées sans données personnelles de tiers.',
+			'projects_link'  => 'Voir la preuve publique',
 			'partners_title'=> 'Nos partenaires institutionnels',
 			'gallery_eyebrow' => 'Nos réalisations',
 			'gallery_title'   => 'Le Groupe sur le terrain',
@@ -187,6 +207,9 @@ function andonick_content() {
 			'toast_msg'       => 'Votre demande est bien reçue. Notre équipe vous répond sous 24 à 48 h ouvrées.',
 			'form_saved_msg'  => 'Votre demande est bien enregistrée. Notre équipe vous répond sous 24 à 48 h ouvrées.',
 			'form_error_msg'  => 'Vérifiez les champs obligatoires, puis envoyez à nouveau votre demande.',
+			'form_select_placeholder' => 'Sélectionnez une option',
+			'form_consent'   => 'J’accepte que mes informations soient utilisées pour répondre à ma demande.',
+			'form_consent_link' => 'Consulter la politique de confidentialité',
 			'form_copy_subject' => 'Confirmation de votre demande — ANDONICK Group International',
 			'form_copy_body'  => 'Bonjour,
 
@@ -222,7 +245,7 @@ Group International',
 
 			// Les 8 métiers.
 			'filiales'        => array(
-				array( 'num' => '01', 'title' => 'Informatique & Télécommunications', 'desc' => 'Distributeur officiel Starlink en RCA, déploiement de liaisons fibre optique et hertziennes, cybersécurité, réseaux d\'entreprise et supervision de systèmes d\'information.', 'tags' => array( 'Starlink', 'Fibre optique', 'Cybersécurité' ) ),
+				array( 'num' => '01', 'title' => 'Informatique & Télécommunications', 'desc' => 'Déploiement de solutions de connectivité Starlink en RCA, liaisons fibre optique et hertziennes, cybersécurité, réseaux d\'entreprise et supervision de systèmes d\'information.', 'tags' => array( 'Starlink', 'Fibre optique', 'Cybersécurité' ) ),
 				array( 'num' => '02', 'title' => 'Énergie Solaire', 'desc' => 'Études de faisabilité, dimensionnement, installation clé en main et maintenance de systèmes photovoltaïques résidentiels, professionnels et institutionnels.', 'tags' => array( 'Kits solaires', 'Onduleurs hybrides', 'Batteries GEL' ) ),
 				array( 'num' => '03', 'title' => 'Sécurité Privée & Vidéosurveillance', 'desc' => 'Caméras haute définition, vision jour/nuit, enregistrement sécurisé, consultation à distance et agents de sécurité formés pour la protection des sites sensibles.', 'tags' => array( 'Vidéosurveillance HD', 'Gardiennage', 'Contrôle d\'accès' ) ),
 				array( 'num' => '04', 'title' => 'Bâtiments & Travaux Publics', 'desc' => 'Conception, construction et réhabilitation d\'infrastructures : bâtiments administratifs, sites techniques et ouvrages de génie civil, aux normes internationales.', 'tags' => array( 'Génie civil', 'Suivi de chantier' ) ),
@@ -255,19 +278,16 @@ Group International',
 			),
 
 			// Témoignages.
-			'testis'         => array(
-				array( 'ANDONICK Group International nous accompagne avec réactivité et fiabilité sur l\'ensemble de nos sites. La connectivité et le support technique sont excellents, même dans les zones les plus isolées.', 'M. Guylain Kongawi Solombe', 'Directeur Pays — Première Urgence Internationale (ONG)' ),
-				array( 'Nous apprécions la qualité des installations réalisées, le respect des délais et l\'accompagnement personnalisé d\'ANDONICK Group International. Un partenaire de confiance.', 'M. Mack P.', 'Client particulier — Installation Internet haut débit' ),
-				array( 'ANDONICK Group International a déployé pour nous une solution réseau robuste et sécurisée. Le professionnalisme et l\'expertise de leurs équipes sont remarquables.', 'ICASEES', 'Institution publique — Solutions IT & Réseau' ),
-			),
+			/* Publier un témoignage nominatif uniquement après accord explicite. */
+			'testis'         => array(),
 
 			// Tableau des références.
 			'ref_headers'    => array( 'Catégorie', 'Organisation / référence', 'Mission' ),
 			'refs'           => array(
-				array( 'ONG Humanitaire', 'M. Guylain Kongawi Solombe', 'Directeur Pays, Première Urgence Internationale', '+236 72 68 33 37' ),
-				array( 'Particulier', 'M. Mack P.', 'Installation Internet haut débit', '+236 72 52 27 26' ),
-				array( 'Institution publique', 'Contact institutionnel', 'ICASEES', '+236 72 14 96 15' ),
-				array( 'Organisation professionnelle', 'Contact organisation professionnelle', 'ICASEES — Solutions IT & Réseau', '+236 72 68 13 54' ),
+				array( 'ONG humanitaire', 'Première Urgence Internationale (PUI)', 'Intervention de connectivité Starlink' ),
+				array( 'Institution publique', 'ICASEES', 'Intervention de connectivité Starlink' ),
+				array( 'Organisation internationale', 'Organisation internationale de la Francophonie (OIF)', 'Solarisation de trois CLAC' ),
+				array( 'Programme de conservation', 'UE–NaturAfrica · WCS', 'Systèmes solaires à Bamingui et sur la base WCS' ),
 			),
 
 			// Partenaires.
@@ -308,6 +328,9 @@ Group International',
 			'map_embed'     => '',
 			'map_url'       => '',
 			'map_lien'      => 'View on the map',
+			'map_title'       => 'ANDONICK Group location in Bangui',
+			'map_consent'     => 'The map is provided by a third-party service. It will load only after you agree.',
+			'map_consent_btn' => 'Load the map',
 			'map_dir'       => 'ANDONICK Group — Quartier Sica 1, Rue du Languedoc, Bangui, Central African Republic',
 			'socials'       => array(),
 			'news_eyebrow'  => 'News',
@@ -315,7 +338,7 @@ Group International',
 			'news_sub'      => '',
 			'news_more'     => 'Read more',
 			'news_count'    => '3',
-			'seo_desc'      => 'ANDONICK Group International — pan-African multi-sector group based in Bangui (Central African Republic), Dakar (Senegal) and Bordeaux (France): construction, energy, ICT, transport, mining, agriculture, trade and financial services.',
+			'seo_desc'      => 'ANDONICK Group International works across telecommunications and ICT, solar energy, electronic security, construction and civil engineering, transport and logistics, general trade, facility management, consulting and training.',
 			'page_404_title' => 'Not Found',
 			'page_404_body'  => 'The requested content no longer exists or is no longer available.',
 			'page_404_back'  => 'Back to home',
@@ -326,16 +349,19 @@ Group International',
 			'texte1_body'    => '',
 			'texte1_btn'     => '',
 			'texte1_btn_href' => '',
+			'texte1_img_alt' => '',
 			'texte2_eyebrow' => '',
 			'texte2_title'   => '',
 			'texte2_body'    => '',
 			'texte2_btn'     => '',
 			'texte2_btn_href' => '',
+			'texte2_img_alt' => '',
 			'texte3_eyebrow' => '',
 			'texte3_title'   => '',
 			'texte3_body'    => '',
 			'texte3_btn'     => '',
 			'texte3_btn_href' => '',
+			'texte3_img_alt' => '',
 			'banniere1_title' => '',
 			'banniere1_body'  => '',
 			'banniere1_btn'   => '',
@@ -364,7 +390,7 @@ Group International',
 				'City|text|0',
 			),
 			'strip'         => array(
-				'Official Starlink Distributor CAR',
+				'Starlink connectivity deployment in CAR',
 				'Fibre Optics & Cybersecurity',
 				'Turnkey Solar Energy',
 				'Smart CCTV',
@@ -381,6 +407,14 @@ Group International',
 				'Lasting Partnership',
 			),
 			'img_team_name' => 'ANDONICK Group team on a logistics site',
+			'gallery_meta'  => array(
+				'ANDONICK field installation and intervention|',
+				'ANDONICK technical delivery|',
+				'Equipment deployed in the field|',
+				'Technical team at work|',
+				'Infrastructure delivered by ANDONICK|',
+				'Project supported by ANDONICK|',
+			),
 
 			's3_eyebrow'    => 'Our Expertise',
 			's3_title'      => 'Essential capabilities for successful projects',
@@ -394,6 +428,12 @@ Group International',
 			'testi_title'   => 'Professional Testimonials',
 			'refs_eyebrow'  => 'Our References',
 			'refs_title'    => 'Clients & partners',
+			'refs_caption'  => 'References and completed assignments',
+			'refs_col4'     => 'Contact / link',
+			'projects_eyebrow' => 'Projects & field evidence',
+			'projects_title' => 'Documented delivery',
+			'projects_sub'   => 'Selected representative interventions, without personal data about third parties.',
+			'projects_link'  => 'View public evidence',
 			'partners_title'=> 'Our institutional partners',
 			'gallery_eyebrow' => 'Our Projects',
 			'gallery_title'   => 'The Group in the field',
@@ -436,6 +476,9 @@ Group International',
 			'toast_msg'       => 'Your request has been received. Our team will respond within 24 to 48 business hours.',
 			'form_saved_msg'  => 'Your request has been recorded. Our team will respond within 24 to 48 business hours.',
 			'form_error_msg'  => 'Please check the required fields and send your request again.',
+			'form_select_placeholder' => 'Select an option',
+			'form_consent'   => 'I agree that my information may be used to respond to my request.',
+			'form_consent_link' => 'Read the privacy policy',
 			'form_copy_subject' => 'Confirmation of your request — ANDONICK Group International',
 			'form_copy_body'  => 'Hello,
 
@@ -466,7 +509,7 @@ International team',
 			'foot_col4_links'  => '',
 
 			'filiales'        => array(
-				array( 'num' => '01', 'title' => 'IT & Telecommunications', 'desc' => 'Official Starlink distributor in the CAR, deployment of fibre-optic and wireless links, cybersecurity, enterprise networks and information-systems supervision.', 'tags' => array( 'Starlink', 'Fibre Optics', 'Cybersecurity' ) ),
+				array( 'num' => '01', 'title' => 'IT & Telecommunications', 'desc' => 'Deployment of Starlink connectivity solutions in the CAR, fibre-optic and wireless links, cybersecurity, enterprise networks and information-systems supervision.', 'tags' => array( 'Starlink', 'Fibre Optics', 'Cybersecurity' ) ),
 				array( 'num' => '02', 'title' => 'Solar Energy', 'desc' => 'Feasibility studies, system sizing, turnkey installation and maintenance of photovoltaic systems for homes, businesses and institutions.', 'tags' => array( 'Solar Kits', 'Hybrid Inverters', 'GEL Batteries' ) ),
 				array( 'num' => '03', 'title' => 'Private Security & CCTV', 'desc' => 'High-definition cameras, day/night vision, secure recording, remote monitoring and trained security officers to protect sensitive sites.', 'tags' => array( 'HD CCTV', 'Guarding', 'Access Control' ) ),
 				array( 'num' => '04', 'title' => 'Construction & Public Works', 'desc' => 'Design, construction and rehabilitation of infrastructure: administrative buildings, technical sites and civil engineering works, to international standards.', 'tags' => array( 'Civil Engineering', 'Site Supervision' ) ),
@@ -496,18 +539,14 @@ International team',
 				array( 'Families', 'Home internet access, even in remote areas' ),
 			),
 
-			'testis'         => array(
-				array( 'ANDONICK Group International supports us with responsiveness and reliability across all our sites. Connectivity and technical support are excellent, even in the most remote areas.', 'Mr. Guylain Kongawi Solombe', 'Country Director — Première Urgence Internationale (NGO)' ),
-				array( 'We appreciate the quality of the installations, the respect of deadlines and the personalised support from ANDONICK Group International. A trusted partner.', 'Mr. Mack P.', 'Private Client — High-speed Internet Installation' ),
-				array( 'ANDONICK Group International deployed a robust, secure network solution for us. The professionalism and expertise of their teams are remarkable.', 'ICASEES', 'Public Institution — IT & Network Solutions' ),
-			),
+			'testis'         => array(),
 
 			'ref_headers'    => array( 'Category', 'Organisation / reference', 'Mission' ),
 			'refs'           => array(
-				array( 'Humanitarian NGO', 'Mr. Guylain Kongawi Solombe', 'Country Director, Première Urgence Internationale', '+236 72 68 33 37' ),
-				array( 'Private Individual', 'Mr. Mack P.', 'High-speed Internet Installation', '+236 72 52 27 26' ),
-				array( 'Public Institution', 'Institutional contact', 'ICASEES', '+236 72 14 96 15' ),
-				array( 'Professional Organisation', 'Professional organisation contact', 'ICASEES — IT & Network Solutions', '+236 72 68 13 54' ),
+				array( 'Humanitarian NGO', 'Première Urgence Internationale (PUI)', 'Starlink connectivity intervention' ),
+				array( 'Public institution', 'ICASEES', 'Starlink connectivity intervention' ),
+				array( 'International organisation', 'International Organisation of La Francophonie (OIF)', 'Solar power for three CLAC centres' ),
+				array( 'Conservation programme', 'EU–NaturAfrica · WCS', 'Solar systems in Bamingui and at the WCS base' ),
 			),
 
 			'partners'       => array( 'Welthungerhilfe', 'Médecins du Monde', 'DanChurchAid', 'ACTED', 'International Medical Corps' ),
@@ -605,8 +644,12 @@ function andonick_img( $key ) {
 		'filiale_7'  => ANDONICK_URI . '/assets/img/metiers/facility.jpg',
 		'filiale_8'  => ANDONICK_URI . '/assets/img/metiers/ltd.jpg',
 	);
-	$mod      = get_theme_mod( "andonick_img_{$key}", '' );
-	return ( '' !== $mod ) ? $mod : ( $defaults[ $key ] ?? '' );
+	$mod_key = "andonick_img_{$key}";
+	if ( andonick_theme_mod_is_saved( $mod_key ) ) {
+		/* Une image retirée dans le Customizer doit rester retirée. */
+		return esc_url_raw( (string) get_theme_mod( $mod_key, '' ) );
+	}
+	return isset( $defaults[ $key ] ) ? $defaults[ $key ] : '';
 }
 
 /**
@@ -689,7 +732,7 @@ function andonick_filiales() {
 		$raw = (string) get_theme_mod( $mod_key, '' );
 		$out = array();
 		foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
-			$parts = array_pad( array_map( 'trim', explode( '|', $line, 4 ) ), 4, '' );
+			$parts = array_pad( array_map( 'trim', explode( '|', $line, 5 ) ), 5, '' );
 			if ( '' === $parts[1] ) {
 				continue;
 			}
@@ -698,6 +741,7 @@ function andonick_filiales() {
 				'title' => $parts[1],
 				'desc'  => $parts[2],
 				'tags'  => array_values( array_filter( array_map( 'trim', explode( ';', $parts[3] ) ) ) ),
+				'alt'   => $parts[4],
 			);
 		}
 		return $out;
@@ -767,13 +811,26 @@ function andonick_socials() {
  */
 function andonick_legal_pages() {
 	$ids = array();
+	$suffix = ( 'en' === andonick_lang() ) ? '_en' : '';
 	foreach ( array( '1', '2', '3' ) as $n ) {
-		$id = absint( get_theme_mod( 'andonick_legal_page_' . $n, 0 ) );
+		$id = absint( get_theme_mod( 'andonick_legal_page_' . $n . $suffix, 0 ) );
+		if ( $id < 1 && '_en' === $suffix ) {
+			$id = absint( get_theme_mod( 'andonick_legal_page_' . $n, 0 ) );
+		}
 		if ( $id > 0 && 'publish' === get_post_status( $id ) ) {
 			$ids[] = $id;
 		}
 	}
 	return $ids;
+}
+
+/** Rend un ancrage de l'accueil utilisable depuis une page intérieure. */
+function andonick_section_url( $url ) {
+	$url = trim( (string) $url );
+	if ( ! is_front_page() && 0 === strpos( $url, '#' ) ) {
+		return andonick_url_in_language( home_url( '/' ), andonick_lang() ) . $url;
+	}
+	return $url;
 }
 
 /**
@@ -783,6 +840,12 @@ function andonick_links_from( $lang_key, $fallback ) {
 	$lang = andonick_lang();
 	$mod_key = 'andonick_' . $lang . '_' . $lang_key;
 	if ( ! andonick_theme_mod_is_saved( $mod_key ) ) {
+		foreach ( $fallback as &$fallback_link ) {
+			if ( isset( $fallback_link[1] ) ) {
+				$fallback_link[1] = andonick_section_url( $fallback_link[1] );
+			}
+		}
+		unset( $fallback_link );
 		return $fallback;
 	}
 	$raw = (string) get_theme_mod( $mod_key, '' );
@@ -790,7 +853,7 @@ function andonick_links_from( $lang_key, $fallback ) {
 	foreach ( array_filter( array_map( 'trim', explode( "\n", $raw ) ) ) as $line ) {
 		$parts = array_pad( array_map( 'trim', explode( '|', $line, 2 ) ), 2, '' );
 		if ( '' !== $parts[0] && '' !== $parts[1] ) {
-			$out[] = array( $parts[0], $parts[1] );
+			$out[] = array( $parts[0], andonick_section_url( $parts[1] ) );
 		}
 	}
 	return $out;
@@ -860,7 +923,10 @@ function andonick_footer_col( $n ) {
  * Interrupteurs des formulaires (1 = affiché, 0 = masqué).
  */
 function andonick_form_enabled( $form ) {
-	return '0' === get_theme_mod( 'andonick_' . $form . '_enabled', '1' ) ? false : true;
+	if ( ! function_exists( 'andonick_core_handle_form' ) ) {
+		return false;
+	}
+	return '0' !== get_theme_mod( 'andonick_' . $form . '_enabled', '1' );
 }
 
 /**
@@ -914,7 +980,7 @@ function andonick_form_fields( $form, $lang = '' ) {
 			continue;
 		}
 		$type = isset( $parts[1] ) ? $parts[1] : 'text';
-		if ( ! in_array( $type, array( 'text', 'tel', 'email', 'textarea', 'select' ), true ) ) {
+		if ( ! in_array( $type, array( 'text', 'tel', 'email', 'textarea', 'select', 'checkbox' ), true ) ) {
 			$type = 'text';
 		}
 		$out[] = array(
@@ -1037,9 +1103,9 @@ function andonick_refs() {
 		$raw = get_theme_mod( $mod_key, '' );
 		$rows = array();
 		foreach ( explode( "\n", $raw ) as $line ) {
-			$parts = array_map( 'trim', explode( '|', $line ) );
+			$parts = array_map( 'trim', explode( '|', $line, 4 ) );
 			if ( count( $parts ) >= 3 ) {
-				$rows[] = array_slice( $parts, 0, 3 );
+				$rows[] = array_slice( $parts, 0, 4 );
 			}
 		}
 		return $rows;
@@ -1097,11 +1163,60 @@ function andonick_gallery() {
 }
 
 /**
+ * Galerie enrichie : URL, texte alternatif et légende alignés par emplacement.
+ * Le format éditorial reste compact : une ligne « alt|légende » par image.
+ */
+function andonick_gallery_items() {
+	$lang = andonick_lang();
+	$default_meta = isset( andonick_content()[ $lang ]['gallery_meta'] ) ? andonick_content()[ $lang ]['gallery_meta'] : array();
+	$meta_lines = andonick_lines( 'gallery_meta', $default_meta );
+	$items = array();
+	$slots = min( 40, max( 1, absint( get_theme_mod( 'andonick_gallery_slots', 12 ) ) ) );
+	for ( $i = 1; $i <= $slots; $i++ ) {
+		$url = andonick_img( 'gallery_' . $i );
+		if ( '' === $url ) {
+			continue;
+		}
+		$meta = isset( $meta_lines[ $i - 1 ] ) ? explode( '|', $meta_lines[ $i - 1 ], 2 ) : array();
+		$alt = isset( $meta[0] ) ? trim( $meta[0] ) : '';
+		$caption = isset( $meta[1] ) ? trim( $meta[1] ) : '';
+		$items[] = array(
+			'url'     => $url,
+			'alt'     => ( '' !== $alt ) ? $alt : andonick_t( 'gallery_title' ),
+			'caption' => $caption,
+		);
+	}
+	return $items;
+}
+
+/** Projets structurés fournis par ANDONICK Core. */
+function andonick_projects() {
+	return function_exists( 'andonick_core_get_projects' ) ? andonick_core_get_projects( andonick_lang() ) : array();
+}
+
+/** Page de confidentialité choisie pour le consentement des formulaires. */
+function andonick_privacy_page_url() {
+	$key = ( 'en' === andonick_lang() ) ? 'andonick_privacy_page_en' : 'andonick_privacy_page';
+	$id = absint( get_theme_mod( $key, 0 ) );
+	if ( $id < 1 && 'andonick_privacy_page_en' === $key ) {
+		$id = absint( get_theme_mod( 'andonick_privacy_page', 0 ) );
+	}
+	return ( $id && 'publish' === get_post_status( $id ) ) ? andonick_url_in_language( get_permalink( $id ), andonick_lang() ) : '';
+}
+
+/**
  * URL de la page dans l'autre langue (préserve ancre et langue).
  * Correcte même si WordPress est installé dans un sous-dossier
  * (ex. http://localhost/wordpress/).
  */
 function andonick_lang_url( $target = 'en' ) {
+	if ( is_singular() ) {
+		$current_id = get_queried_object_id();
+		$translated_id = absint( get_post_meta( $current_id, '_andonick_translation_' . ( 'en' === $target ? 'en' : 'fr' ), true ) );
+		if ( $translated_id && 'publish' === get_post_status( $translated_id ) ) {
+			return andonick_url_in_language( get_permalink( $translated_id ), $target );
+		}
+	}
 	$request = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
 	$hash    = '';
 	$hpos    = strpos( $request, '#' );

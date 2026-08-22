@@ -11,7 +11,7 @@
 get_header();
 ?>
 
-<main id="accueil">
+<main id="accueil" tabindex="-1">
 	<?php
 	foreach ( andonick_section_order() as $section ) {
 		if ( '0' === get_theme_mod( 'andonick_sec_' . $section . '_enabled', '1' ) ) {

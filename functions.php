@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ANDONICK_VERSION', '3.9.0' );
+define( 'ANDONICK_VERSION', '4.0.0' );
 define( 'ANDONICK_DIR', get_template_directory() );
 define( 'ANDONICK_URI', get_template_directory_uri() );
 
@@ -163,9 +163,20 @@ function andonick_seo_lang_links() {
 	$cur  = andonick_url_in_language( $base, andonick_lang() );
 	echo '<link rel="canonical" href="' . esc_url( $cur ) . '">' . "\n";
 
-	/* Le site ne possède pas encore de paires de traductions pour les pages
-	 * et articles. Déclarer des hreflang sur ces contenus serait trompeur :
-	 * seul l'accueil existe réellement dans les deux langues. */
+	if ( is_singular() ) {
+		$current_id = get_queried_object_id();
+		$fr_id = absint( get_post_meta( $current_id, '_andonick_translation_fr', true ) );
+		$en_id = absint( get_post_meta( $current_id, '_andonick_translation_en', true ) );
+		if ( $fr_id && $en_id && 'publish' === get_post_status( $fr_id ) && 'publish' === get_post_status( $en_id ) ) {
+			$fr = get_permalink( $fr_id );
+			$en = add_query_arg( 'lang', 'en', get_permalink( $en_id ) );
+			echo '<link rel="alternate" hreflang="fr" href="' . esc_url( $fr ) . '">' . "\n";
+			echo '<link rel="alternate" hreflang="en" href="' . esc_url( $en ) . '">' . "\n";
+			echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( $fr ) . '">' . "\n";
+			return;
+		}
+	}
+
 	if ( is_front_page() ) {
 		echo '<link rel="alternate" hreflang="fr" href="' . esc_url( $fr ) . '">' . "\n";
 		echo '<link rel="alternate" hreflang="en" href="' . esc_url( $en ) . '">' . "\n";
@@ -173,6 +184,28 @@ function andonick_seo_lang_links() {
 	}
 }
 add_action( 'wp_head', 'andonick_seo_lang_links', 1 );
+
+/** Garantit que les pages anglaises dédiées sont servies avec la bonne locale. */
+function andonick_redirect_translated_page_language() {
+	if ( ! is_singular() ) {
+		return;
+	}
+	$id = get_queried_object_id();
+	$page_lang = get_post_meta( $id, '_andonick_page_lang', true );
+	$current_lang = andonick_lang();
+	if ( 'en' === $page_lang && 'en' !== $current_lang ) {
+		wp_safe_redirect( add_query_arg( 'lang', 'en', get_permalink( $id ) ), 302 );
+		exit;
+	}
+	if ( 'fr' === $page_lang && 'en' === $current_lang ) {
+		$en_id = absint( get_post_meta( $id, '_andonick_translation_en', true ) );
+		if ( $en_id && 'publish' === get_post_status( $en_id ) ) {
+			wp_safe_redirect( add_query_arg( 'lang', 'en', get_permalink( $en_id ) ), 302 );
+			exit;
+		}
+	}
+}
+add_action( 'template_redirect', 'andonick_redirect_translated_page_language', -1 );
 
 /* WordPress émet déjà une canonical sur les contenus unitaires. Le thème
  * fournit une canonical unique, compatible avec ?lang=en, pour toutes les
@@ -204,180 +237,18 @@ function andonick_favicon() {
 add_action( 'wp_head', 'andonick_favicon', 5 );
 
 /**
- * Registre privé des demandes : une demande reste visible dans WordPress
- * même lorsqu'un service SMTP est indisponible.
- */
-function andonick_register_leads() {
-	register_post_type( 'andonick_lead', array(
-		'labels' => array(
-			'name'          => 'Demandes du site',
-			'singular_name' => 'Demande du site',
-			'menu_name'     => 'Demandes',
-		),
-		'public'             => false,
-		'show_ui'            => true,
-		'show_in_menu'       => true,
-		'exclude_from_search' => true,
-		'supports'           => array( 'title', 'editor' ),
-		'menu_icon'          => 'dashicons-email-alt',
-		/* Les demandes peuvent contenir des données personnelles : elles sont
-		 * réservées aux administrateurs, pas aux auteurs et éditeurs. */
-		'capabilities'       => array(
-			'edit_post'          => 'manage_options',
-			'read_post'          => 'manage_options',
-			'delete_post'        => 'manage_options',
-			'edit_posts'         => 'manage_options',
-			'edit_others_posts'  => 'manage_options',
-			'delete_posts'       => 'manage_options',
-			'delete_private_posts' => 'manage_options',
-			'edit_private_posts' => 'manage_options',
-			'read_private_posts' => 'manage_options',
-			'publish_posts'      => 'manage_options',
-			'create_posts'       => 'do_not_allow',
-		),
-		'map_meta_cap'       => false,
-	) );
-}
-add_action( 'init', 'andonick_register_leads' );
-
-/**
  * Retourne le message de confirmation à afficher après un formulaire.
+ * La logique métier vit dans le plugin ANDONICK Core ; ce relais garde le
+ * thème compatible lorsque le plugin n'est pas encore activé.
  */
 function andonick_form_feedback() {
-	$status = isset( $_GET['andonick_form'] ) ? sanitize_key( wp_unslash( $_GET['andonick_form'] ) ) : '';
-	if ( 'saved' === $status ) {
-		return andonick_t( 'form_saved_msg' );
-	}
-	if ( 'error' === $status ) {
-		return andonick_t( 'form_error_msg' );
-	}
-	if ( 'sent' === $status ) {
-		return andonick_t( 'toast_msg' );
-	}
-	return '';
+	return function_exists( 'andonick_core_form_feedback' ) ? andonick_core_form_feedback() : '';
 }
 
-/**
- * Redirige le visiteur vers le formulaire, avec un état lisible.
- */
-function andonick_form_redirect( $status ) {
-	$referer = wp_get_referer();
-	$url     = $referer ? $referer : home_url( '/' );
-	$url     = strtok( $url, '#' );
-	$url     = add_query_arg( 'andonick_form', sanitize_key( $status ), remove_query_arg( 'andonick_form', $url ) );
-	wp_safe_redirect( $url . '#devis' );
-	exit;
+/** Formulaire à rouvrir après la redirection (devis par défaut). */
+function andonick_form_active() {
+	return function_exists( 'andonick_core_active_form' ) ? andonick_core_active_form() : 'devis';
 }
-
-/**
- * Gestion des formulaires (devis / rappel) — admin-post.
- * Les champs sont définis sans code : « Formulaires & listes » dans le
- * Customizer. Le nom de chaque champ est andonick_f{index} ; la validation
- * porte sur les lignes marquées obligatoires (|1).
- */
-function andonick_handle_form() {
-	$nonce_ok = isset( $_POST['andonick_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['andonick_nonce'] ) ), 'andonick_contact' );
-	if ( ! $nonce_ok ) {
-		andonick_form_redirect( 'error' );
-	}
-
-	// Honeypot anti-spam : si rempli, on ignore silencieusement.
-	if ( ! empty( $_POST['andonick_website'] ) ) {
-		andonick_form_redirect( 'sent' );
-	}
-
-	$lang = ( isset( $_POST['andonick_lang'] ) && 'en' === sanitize_key( wp_unslash( $_POST['andonick_lang'] ) ) ) ? 'en' : 'fr';
-	$type = ( isset( $_POST['andonick_form_type'] ) && 'rappel' === $_POST['andonick_form_type'] ) ? 'rappel' : 'devis';
-	$config = andonick_form_fields( $type, $lang );
-
-	$labels = array( 'fr' => 'FR', 'en' => 'EN' );
-	$kind   = ( 'rappel' === $type ) ? 'RAPPEL' : 'DEVIS';
-	$lines  = array();
-	$ok     = true;
-
-	if ( empty( $config ) ) {
-		$ok = false;
-	}
-	foreach ( $config as $i => $field ) {
-		$key = 'andonick_f' . $i;
-		if ( 'email' === $field['type'] ) {
-			$value = isset( $_POST[ $key ] ) ? sanitize_email( wp_unslash( $_POST[ $key ] ) ) : '';
-		} elseif ( 'textarea' === $field['type'] ) {
-			$value = isset( $_POST[ $key ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $key ] ) ) : '';
-		} else {
-			$value = isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : '';
-		}
-		$value = trim( $value );
-		if ( strlen( $value ) > 3000 || ( 'email' === $field['type'] && '' !== $value && ! is_email( $value ) ) ) {
-			$ok = false;
-			continue;
-		}
-		if ( 'select' === $field['type'] && '' !== $value ) {
-			$options = ( 'slots' === $field['options'] ) ? andonick_slots() : andonick_services();
-			if ( ! in_array( $value, $options, true ) ) {
-				$ok = false;
-				continue;
-			}
-		}
-		if ( $field['required'] && '' === $value ) {
-			$ok = false;
-			continue;
-		}
-		if ( '' !== $value ) {
-			$lines[] = $field['label'] . ' : ' . $value;
-		}
-	}
-
-	if ( ! $ok ) {
-		andonick_form_redirect( 'error' );
-	}
-
-	$body  = 'Demande [' . $kind . '] — Site web (langue ' . $labels[ $lang ] . ')' . "\n\n";
-	$body .= implode( "\n", $lines );
-	$body .= "\n\nEnvoyé depuis : " . esc_url_raw( wp_get_referer() );
-
-	$lead_id = wp_insert_post( array(
-		'post_type'    => 'andonick_lead',
-		'post_status'  => 'private',
-		'post_title'   => sprintf( '%s — %s', $kind, current_time( 'Y-m-d H:i' ) ),
-		'post_content' => $body,
-	) );
-	if ( ! is_wp_error( $lead_id ) && $lead_id ) {
-		update_post_meta( $lead_id, '_andonick_lead_language', $lang );
-		update_post_meta( $lead_id, '_andonick_lead_type', $type );
-	}
-
-	$mail_sent = wp_mail(
-		andonick_t_lang( 'contact_mail', $lang ),
-		'[ANDONICK] Nouvelle demande ' . $kind . ' (' . $labels[ $lang ] . ')',
-		$body
-	);
-
-	/* Copie de confirmation au visiteur (si activé ET une adresse e-mail valide
-	 * a été saisie dans un champ de type email). */
-	if ( '1' === get_theme_mod( 'andonick_forms_copy', '0' ) ) {
-		$visitor_email = '';
-		foreach ( $config as $i => $field ) {
-			if ( 'email' === $field['type'] && ! empty( $_POST[ 'andonick_f' . $i ] ) ) {
-				$visitor_email = sanitize_email( wp_unslash( $_POST[ 'andonick_f' . $i ] ) );
-				if ( '' !== $visitor_email ) {
-					break;
-				}
-			}
-		}
-		if ( '' !== $visitor_email ) {
-			wp_mail(
-				$visitor_email,
-				andonick_t_lang( 'form_copy_subject', $lang ),
-				andonick_t_lang( 'form_copy_body', $lang ) . "\n\n" . implode( "\n", $lines )
-			);
-		}
-	}
-
-	andonick_form_redirect( ( ! is_wp_error( $lead_id ) && $lead_id ) ? ( $mail_sent ? 'sent' : 'saved' ) : 'error' );
-}
-add_action( 'admin_post_nopriv_andonick_contact', 'andonick_handle_form' );
-add_action( 'admin_post_andonick_contact', 'andonick_handle_form' );
 
 /**
  * SEO — meta description + balises Open Graph / Twitter, réglées sans code
@@ -400,6 +271,9 @@ function andonick_seo_meta() {
 	$img    = trim( (string) get_theme_mod( 'andonick_img_og', '' ) );
 	if ( $obj && has_post_thumbnail( $obj ) ) {
 		$img = get_the_post_thumbnail_url( $obj, 'full' );
+	}
+	if ( '' === $img ) {
+		$img = ANDONICK_URI . '/assets/img/hero.jpg';
 	}
 	$url    = andonick_url_in_language( andonick_current_url(), $lang );
 	$locale = ( 'en' === $lang ) ? 'en_US' : 'fr_FR';
@@ -427,3 +301,53 @@ function andonick_seo_meta() {
 	}
 }
 add_action( 'wp_head', 'andonick_seo_meta', 2 );
+
+/**
+ * Données structurées limitées aux informations confirmées par les documents
+ * client. Les implantations de Dakar et Bordeaux ne sont pas transformées en
+ * adresses, faute d'adresse postale fournie.
+ */
+function andonick_organization_schema() {
+	if ( ! is_front_page() ) {
+		return;
+	}
+
+	$data = array(
+		'@context'    => 'https://schema.org',
+		'@type'       => 'Organization',
+		'@id'         => home_url( '/#organization' ),
+		'name'        => get_bloginfo( 'name' ),
+		'url'         => home_url( '/' ),
+		'logo'        => array(
+			'@type' => 'ImageObject',
+			'url'   => ANDONICK_URI . '/assets/img/logo.png',
+		),
+		'image'       => ANDONICK_URI . '/assets/img/hero.jpg',
+		'description' => trim( (string) andonick_t( 'seo_desc' ) ),
+		'email'       => sanitize_email( andonick_t( 'contact_mail' ) ),
+		'telephone'   => trim( (string) andonick_t( 'phone_rca1' ) ),
+		'address'     => array(
+			'@type'           => 'PostalAddress',
+			'streetAddress'   => 'Quartier Sica 1, Rue du Languedoc',
+			'addressLocality' => 'Bangui',
+			'addressCountry'  => 'CF',
+		),
+		'areaServed'  => array( 'République centrafricaine', 'Sénégal', 'France' ),
+	);
+
+	echo '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
+}
+add_action( 'wp_head', 'andonick_organization_schema', 3 );
+
+/** Routes machine lisibles et statut correct du sitemap avec une page statique. */
+function andonick_machine_routes() {
+	add_rewrite_rule( '^robots\.txt$', 'index.php?robots=1', 'top' );
+}
+add_action( 'init', 'andonick_machine_routes', 9 );
+
+function andonick_sitemap_status_header() {
+	if ( get_query_var( 'sitemap' ) ) {
+		status_header( 200 );
+	}
+}
+add_action( 'template_redirect', 'andonick_sitemap_status_header', 0 );

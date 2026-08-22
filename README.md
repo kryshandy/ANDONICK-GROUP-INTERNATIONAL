@@ -4,12 +4,23 @@ Site vitrine one-page bilingue (FR/EN) de **ANDONICK Group International** (Bang
 
 > **Charte graphique stricte** : violet `#461491`, violet foncé `#2A0A63`, blanc `#FFFFFF`, gris `#333333`. Aucune autre couleur (jaune, or...) n'est autorisée.
 
+## Livrables et documentation
+
+- `andonick-theme.zip` : thème installable, généré par `scripts/build-release.ps1`
+- `andonick-core.zip` : extension métier installable, générée depuis `companion-plugin/andonick-core/`
+- [`docs/GUIDE-PROPRIETAIRE.pdf`](docs/GUIDE-PROPRIETAIRE.pdf) : guide no-code complet du propriétaire
+- [`docs/INSTALLATION-DEPLOIEMENT.md`](docs/INSTALLATION-DEPLOIEMENT.md) : installation, migration, recette et retour arrière
+- [`docs/PRODUCTION-CHECKLIST.md`](docs/PRODUCTION-CHECKLIST.md) : décision de mise en ligne
+- [`docs/PLAN-SUITE.md`](docs/PLAN-SUITE.md) : plan priorisé après livraison
+- [`CHANGELOG.md`](CHANGELOG.md) : historique de livraison
+
 ---
 
 ## Aperçu
 
-- **Environnement local** : XAMPP (Apache + MySQL + PHP 8.x) — WordPress 7.0
+- **Environnement local** : XAMPP (Apache + MySQL + PHP 8.x) — WordPress 7.1
 - **Thème** : `andonick` (classique, sans builder obligatoire)
+- **Extension métier obligatoire** : `andonick-core` (demandes privées, projets/preuves, rétention et droits RGPD)
 - **Multilingue** : FR (défaut) / EN via `?lang=en` — accueil bilingue, avec locale et balises `hreflang` uniquement là où les deux versions existent réellement
 - **Contenu** : 8 métiers (extensible à 12 dès le Customizer), témoignages (6 places), références (illimité), partenaires (illimité), statistiques du haut de page (illimitées), actualités (articles WordPress), réseaux sociaux (illimités), carte Google Maps, formulaires devis/rappel aux champs modifiables, **6 sections libres (3 « texte » + 3 « bannière »)** ajoutables/masquables dans la page, galerie réalisations (12 places)
 - **Référencement** : description + Open Graph/Twitter réglés sans code (par langue), image de partage dédiée, textes du blog et de la page 404 modifiables
@@ -19,7 +30,7 @@ Site vitrine one-page bilingue (FR/EN) de **ANDONICK Group International** (Bang
 ```
 wp-content/themes/andonick/
 ├── style.css              → déclaration du thème + CSS complet (charte)
-├── functions.php          → setup, assets, service de langues, demandes de contact
+├── functions.php          → setup, assets, service de langues, SEO et données structurées
 ├── header.php             → topbar, menus WordPress FR/EN, bouton FR/EN
 ├── footer.php             → footer, WhatsApp flottant, retour en haut
 ├── front-page.php         → orchestre les sections dans l'ordre du Customizer
@@ -31,8 +42,10 @@ wp-content/themes/andonick/
 │   └── appearance.php     → panneau « Apparence & Styles » + réinitialisation
 ├── assets/
 │   ├── img/               → logo officiel HD, favicon, photos du site officiel
-│   └── js/main.js         → menu mobile, scrollspy, reveal, compteurs, AJAX
-└── docs/                  → documentation et fichiers sources du client
+│   └── js/main.js         → menu mobile, scrollspy, reveal, compteurs, onglets, galerie
+├── companion-plugin/     → source versionnée de l’extension ANDONICK Core
+├── scripts/              → configuration reproductible, recette et packages ZIP
+└── docs/                 → guide propriétaire, déploiement et sources client
 ```
 
 ## Installation locale
@@ -43,7 +56,10 @@ wp-content/themes/andonick/
 4. Créer la base de données (ex. `wp_elecam`, charset `utf8mb4`).
 5. Configurer `wp-config.php` (DB + salts officiels).
 6. Activer le thème **ANDONICK Group International** (Apparence → Thèmes).
-7. Ouvrir `http://localhost/wordpress/`.
+7. Copier `companion-plugin/andonick-core/` dans `wp-content/plugins/`, puis activer **ANDONICK Core**.
+8. Ouvrir `http://localhost/wordpress/`.
+
+Pour une installation reproductible, suivre [`docs/INSTALLATION-DEPLOIEMENT.md`](docs/INSTALLATION-DEPLOIEMENT.md). Avant toute mise en ligne, valider chaque ligne de [`docs/PRODUCTION-CHECKLIST.md`](docs/PRODUCTION-CHECKLIST.md).
 
 ## Modifier le site SANS code — Apparence → Personnaliser
 
@@ -56,7 +72,7 @@ Tout le site est éditable depuis l'admin WordPress, sans toucher au code :
   - **Les métiers — FR / EN** : **illimités** (1 ligne = `Numéro|Titre|Description|Étiquette1;Étiquette2`)
   - **Témoignages & Références — FR / EN** : **témoignages illimités** (1 ligne = `Citation|Nom|Rôle`), références illimitées (1 ligne = `Catégorie | Organisation | Mission`), en-têtes du tableau
   - **Formulaires & listes — FR / EN** : impacts **illimités** (1 ligne = `Chiffre|Description`), partenaires, liste déroulante des services, créneaux de rappel, **statistiques illimitées** (1 ligne = `Nombre|Libellé`, ex. `15+|ans d'expertise`), **réseaux sociaux illimités** (1 ligne = `Nom|URL`), champs des formulaires Devis/Rappel
-  - **Pages légales & Actualités** : 3 liens de pied de page choisis parmi vos pages WordPress (Mentions légales, Politique de confidentialité…), interrupteur d'affichage de la section Actualités (articles du blog)
+  - **Pages légales & Actualités** : 3 liens de pied de page <strong>par langue</strong>, choisis parmi vos pages WordPress, et interrupteur de la section Actualités
   - **Formulaires & Blog (réglages communs)** : afficher/masquer chacun des deux formulaires, longueur des extraits d'articles, commentaires sous les articles
   - **Images** : photo du hero, photos des sections, **galerie à 40 emplacements réglables** (place vide = photo non affichée), **photo optionnelle des sections libres « Texte » (position gauche/droite réglable)**, image de partage Open Graph
 - **Identité du site** (Réglages de base) : logo, titre, icône, description.
@@ -74,32 +90,39 @@ L'approche `?lang=en` est recommandée pour un site vitrine structuré (zéro re
 - `switch_to_locale('en_US')` → les éléments WordPress affichés côté visiteur suivent l’anglais
 - `<html lang="en-US">` (fr-FR par défaut)
 - Titre de l'onglet et métadonnées adaptés au contenu réellement consulté
-- `hreflang` réciproques fr/en + `x-default` pour l’accueil ; les pages et articles ne déclarent pas une fausse traduction
+- `hreflang` réciproques fr/en + `x-default` pour l’accueil et les pages légales réellement appairées ; aucun `hreflang` n’est inventé pour les contenus sans traduction
 - `body class="lang-en"` / `lang-fr`
 - Les textes du thème sont traduits. Les articles et pages WordPress doivent être rédigés dans les deux langues avant d’être reliés par une solution multilingue dédiée.
 
-## Demandes et e-mails
+## Données métier, demandes et e-mails
 
-Chaque formulaire validé est enregistré dans **Demandes** dans l’administration WordPress avant l’envoi de l’e-mail. Ainsi, une panne SMTP ne fait pas perdre le prospect : le statut « enregistrée » est affiché au visiteur. Configurez tout de même un SMTP transactionnel avant la mise en ligne.
+Les quatre preuves documentées sont gérées dans **Projets & preuves**. Chaque formulaire validé est enregistré dans **Demandes** avant l’envoi de l’e-mail. Une panne SMTP ne fait donc pas perdre la demande. ANDONICK Core ajoute consentement, anti-abus, rétention configurable, export et effacement des données WordPress.
 
 ## Workflow Git recommandé
 
-Le dépôt Git se trouve à la racine de ce thème. Travaillez sur une branche par évolution, vérifiez PHP/JavaScript, créez un commit lisible puis ouvrez une pull request vers `main`. Les réglages, pages, médias et menus WordPress vivent dans la base de données : exportez-les avec une sauvegarde de production, ils ne doivent pas être committés comme du code. Pour transmettre le thème, lancez `scripts/build-release.ps1` : son ZIP exclut volontairement Git, les documents internes, les sources et les scripts de développement. Apache bloque aussi `.git` et `docs` lorsque le thème est servi localement.
+Le dépôt Git se trouve à la racine de ce thème. Travaillez sur une branche par évolution, vérifiez PHP/JavaScript, créez un commit lisible puis ouvrez une pull request vers `main`. Les réglages, pages, médias et menus WordPress vivent dans la base de données : exportez-les avec une sauvegarde de production, ils ne doivent pas être committés comme du code. Pour transmettre le thème et l’extension, lancez `powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1`. Le ZIP du thème exclut volontairement Git, les documents internes, le plugin compagnon et les scripts de développement. Apache bloque aussi `.git` et `docs` lorsque le thème est servi localement.
+
+Recette locale complète :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/qa/verify-site.ps1 -BaseUrl "http://localhost/wordpress" -BuildRelease
+```
 
 ## Mise en production — checklist
 
 - [ ] Hébergement PHP 8+ avec MySQL/MariaDB
 - [ ] Passer `WP_DEBUG` à `false` dans `wp-config.php`
-- [ ] Installer **WP Mail SMTP** (l'envoi local des formulaires ne fonctionne pas sans)
+- [ ] Configurer un SMTP authentifié + SPF/DKIM/DMARC et tester la délivrabilité
 - [ ] Certificat SSL (Let's Encrypt) + redirection HTTPS
 - [ ] CDN Cloudflare (perfs + protection)
 - [ ] Sauvegardes régulières (UpdraftPlus)
 - [ ] Remplacer les URL locales (`http://localhost/wordpress`) par le domaine
-- [ ] Créer ses pages légales (Pages → Ajouter) et relier les 3 liens du pied de page (Customizer → Pages légales)
+- [ ] Compléter forme juridique, capital, RCCM, NIF, direction de publication et hébergeur dans le brouillon « Mentions légales », puis publier
 - [ ] Publier des articles (Articles → Ajouter) pour alimenter la section Actualités (invisible tant qu'aucun article n'existe)
 
 ## Versions
 
+- **4.0.0** — Refonte UX/UI institutionnelle responsive, logo conforme, clavier/lightbox/onglets accessibles, section structurée « Projets & preuves », extension ANDONICK Core séparant les données métier du thème, consentement et anti-abus des formulaires, rétention/export/effacement, pages légales FR/EN appairées, SEO/JSON-LD, sécurité locale, livrables thème + plugin et guide propriétaire/formation no-code v4.
 - **3.9.0** — **Livraison opérationnelle** : positionnement recentré sur un partenaire unique de l’étude à la maintenance ; hero sobre avec preuves partenaires et parcours de prise en charge éditables ; palette officielle verrouillée ; menus WordPress distincts FR/EN ; demandes de formulaire validées et conservées dans l’administration avant e-mail ; SEO par page corrigé (titre, canonical unique, Open Graph), navigation/accessibilité mobile, onglets et lightbox durcis. Les mises à jour du thème ne suppriment plus jamais de contenu WordPress.
 - **3.8.0** — **Harmonie et équilibre responsive sur tous les écrans** : grilles de cartes (métiers, témoignages, impacts) qui passent proprement de 3 → 2 → 1 colonnes (tablette et mobile), ancres qui ne sont plus cachées sous le menu fixe (`scroll-margin-top`), boutons WhatsApp du contact empilés pleine largeur sur mobile, échelles typographiques fluides, rythme d&#8217;espacement homogène. Vérifié à 1400/1024/768/480/380 px : aucune colonne écrasée, aucun débordement horizontal, boutons 448 px pleine largeur au mobile
 - **3.7.0** — **Actualités proprement bilingues et « vraies »** : le contenu de démonstration WordPress (article « Bonjour tout le monde ! », page d&#8217;exemple et son commentaire) est automatiquement supprimé à l&#8217;installation/à la mise à jour du thème — la section n&#8217;apparaît donc plus à cause d&#8217;un article vide ; nouvelle : **« Actualités — catégorie des articles français / anglais »** (Pages légales &amp; Actualités) : la section ne montre que les articles de la langue visitée et se masque quand la catégorie est vide. Vérifié : EN vide → section masquée, FR intacte

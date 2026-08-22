@@ -3,7 +3,7 @@ Theme Name: ANDONICK Group International
 Theme URI: https://andonickgroup.com
 Author: Webmaster ANDONICK
 Description: Thème one-page bilingue (FR/EN) pour ANDONICK Group International. Charte graphique officielle : violet #461491, violet foncé #2A0A63, blanc #FFFFFF, gris #333333. Aucune autre couleur n'est autorisée.
-Version: 3.9.0
+Version: 4.0.0
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -161,15 +161,22 @@ button {
    ========================================================================== */
 
 .reveal {
+	opacity: 1;
+	transform: none;
+	transition: none;
+}
+
+.reveal-ready .reveal {
 	opacity: 0;
 	transform: translateY(28px);
 	transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 	will-change: opacity, transform;
 }
 
-.reveal.visible {
+.reveal-ready .reveal.visible {
 	opacity: 1;
 	transform: none;
+	will-change: auto;
 }
 
 .reveal-delay-1 { transition-delay: 0.08s; }
@@ -180,7 +187,8 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
 	html { scroll-behavior: auto; }
-	.reveal {
+	.reveal,
+	.reveal-ready .reveal {
 		opacity: 1;
 		transform: none;
 		transition: none;
@@ -191,6 +199,127 @@ button {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
+	}
+}
+
+/* ==========================================================================
+   PROJETS & PREUVES — contenu structuré fourni par ANDONICK Core
+   ========================================================================== */
+
+.section-projects .section-head {
+	max-width: 780px;
+	margin-inline: auto;
+	text-align: center;
+}
+
+.projects-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: clamp(18px, 2vw, 28px);
+	margin-top: clamp(32px, 4vw, 52px);
+}
+
+.project-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 290px;
+	padding: clamp(24px, 3vw, 34px);
+	border: 1px solid rgba(70, 20, 145, 0.16);
+	border-top: 4px solid var(--violet);
+	border-radius: var(--radius);
+	background: var(--white);
+	box-shadow: var(--shadow-sm);
+	overflow: hidden;
+}
+
+.project-card::after {
+	content: "";
+	position: absolute;
+	right: -42px;
+	bottom: -42px;
+	width: 118px;
+	height: 118px;
+	border: 22px solid rgba(70, 20, 145, 0.05);
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+.project-logo {
+	width: auto;
+	max-width: 160px;
+	height: 52px;
+	margin-bottom: 18px;
+	object-fit: contain;
+	object-position: left center;
+}
+
+.project-domains {
+	margin: 0 0 10px;
+	color: var(--violet);
+	font-size: 0.76rem;
+	font-weight: 800;
+	letter-spacing: 0.09em;
+	line-height: 1.35;
+	text-transform: uppercase;
+}
+
+.project-card h3 {
+	max-width: 27ch;
+	margin: 0 0 14px;
+	color: var(--violet-dark);
+	font-size: clamp(1.28rem, 2vw, 1.65rem);
+	line-height: 1.2;
+}
+
+.project-description {
+	margin: 0 0 18px;
+	color: var(--grey);
+	line-height: 1.65;
+}
+
+.project-location {
+	margin: auto 0 12px;
+	padding-top: 16px;
+	border-top: 1px solid rgba(70, 20, 145, 0.13);
+	color: var(--grey);
+	font-size: 0.92rem;
+	font-weight: 600;
+}
+
+.project-proof {
+	align-self: flex-start;
+	margin: 0;
+	padding: 7px 11px;
+	border-radius: 999px;
+	background: var(--violet-tint);
+	color: var(--violet-dark);
+	font-size: 0.78rem;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+}
+
+.project-link {
+	display: inline-flex;
+	margin-top: 16px;
+	color: var(--violet);
+	font-weight: 800;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 4px;
+}
+
+.section-projects.section-bg-dark .project-card {
+	background: var(--white);
+}
+
+@media (max-width: 720px) {
+	.projects-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.project-card {
+		min-height: 0;
 	}
 }
 
@@ -2524,4 +2653,642 @@ div[id] {
 .cookie-decline:focus {
 	background: var(--white);
 	color: var(--violet-dark);
+}
+
+/* ==========================================================================
+   v4.0 — Direction frontend : institution claire, chaîne opérationnelle,
+   navigation accessible et équilibre 320–1440 px.
+   ========================================================================== */
+
+:root {
+	--line: rgba(70, 20, 145, 0.14);
+	--line-strong: rgba(70, 20, 145, 0.24);
+	--surface-soft: rgba(70, 20, 145, 0.045);
+}
+
+body.nav-open,
+body.lightbox-open {
+	overflow: hidden;
+}
+
+.section {
+	isolation: isolate;
+}
+
+.section + .section {
+	border-top: 1px solid rgba(70, 20, 145, 0.06);
+}
+
+.section-head {
+	max-width: 740px;
+	margin-bottom: clamp(36px, 5vw, 58px);
+}
+
+.section-head h2,
+.section h2 {
+	letter-spacing: -0.025em;
+}
+
+.section-head p {
+	max-width: 650px;
+	margin-inline: auto;
+}
+
+.btn {
+	min-height: 44px;
+	border-radius: var(--radius-sm);
+	letter-spacing: 0.01em;
+	box-shadow: 0 6px 18px rgba(42, 10, 99, 0.14);
+}
+
+.btn:hover {
+	box-shadow: 0 10px 24px rgba(42, 10, 99, 0.2);
+}
+
+.btn-outline,
+.btn-outline-light,
+.btn-white {
+	box-shadow: none;
+}
+
+/* Bandeau discret : contact utile, sans concurrencer la proposition de valeur. */
+.topbar {
+	min-height: 34px;
+}
+
+.topbar-inner {
+	justify-content: flex-end;
+	min-height: 34px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.topbar-links {
+	gap: 4px 12px;
+	font-size: 0.76rem;
+	letter-spacing: 0.01em;
+}
+
+.topbar-links strong {
+	font-weight: 600;
+}
+
+.topbar-sep {
+	opacity: 0.28;
+}
+
+/* Header : logo réellement lisible et navigation respirante. */
+.site-header {
+	border-bottom: 1px solid rgba(70, 20, 145, 0.08);
+}
+
+.header-inner {
+	height: auto;
+	min-height: max(var(--header-h), 84px);
+	gap: clamp(14px, 2vw, 28px);
+}
+
+.brand {
+	flex: 0 0 auto;
+}
+
+.brand-logo {
+	width: clamp(120px, 11vw, 156px);
+	height: auto;
+	max-height: 76px;
+	object-fit: contain;
+}
+
+.main-nav {
+	margin-left: auto;
+	gap: clamp(14px, 1.7vw, 26px);
+}
+
+.main-nav-list {
+	gap: clamp(14px, 1.7vw, 26px);
+}
+
+.main-nav a:not(.btn) {
+	font-size: 0.9rem;
+	white-space: nowrap;
+}
+
+.main-nav .btn {
+	white-space: nowrap;
+}
+
+.nav-toggle,
+.nav-close {
+	min-width: 44px;
+	min-height: 44px;
+}
+
+.nav-overlay[aria-hidden="true"] {
+	pointer-events: none;
+}
+
+/* Hero-thèse : une seule promesse, puis les preuves et le parcours réel. */
+.hero::before {
+	background:
+		linear-gradient(90deg, rgba(42, 10, 99, 0.98) 0%, rgba(42, 10, 99, 0.91) 54%, rgba(42, 10, 99, 0.55) 100%);
+}
+
+.hero-inner {
+	max-width: 1080px;
+}
+
+.hero-tag {
+	padding: 7px 15px;
+	border-radius: 999px;
+	letter-spacing: 0.12em;
+}
+
+.hero-title {
+	max-width: 820px;
+	text-wrap: balance;
+}
+
+.hero-lead {
+	max-width: 680px;
+	line-height: 1.72;
+}
+
+.hero-cta {
+	gap: 12px;
+	margin-bottom: clamp(38px, 5vw, 58px);
+}
+
+.hero-stats {
+	gap: 0;
+	width: min(100%, 760px);
+	border-top: 1px solid rgba(255, 255, 255, 0.22);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.stat {
+	flex: 1 1 180px;
+	padding: 22px clamp(18px, 3vw, 34px);
+}
+
+.stat:first-child {
+	padding-left: 0;
+}
+
+.stat + .stat {
+	border-left-color: rgba(255, 255, 255, 0.22);
+}
+
+.hero-trust {
+	max-width: 920px;
+	border-top: 0;
+	padding-top: 0;
+}
+
+.hero-trust ul {
+	gap: 8px 10px;
+}
+
+.hero-trust li {
+	padding: 5px 10px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 999px;
+}
+
+.engagement-rail {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+	width: min(100%, 920px);
+	margin-top: 26px;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	border-radius: var(--radius);
+	background: rgba(255, 255, 255, 0.07);
+	overflow: hidden;
+}
+
+.engagement-rail li {
+	position: relative;
+	min-height: 64px;
+	padding: 14px 16px;
+	line-height: 1.35;
+}
+
+.engagement-rail li + li {
+	border-left: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.engagement-rail li + li::before {
+	margin-left: 0;
+}
+
+.strip-inner {
+	justify-content: flex-start;
+}
+
+/* Images et cartes : surfaces plus calmes, hiérarchie plus nette. */
+.group-media img {
+	width: 100%;
+	max-height: 620px;
+	object-fit: cover;
+}
+
+.filiale-card,
+.testi-card,
+.news-card,
+.contact-block,
+.contact-form-wrap,
+.refs-block {
+	border-color: var(--line);
+}
+
+.filiale-card,
+.testi-card,
+.news-card {
+	box-shadow: 0 8px 26px rgba(42, 10, 99, 0.09);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.filiale-card:hover,
+	.testi-card:hover {
+		transform: translateY(-4px);
+	}
+}
+
+.gallery-item::after {
+	pointer-events: none;
+}
+
+.gallery-link:focus-visible img {
+	transform: scale(1.03);
+}
+
+.refs-table-wrap:focus-visible {
+	outline: 3px solid var(--violet);
+	outline-offset: 4px;
+}
+
+.form-tab {
+	min-height: 52px;
+}
+
+.form-tab:focus-visible {
+	position: relative;
+	z-index: 1;
+	outline-color: var(--white);
+	outline-offset: -5px;
+}
+
+/* Les variantes sombres restent utilisables avec des cartes blanches lisibles. */
+.section-news.section-bg-dark {
+	background: var(--violet-dark);
+}
+
+.section-bg-dark .filiale-card,
+.section-bg-dark .testi-card,
+.section-bg-dark .news-card,
+.section-bg-dark .contact-block,
+.section-bg-dark .contact-form-wrap,
+.section-bg-dark .refs-table-wrap,
+.section-bg-dark .refs-table {
+	background: var(--white);
+	color: var(--grey);
+}
+
+.section-bg-dark .filiale-card h3,
+.section-bg-dark .filiale-card p,
+.section-bg-dark .filiale-card li,
+.section-bg-dark .testi-card p,
+.section-bg-dark .testi-card footer b,
+.section-bg-dark .testi-card footer span,
+.section-bg-dark .news-card h3,
+.section-bg-dark .news-card p,
+.section-bg-dark .news-card time,
+.section-bg-dark .contact-block h4,
+.section-bg-dark .contact-block p,
+.section-bg-dark .contact-block a,
+.section-bg-dark .refs-table td,
+.section-bg-dark .refs-table td a {
+	color: var(--grey);
+}
+
+.section-bg-dark .filiale-tags li,
+.section-bg-dark .news-more,
+.section-bg-dark .contact-block a {
+	color: var(--violet);
+}
+
+.section-bg-dark .contact-form-wrap label {
+	color: var(--violet-dark);
+}
+
+.section-contact.section-bg-dark .contact-info h2 {
+	color: var(--white);
+}
+
+/* Footer et utilitaires. */
+.footer-logo {
+	width: clamp(150px, 15vw, 190px);
+	height: auto;
+	max-height: none;
+}
+
+.wa-float,
+.back-top {
+	border: 2px solid rgba(255, 255, 255, 0.88);
+}
+
+.cookie-banner:not(.open) {
+	visibility: hidden;
+}
+
+.cookie-banner.open {
+	visibility: visible;
+}
+
+.lightbox:not(.open) {
+	pointer-events: none;
+}
+
+.lightbox.open {
+	pointer-events: auto;
+}
+
+.hero :focus-visible,
+.topbar :focus-visible,
+.site-footer :focus-visible,
+.section-banner :focus-visible,
+.section-impact :focus-visible,
+.lightbox :focus-visible {
+	outline-color: var(--white);
+}
+
+/* Le tiroir apparaît avant que la navigation desktop ne soit comprimée. */
+@media (max-width: 1040px) {
+	.header-inner {
+		min-height: 78px;
+	}
+
+	.brand-logo {
+		width: clamp(120px, 17vw, 144px);
+		max-height: 70px;
+	}
+
+	.main-nav {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: flex-start;
+		gap: 0;
+		width: min(360px, 88vw);
+		margin: 0;
+		padding: 88px 28px 30px;
+		background: var(--white);
+		box-shadow: -20px 0 60px rgba(42, 10, 99, 0.22);
+		transform: translateX(110%);
+		visibility: hidden;
+		overflow-y: auto;
+		transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.32s;
+		z-index: 120;
+	}
+
+	.main-nav.open {
+		transform: translateX(0);
+		visibility: visible;
+	}
+
+	.main-nav::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 5px;
+		background: var(--violet);
+	}
+
+	.main-nav-list {
+		width: 100%;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+	}
+
+	.main-nav-list .menu-item {
+		margin: 0;
+	}
+
+	.main-nav a:not(.btn) {
+		display: block;
+		padding: 14px 2px;
+		font-size: 1rem;
+		border-bottom: 1px solid var(--line);
+		white-space: normal;
+	}
+
+	.main-nav a:not(.btn)::after {
+		display: none;
+	}
+
+	.main-nav a:not(.btn).active {
+		padding-left: 12px;
+		border-left: 3px solid var(--violet);
+	}
+
+	.main-nav .btn {
+		width: 100%;
+		margin-top: 22px;
+	}
+
+	.nav-close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		padding: 0;
+		border: 1px solid var(--line-strong);
+		border-radius: var(--radius-sm);
+		background: var(--white);
+		color: var(--violet-dark);
+		font-size: 2rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.nav-toggle {
+		display: flex;
+	}
+
+	.nav-overlay {
+		z-index: 95;
+	}
+
+	html:not(.reveal-ready) .header-inner {
+		flex-wrap: wrap;
+		padding-top: 8px;
+	}
+
+	html:not(.reveal-ready) .main-nav {
+		position: static;
+		order: 4;
+		flex: 1 0 100%;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		padding: 0 0 14px;
+		box-shadow: none;
+		transform: none;
+		visibility: visible;
+		overflow: visible;
+	}
+
+	html:not(.reveal-ready) .main-nav::before,
+	html:not(.reveal-ready) .nav-close,
+	html:not(.reveal-ready) .nav-toggle {
+		display: none;
+	}
+
+	html:not(.reveal-ready) .main-nav-list {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 4px 18px;
+	}
+
+	html:not(.reveal-ready) .main-nav a:not(.btn) {
+		display: inline-block;
+		padding: 8px 0;
+		border: 0;
+	}
+
+	html:not(.reveal-ready) .main-nav .btn {
+		width: auto;
+		margin: 0 0 0 auto;
+	}
+}
+
+@media (max-width: 768px) {
+	.topbar-inner {
+		justify-content: center;
+	}
+
+	.header-inner {
+		min-height: 74px;
+		gap: 10px;
+	}
+
+	.brand-logo {
+		width: 120px;
+		max-height: 68px;
+	}
+
+	.hero-inner {
+		padding-top: 58px;
+	}
+
+	.hero-stats {
+		align-items: stretch;
+	}
+
+	.stat,
+	.stat:first-child {
+		width: 100%;
+		max-width: none;
+		padding: 18px 0;
+		text-align: left;
+	}
+
+	.stat + .stat {
+		border-top: 1px solid rgba(255, 255, 255, 0.22);
+	}
+
+	.engagement-rail {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.engagement-rail li:nth-child(odd) {
+		border-left: 0;
+	}
+
+	.engagement-rail li:nth-child(n + 3) {
+		border-top: 1px solid rgba(255, 255, 255, 0.18);
+	}
+}
+
+@media (max-width: 520px) {
+	.topbar-links > :nth-child(n + 4) {
+		display: none;
+	}
+
+	.topbar-links {
+		justify-content: center;
+		font-size: 0.72rem;
+	}
+
+	.lang-switch a,
+	.lang-switch .lang-active {
+		min-width: 32px;
+		padding-inline: 8px;
+	}
+
+	.engagement-rail {
+		grid-template-columns: 1fr;
+	}
+
+	.engagement-rail li + li,
+	.engagement-rail li:nth-child(n + 3) {
+		border-left: 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.18);
+	}
+
+	.hero-cta .btn {
+		max-width: none;
+	}
+
+	.cookie-actions {
+		width: 100%;
+	}
+}
+
+@media (max-width: 360px) {
+	.container {
+		padding-inline: 14px;
+	}
+
+	.topbar-links > :nth-child(n + 2) {
+		display: none;
+	}
+
+	.header-inner {
+		gap: 7px;
+	}
+
+	.brand-logo {
+		width: 120px;
+	}
+
+	.lang-switch a,
+	.lang-switch .lang-active {
+		min-width: 29px;
+		padding-inline: 6px;
+	}
+
+	.nav-toggle {
+		padding: 7px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero-tag .dot {
+		animation: none;
+	}
+
+	.filiale-card:hover,
+	.testi-card:hover,
+	.gallery-item:hover img {
+		transform: none;
+	}
 }

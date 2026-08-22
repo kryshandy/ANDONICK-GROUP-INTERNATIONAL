@@ -2,6 +2,16 @@
 
 Documentation et fichiers sources fournis par le client (Google Drive) et extraits du site officiel.
 
+## Documentation de livraison
+
+| Fichier | Usage |
+|---|---|
+| `GUIDE-PROPRIETAIRE.pdf` | Administration no-code, bonnes pratiques éditoriales et formation du propriétaire |
+| `INSTALLATION-DEPLOIEMENT.md` | Construction des ZIP, installation, migration, recette et retour arrière |
+| `PRODUCTION-CHECKLIST.md` | Décision GO/NO-GO avant ouverture publique |
+| `PLAN-SUITE.md` | Priorités P0 à P3 après livraison |
+| `RELEASE-NOTES-4.0.0.md` | Synthèse de la version livrée |
+
 ## Fichiers client (Drive)
 
 | Fichier | Usage |
@@ -11,7 +21,7 @@ Documentation et fichiers sources fournis par le client (Google Drive) et extrai
 
 ## Fichiers sources (site officiel)
 
-`Site_FR-EN.html` et `Site_EN.html` : ancien site une-page bilingue de référence. Toute la rédaction du nouveau thème WordPress en a été extraite (témoignages, références, métiers, formulaires, contacts) — garantie d'exactitude.
+`Site_FR-EN.html` et `Site_EN.html` : ancien site une-page bilingue conservé comme source historique. Il ne constitue pas à lui seul une preuve d’exactitude : les affirmations sensibles, témoignages et coordonnées de tiers ont été écartés ou recoupés avec les documents client plus récents.
 
 ## Médias extraits
 
@@ -19,7 +29,7 @@ Documentation et fichiers sources fournis par le client (Google Drive) et extrai
 
 ## Notes de production
 
-- L'envoi des formulaires (devis/rappel) passe par `wp_mail()` — nécessite un plugin SMTP (ex. WP Mail SMTP) en production.
-- Le formulaire inclut : nonce WordPress, honeypot anti-spam, validation serveur, enregistrement privé dans **Demandes**, puis redirection sécurisée. Une panne SMTP ne doit donc pas faire perdre une demande.
+- L'envoi des formulaires (devis/rappel) passe par `wp_mail()` et exige un SMTP authentifié correctement configuré en production.
+- ANDONICK Core gère : nonces distincts, honeypot, temps minimal, limitation de débit, validation serveur, consentement, enregistrement privé dans **Demandes**, rétention, export/effacement et redirection sécurisée.
 - Pour tout changement visuel : respecter impérativement la charte (4 couleurs, logo intact).
 - Les menus, pages, articles, médias et réglages restent des données WordPress. Le dépôt Git versionne le thème ; la sauvegarde WordPress versionne les données de production.

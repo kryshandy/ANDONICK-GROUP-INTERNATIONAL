@@ -89,6 +89,9 @@ function andonick_ap_font_choices() {
  * Autorise l'upload de polices (woff2 / woff) dans la bibliothèque.
  */
 function andonick_ap_font_mimes( $mimes ) {
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
+		return $mimes;
+	}
 	$mimes['woff2'] = 'font/woff2';
 	$mimes['woff']  = 'font/woff';
 	return $mimes;
@@ -183,6 +186,7 @@ function andonick_appearance_css() {
 	$bg_sections = array(
 		'groupe'    => '.section-group',
 		'filiales'  => '.section-filiales',
+		'projets'   => '.section-projects',
 		'references'=> '.section-refs',
 		'contact'   => '.section-contact',
 	);
@@ -414,6 +418,7 @@ function andonick_customize_appearance( $wp_customize ) {
 	$secbg_defaults = array(
 		'groupe'      => 'light',
 		'filiales'    => 'tint',
+		'projets'     => 'light',
 		'actualites'  => 'light',
 		'realisations'=> 'light',
 		'references'  => 'light',

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function andonick_section_order() {
 	$default = array_merge(
-		array( 'hero', 'groupe', 'filiales', 'references', 'realisations', 'impact', 'actualites', 'contact' ),
+		array( 'hero', 'groupe', 'filiales', 'projets', 'references', 'realisations', 'impact', 'actualites', 'contact' ),
 		andonick_free_sections()
 	);
 	$raw     = get_theme_mod( 'andonick_section_order', '' );
@@ -124,6 +124,11 @@ function andonick_sec_bg( $key, $default = 'light' ) {
  * Section GROUPE.
  */
 function andonick_section_groupe() {
+	$group_img = andonick_img( 'group' );
+	$values = andonick_values();
+	if ( '' === trim( (string) andonick_t( 's2_eyebrow' ) ) && '' === trim( (string) andonick_t( 's2_title' ) ) && '' === trim( (string) andonick_t( 's2_body' ) ) && empty( $values ) && '' === $group_img ) {
+		return;
+	}
 	?>
 	<section class="section section-group section-bg-<?php echo andonick_sec_bg( 'groupe', 'light' ); ?>" id="groupe">
 		<div class="container group-grid">
@@ -131,16 +136,16 @@ function andonick_section_groupe() {
 				<span class="eyebrow"><?php echo esc_html( andonick_t( 's2_eyebrow' ) ); ?></span>
 				<h2><?php echo esc_html( andonick_t( 's2_title' ) ); ?></h2>
 				<p><?php echo wp_kses_post( andonick_t( 's2_body' ) ); ?></p>
-				<ul class="value-list">
-					<?php foreach ( andonick_values() as $value ) : ?>
+				<?php if ( ! empty( $values ) ) : ?><ul class="value-list">
+					<?php foreach ( $values as $value ) : ?>
 						<li><b><?php echo esc_html( $value ); ?></b></li>
 					<?php endforeach; ?>
-				</ul>
+				</ul><?php endif; ?>
 			</div>
-			<figure class="group-media reveal reveal-delay-2">
-				<img src="<?php echo esc_url( andonick_img( 'group' ) ); ?>" alt="<?php echo esc_attr( andonick_t( 'img_team_name' ) ); ?>">
-				<figcaption><?php echo esc_html( andonick_t( 'hero_cap' ) ); ?></figcaption>
-			</figure>
+			<?php if ( '' !== $group_img ) : ?><figure class="group-media reveal reveal-delay-2">
+				<img src="<?php echo esc_url( $group_img ); ?>" alt="<?php echo esc_attr( andonick_t( 'img_team_name' ) ); ?>">
+				<?php if ( '' !== trim( (string) andonick_t( 'hero_cap' ) ) ) : ?><figcaption><?php echo esc_html( andonick_t( 'hero_cap' ) ); ?></figcaption><?php endif; ?>
+			</figure><?php endif; ?>
 		</div>
 	</section>
 	<?php
@@ -169,7 +174,7 @@ function andonick_section_filiales() {
 						<?php if ( $img ) : ?>
 							<div class="filiale-media">
 								<span class="filiale-badge"><?php echo esc_html( $filiale['num'] ); ?></span>
-								<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $filiale['title'] ); ?>" loading="lazy">
+								<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( ! empty( $filiale['alt'] ) ? $filiale['alt'] : $filiale['title'] ); ?>" loading="lazy">
 							</div>
 						<?php endif; ?>
 						<div class="filiale-head">
@@ -195,9 +200,13 @@ function andonick_section_filiales() {
  */
 function andonick_section_impact() {
 	$impacts = andonick_impacts();
+	$impact_img = andonick_img( 'impact' );
+	if ( empty( $impacts ) && '' === trim( (string) andonick_t( 'impact_eyebrow' ) ) && '' === trim( (string) andonick_t( 'impact_title' ) ) && '' === trim( (string) andonick_t( 'impact_body' ) ) && '' === $impact_img ) {
+		return;
+	}
 	?>
 	<section class="section section-impact" id="impact">
-		<div class="impact-bg" style="background-image:url('<?php echo esc_url( andonick_img( 'impact' ) ); ?>');"></div>
+		<?php if ( '' !== $impact_img ) : ?><div class="impact-bg" style="background-image:url('<?php echo esc_url( $impact_img ); ?>');"></div><?php endif; ?>
 		<div class="container impact-inner">
 			<span class="eyebrow eyebrow-light reveal"><?php echo esc_html( andonick_t( 'impact_eyebrow' ) ); ?></span>
 			<h2 class="reveal"><?php echo esc_html( andonick_t( 'impact_title' ) ); ?></h2>
@@ -221,7 +230,7 @@ function andonick_section_impact() {
  * Section GALERIE RÉALISATIONS.
  */
 function andonick_section_realisations() {
-	$gallery = array_filter( andonick_gallery() );
+	$gallery = andonick_gallery_items();
 	if ( empty( $gallery ) ) {
 		return;
 	}
@@ -236,10 +245,43 @@ function andonick_section_realisations() {
 			<div class="gallery-grid">
 				<?php foreach ( $gallery as $gi => $gimg ) : ?>
 <figure class="gallery-item reveal reveal-delay-<?php echo esc_attr( ( $gi % 3 ) + 1 ); ?>">
-						<a class="gallery-link" href="<?php echo esc_url( $gimg ); ?>" aria-label="<?php echo esc_attr( andonick_t( 'gallery_zoom' ) ); ?>">
-							<img src="<?php echo esc_url( $gimg ); ?>" alt="<?php echo esc_attr( andonick_t( 'gallery_title' ) ); ?>" loading="lazy">
+						<a class="gallery-link" href="<?php echo esc_url( $gimg['url'] ); ?>" aria-label="<?php echo esc_attr( andonick_t( 'gallery_zoom' ) . ' — ' . $gimg['alt'] ); ?>">
+							<img src="<?php echo esc_url( $gimg['url'] ); ?>" alt="<?php echo esc_attr( $gimg['alt'] ); ?>" loading="lazy">
 						</a>
+						<?php if ( '' !== $gimg['caption'] ) : ?><figcaption><?php echo esc_html( $gimg['caption'] ); ?></figcaption><?php endif; ?>
 					</figure>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+	<?php
+}
+
+/** Section PROJETS & PREUVES TERRAIN — données structurées par ANDONICK Core. */
+function andonick_section_projets() {
+	$projects = andonick_projects();
+	if ( empty( $projects ) ) {
+		return;
+	}
+	?>
+	<section class="section section-projects section-bg-<?php echo andonick_sec_bg( 'projets', 'light' ); ?>" id="projets">
+		<div class="container">
+			<div class="section-head reveal">
+				<?php if ( '' !== trim( (string) andonick_t( 'projects_eyebrow' ) ) ) : ?><span class="eyebrow"><?php echo esc_html( andonick_t( 'projects_eyebrow' ) ); ?></span><?php endif; ?>
+				<?php if ( '' !== trim( (string) andonick_t( 'projects_title' ) ) ) : ?><h2><?php echo esc_html( andonick_t( 'projects_title' ) ); ?></h2><?php endif; ?>
+				<?php if ( '' !== trim( (string) andonick_t( 'projects_sub' ) ) ) : ?><p><?php echo esc_html( andonick_t( 'projects_sub' ) ); ?></p><?php endif; ?>
+			</div>
+			<div class="projects-grid">
+				<?php foreach ( $projects as $project ) : ?>
+					<article class="project-card reveal">
+						<?php if ( ! empty( $project['logo'] ) ) : ?><img class="project-logo" src="<?php echo esc_url( $project['logo'] ); ?>" alt="" loading="lazy"><?php endif; ?>
+						<?php if ( ! empty( $project['domains'] ) ) : ?><p class="project-domains"><?php echo esc_html( implode( ' · ', $project['domains'] ) ); ?></p><?php endif; ?>
+						<?php if ( '' !== $project['title'] ) : ?><h3><?php echo esc_html( $project['title'] ); ?></h3><?php endif; ?>
+						<?php if ( '' !== $project['description'] ) : ?><p class="project-description"><?php echo esc_html( $project['description'] ); ?></p><?php endif; ?>
+						<?php if ( '' !== $project['location'] ) : ?><p class="project-location"><?php echo esc_html( $project['location'] ); ?></p><?php endif; ?>
+						<?php if ( '' !== $project['proof'] ) : ?><p class="project-proof"><?php echo esc_html( $project['proof'] ); ?></p><?php endif; ?>
+						<?php if ( '' !== $project['link'] ) : ?><p><a class="project-link" href="<?php echo esc_url( $project['link'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( andonick_t( 'projects_link' ) ); ?></a></p><?php endif; ?>
+					</article>
 				<?php endforeach; ?>
 			</div>
 		</div>
@@ -302,6 +344,14 @@ $q = new WP_Query( array(
  */
 function andonick_section_references() {
 	$testis  = andonick_testis();
+	$refs    = andonick_refs();
+	$headers = array_values( array_filter( array_map( 'trim', andonick_ref_headers() ), 'strlen' ) );
+	/* Une quatrième colonne doit être explicitement nommée. Les anciennes
+	 * lignes à quatre valeurs ne peuvent ainsi republier un téléphone privé. */
+	$column_count = count( $headers ) >= 4 ? 4 : 3;
+	if ( empty( $testis ) && empty( $refs ) && '' === trim( (string) andonick_t( 'refs_title' ) ) && '' === trim( (string) andonick_t( 'refs_eyebrow' ) ) ) {
+		return;
+	}
 	?>
 <section class="section section-refs section-bg-<?php echo andonick_sec_bg( 'references', 'light' ); ?>" id="references">
 		<div class="container">
@@ -325,31 +375,32 @@ function andonick_section_references() {
 				</div>
 			<?php endif; ?>
 
-			<div class="refs-block reveal">
+			<?php if ( ! empty( $refs ) ) : ?><div class="refs-block reveal">
 				<span class="eyebrow"><?php echo esc_html( andonick_t( 'refs_eyebrow' ) ); ?></span>
 				<h3><?php echo esc_html( andonick_t( 'refs_title' ) ); ?></h3>
 				<div class="refs-table-wrap">
 					<table class="refs-table">
+						<caption><?php echo esc_html( andonick_t( 'refs_caption' ) ); ?></caption>
 						<thead>
 							<tr>
-								<?php foreach ( array_slice( andonick_ref_headers(), 0, 3 ) as $header ) : ?>
-									<th><?php echo esc_html( $header ); ?></th>
+								<?php foreach ( array_slice( $headers, 0, $column_count ) as $header ) : ?>
+									<th scope="col"><?php echo esc_html( $header ); ?></th>
 								<?php endforeach; ?>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ( andonick_refs() as $ref ) : ?>
+							<?php foreach ( $refs as $ref ) : ?>
 								<tr>
-									<td><?php echo esc_html( isset( $ref[0] ) ? $ref[0] : '' ); ?></td>
-									<td><b><?php echo esc_html( isset( $ref[1] ) ? $ref[1] : '' ); ?></b></td>
-									<td><?php echo esc_html( isset( $ref[2] ) ? $ref[2] : '' ); ?></td>
+									<?php for ( $ci = 0; $ci < $column_count; $ci++ ) : ?>
+										<?php if ( 0 === $ci ) : ?><th scope="row"><?php echo esc_html( isset( $ref[ $ci ] ) ? $ref[ $ci ] : '' ); ?></th><?php else : ?><td><?php echo esc_html( isset( $ref[ $ci ] ) ? $ref[ $ci ] : '' ); ?></td><?php endif; ?>
+									<?php endfor; ?>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
 
-			</div>
+			</div><?php endif; ?>
 		</div>
 	</section>
 	<?php
@@ -391,13 +442,21 @@ function andonick_section_contact() {
 				<?php $map_embed = trim( (string) andonick_t( 'map_embed' ) ); ?>
 				<?php $map_url   = trim( (string) andonick_t( 'map_url' ) ); ?>
 				<?php $map_dir   = trim( (string) andonick_t( 'map_dir' ) ); ?>
+				<?php $map_allowed = isset( $_GET['andonick_map'] ) && '1' === sanitize_key( wp_unslash( $_GET['andonick_map'] ) ); ?>
 				<?php if ( '' !== $map_embed || '' !== $map_url ) : ?>
 					<div class="contact-map">
 						<?php if ( '' !== $map_dir ) : ?>
 							<p class="map-dir"><?php echo esc_html( $map_dir ); ?></p>
 						<?php endif; ?>
-						<?php if ( '' !== $map_embed ) : ?>
-							<iframe src="<?php echo esc_url( $map_embed ); ?>" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+						<?php if ( '' !== $map_embed && $map_allowed ) : ?>
+							<iframe src="<?php echo esc_url( $map_embed ); ?>" title="<?php echo esc_attr( andonick_t( 'map_title' ) ); ?>" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+						<?php elseif ( '' !== $map_embed ) : ?>
+							<form class="map-consent" method="get" action="<?php echo esc_url( andonick_current_url() ); ?>">
+								<?php if ( 'en' === andonick_lang() ) : ?><input type="hidden" name="lang" value="en"><?php endif; ?>
+								<input type="hidden" name="andonick_map" value="1">
+								<p><?php echo esc_html( andonick_t( 'map_consent' ) ); ?></p>
+								<button class="btn btn-outline" type="submit"><?php echo esc_html( andonick_t( 'map_consent_btn' ) ); ?></button>
+							</form>
 						<?php endif; ?>
 						<?php if ( '' !== $map_url ) : ?>
 							<a class="btn btn-outline" href="<?php echo esc_url( $map_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( andonick_t( 'map_lien' ) ); ?></a>
@@ -409,24 +468,28 @@ function andonick_section_contact() {
 <div class="contact-form-wrap reveal reveal-delay-2" id="devis">
 				<?php $tab_devis  = andonick_form_enabled( 'devis' ); ?>
 				<?php $tab_rappel = andonick_form_enabled( 'rappel' ); ?>
+				<?php $active_form = andonick_form_active(); ?>
+				<?php if ( 'rappel' === $active_form && ! $tab_rappel ) { $active_form = 'devis'; } ?>
+				<?php if ( 'devis' === $active_form && ! $tab_devis ) { $active_form = 'rappel'; } ?>
 				<?php if ( $tab_devis || $tab_rappel ) : ?>
 				<div class="form-tabs" role="tablist" aria-label="<?php echo esc_attr( andonick_t( 'contact_title' ) ); ?>">
 					<?php if ( $tab_devis ) : ?>
-						<button type="button" class="form-tab active" id="tab-devis" data-tab="devis" role="tab" aria-selected="true" aria-controls="panel-devis"><?php echo esc_html( andonick_t( 'tab_devis' ) ); ?></button>
+						<button type="button" class="form-tab<?php echo 'devis' === $active_form ? ' active' : ''; ?>" id="tab-devis" data-tab="devis" role="tab" aria-selected="<?php echo 'devis' === $active_form ? 'true' : 'false'; ?>" aria-controls="panel-devis"><?php echo esc_html( andonick_t( 'tab_devis' ) ); ?></button>
 					<?php endif; ?>
 					<?php if ( $tab_rappel ) : ?>
-						<button type="button" class="form-tab<?php echo ( ! $tab_devis ) ? ' active' : ''; ?>" id="tab-rappel" data-tab="rappel" role="tab" aria-selected="<?php echo $tab_devis ? 'false' : 'true'; ?>" aria-controls="panel-rappel"><?php echo esc_html( andonick_t( 'tab_rappel' ) ); ?></button>
+						<button type="button" class="form-tab<?php echo 'rappel' === $active_form ? ' active' : ''; ?>" id="tab-rappel" data-tab="rappel" role="tab" aria-selected="<?php echo 'rappel' === $active_form ? 'true' : 'false'; ?>" aria-controls="panel-rappel"><?php echo esc_html( andonick_t( 'tab_rappel' ) ); ?></button>
 					<?php endif; ?>
 				</div>
 				<?php endif; ?>
 
 				<?php if ( $tab_devis ) : ?>
-				<div class="form-panel" id="panel-devis" role="tabpanel" aria-labelledby="tab-devis">
+				<div class="form-panel" id="panel-devis" role="tabpanel" aria-labelledby="tab-devis"<?php echo 'devis' !== $active_form ? ' hidden' : ''; ?>>
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
 						<input type="hidden" name="andonick_form_type" value="devis">
 						<input type="hidden" name="andonick_lang" value="<?php echo esc_attr( andonick_lang() ); ?>">
-						<?php wp_nonce_field( 'andonick_contact', 'andonick_nonce' ); ?>
+						<input type="hidden" name="andonick_started" value="<?php echo esc_attr( time() ); ?>">
+						<?php wp_nonce_field( 'andonick_contact_devis', 'andonick_nonce_devis' ); ?>
 						<div style="display:none;"><input type="text" name="andonick_website" tabindex="-1" autocomplete="off"></div>
 
 						<?php $fi = 0; ?>
@@ -435,11 +498,14 @@ function andonick_section_contact() {
 								<label for="f-devis-<?php echo esc_attr( $fi ); ?>"><?php echo esc_html( $ffield['label'] ); ?></label>
 								<?php if ( 'select' === $ffield['type'] ) : ?>
 									<select id="f-devis-<?php echo esc_attr( $fi ); ?>" name="andonick_f<?php echo esc_attr( $fi ); ?>"<?php echo $ffield['required'] ? ' required' : ''; ?>>
+										<option value=""><?php echo esc_html( andonick_t( 'form_select_placeholder' ) ); ?></option>
 										<?php $options = ( 'slots' === $ffield['options'] ) ? andonick_lines( 'slots', $slots ) : andonick_lines( 'services', $services ); ?>
 										<?php foreach ( $options as $option ) : ?>
 											<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option ); ?></option>
 										<?php endforeach; ?>
 									</select>
+								<?php elseif ( 'checkbox' === $ffield['type'] ) : ?>
+									<input type="checkbox" id="f-devis-<?php echo esc_attr( $fi ); ?>" name="andonick_f<?php echo esc_attr( $fi ); ?>" value="1"<?php echo $ffield['required'] ? ' required' : ''; ?>>
 								<?php elseif ( 'textarea' === $ffield['type'] ) : ?>
 									<textarea id="f-devis-<?php echo esc_attr( $fi ); ?>" name="andonick_f<?php echo esc_attr( $fi ); ?>" rows="4"<?php echo $ffield['required'] ? ' required' : ''; ?>></textarea>
 								<?php else : ?>
@@ -448,6 +514,9 @@ function andonick_section_contact() {
 							</div>
 							<?php $fi++; ?>
 						<?php endforeach; ?>
+						<?php if ( '0' !== get_theme_mod( 'andonick_form_consent_enabled', '1' ) ) : ?>
+							<p class="form-consent"><label for="andonick-consent-devis"><input type="checkbox" id="andonick-consent-devis" name="andonick_consent" value="1" required> <?php echo esc_html( andonick_t( 'form_consent' ) ); ?></label><?php $privacy_url = andonick_privacy_page_url(); if ( $privacy_url ) : ?> <a href="<?php echo esc_url( $privacy_url ); ?>"><?php echo esc_html( andonick_t( 'form_consent_link' ) ); ?></a><?php endif; ?></p>
+						<?php endif; ?>
 						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_devis' ) ); ?></button>
 <p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_devis' ) ); ?></p>
 					</form>
@@ -455,12 +524,13 @@ function andonick_section_contact() {
 				<?php endif; ?>
 
 				<?php if ( $tab_rappel ) : ?>
-				<div class="form-panel" id="panel-rappel" role="tabpanel" aria-labelledby="tab-rappel"<?php echo $tab_devis ? ' hidden' : ''; ?>>
+				<div class="form-panel" id="panel-rappel" role="tabpanel" aria-labelledby="tab-rappel"<?php echo 'rappel' !== $active_form ? ' hidden' : ''; ?>>
 					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" class="andonick-form">
 						<input type="hidden" name="action" value="andonick_contact">
 						<input type="hidden" name="andonick_form_type" value="rappel">
 						<input type="hidden" name="andonick_lang" value="<?php echo esc_attr( andonick_lang() ); ?>">
-						<?php wp_nonce_field( 'andonick_contact', 'andonick_nonce' ); ?>
+						<input type="hidden" name="andonick_started" value="<?php echo esc_attr( time() ); ?>">
+						<?php wp_nonce_field( 'andonick_contact_rappel', 'andonick_nonce_rappel' ); ?>
 						<div style="display:none;"><input type="text" name="andonick_website" tabindex="-1" autocomplete="off"></div>
 
 						<?php $ri = 0; ?>
@@ -469,11 +539,14 @@ function andonick_section_contact() {
 								<label for="f-rappel-<?php echo esc_attr( $ri ); ?>"><?php echo esc_html( $rfield['label'] ); ?></label>
 								<?php if ( 'select' === $rfield['type'] ) : ?>
 									<select id="f-rappel-<?php echo esc_attr( $ri ); ?>" name="andonick_f<?php echo esc_attr( $ri ); ?>"<?php echo $rfield['required'] ? ' required' : ''; ?>>
+										<option value=""><?php echo esc_html( andonick_t( 'form_select_placeholder' ) ); ?></option>
 										<?php $options = ( 'slots' === $rfield['options'] ) ? andonick_lines( 'slots', $slots ) : andonick_lines( 'services', $services ); ?>
 										<?php foreach ( $options as $option ) : ?>
 											<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( $option ); ?></option>
 										<?php endforeach; ?>
 									</select>
+								<?php elseif ( 'checkbox' === $rfield['type'] ) : ?>
+									<input type="checkbox" id="f-rappel-<?php echo esc_attr( $ri ); ?>" name="andonick_f<?php echo esc_attr( $ri ); ?>" value="1"<?php echo $rfield['required'] ? ' required' : ''; ?>>
 								<?php elseif ( 'textarea' === $rfield['type'] ) : ?>
 									<textarea id="f-rappel-<?php echo esc_attr( $ri ); ?>" name="andonick_f<?php echo esc_attr( $ri ); ?>" rows="4"<?php echo $rfield['required'] ? ' required' : ''; ?>></textarea>
 								<?php else : ?>
@@ -482,6 +555,9 @@ function andonick_section_contact() {
 							</div>
 							<?php $ri++; ?>
 						<?php endforeach; ?>
+						<?php if ( '0' !== get_theme_mod( 'andonick_form_consent_enabled', '1' ) ) : ?>
+							<p class="form-consent"><label for="andonick-consent-rappel"><input type="checkbox" id="andonick-consent-rappel" name="andonick_consent" value="1" required> <?php echo esc_html( andonick_t( 'form_consent' ) ); ?></label><?php $privacy_url = andonick_privacy_page_url(); if ( $privacy_url ) : ?> <a href="<?php echo esc_url( $privacy_url ); ?>"><?php echo esc_html( andonick_t( 'form_consent_link' ) ); ?></a><?php endif; ?></p>
+						<?php endif; ?>
 						<button type="submit" class="btn btn-block"><?php echo esc_html( andonick_t( 'f_submit_rappel' ) ); ?></button>
 <p class="form-disclaimer"><?php echo wp_kses_post( andonick_t( 'f_disc_rappel' ) ); ?></p>
 					</form>
@@ -523,7 +599,7 @@ function andonick_free_texte( $n ) {
 			<div class="free-layout<?php echo $media && 'right' === $media[1] ? ' pos-right' : ''; ?>">
 				<?php if ( $media ) : ?>
 					<figure class="free-media reveal">
-						<img src="<?php echo esc_url( $media[0] ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
+						<img src="<?php echo esc_url( $media[0] ); ?>" alt="<?php echo esc_attr( '' !== trim( (string) andonick_t( $p . '_img_alt' ) ) ? andonick_t( $p . '_img_alt' ) : $title ); ?>" loading="lazy">
 					</figure>
 				<?php endif; ?>
 				<div class="free-content">
@@ -558,7 +634,7 @@ function andonick_free_banniere( $n ) {
 	$body  = trim( (string) andonick_t( $p . '_body' ) );
 	$btn   = trim( (string) andonick_t( $p . '_btn' ) );
 	$href  = trim( (string) andonick_t( $p . '_btn_href' ) );
-	if ( '' === $title && '' === $body && '' === $btn ) {
+	if ( '' === $title && '' === $body && ( '' === $btn || '' === $href ) ) {
 		return;
 	}
 	$bg = andonick_ap_bg( $p );
